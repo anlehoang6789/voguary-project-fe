@@ -1,7 +1,24 @@
-import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import { adminRoutes, publicRoutes } from 'routes/routes';
 
 function App() {
-  return <div className='text-red-500'>Hoang An</div>;
+  return (
+    <>
+      <Routes>
+        {publicRoutes.map(({ layout, component, path }, index) => {
+          const Layout = layout;
+          const Component = component;
+          return <Route key={index} path={path} element={<Layout children={<Component />} />} />;
+        })}
+
+        {adminRoutes.map(({ layout, component, path }, index) => {
+          const Layout = layout;
+          const Component = component;
+          return <Route key={index} path={path} element={<Layout children={<Component />} />} />;
+        })}
+      </Routes>
+    </>
+  );
 }
 
 export default App;

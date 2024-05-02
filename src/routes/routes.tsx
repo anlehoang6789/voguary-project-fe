@@ -3,6 +3,7 @@ import ClientLayout from 'layouts/client_layout/ClientLayout';
 import LoginLayout from 'layouts/login_layout/LoginLayout';
 import DashboardPage from 'pages/Auth/admin/Dashboard/DashboardPage';
 import LoginPage from 'pages/Auth/login/LoginPage';
+import RegisterPage from 'pages/Auth/login/RegisterPage';
 import HomePage from 'pages/clientPages/HomePage';
 
 interface LayoutProps {
@@ -19,7 +20,8 @@ interface RouteProps {
 
 const publicRoutes: RouteProps[] = [
   { path: '/', component: HomePage, layout: ClientLayout },
-  { path: '/login', component: LoginPage, layout: LoginLayout }
+  { path: '/login', component: LoginPage, layout: LoginLayout },
+  { path: '/register', component: RegisterPage, layout: LoginLayout }
 ];
 
 // const privateRoutes: RouteProps[] = [];

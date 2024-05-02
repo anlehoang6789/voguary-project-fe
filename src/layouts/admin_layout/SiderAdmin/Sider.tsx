@@ -36,11 +36,11 @@ export default function MySider() {
 
   const getConditionalItems = (): MenuItem[] => {
     return [
-      getItem('Dashboard', 'dashboard', <MdDashboard />),
-      getItem('View all inventory', 'inventory', <MdInventory />),
-      getItem('Manage user', 'sub2', <MdManageAccounts />, [
-        getItem('View all user', 'accountAll', <FaUsersViewfinder />),
-        getItem('Create account for staff', 'createAccount', <IoMdPersonAdd />)
+      getItem('Thống kê', 'dashboard', <MdDashboard />),
+      getItem('Xem tất cả hàng tồn kho', 'inventory', <MdInventory />),
+      getItem('Quản lí tài khoản', 'sub2', <MdManageAccounts />, [
+        getItem('Xem tất cả tài khoản', 'accountAll', <FaUsersViewfinder />),
+        getItem('Tạo tài khoản cho nhân viên', 'createAccount', <IoMdPersonAdd />)
       ])
     ];
   };

@@ -1,0 +1,7 @@
+.ant-menu-horizontal, .ant-menu-item::after, .ant-menu-submenu::after {
+    border-bottom: none !important;
+  }
+  
+  .ant-menu-item:hover, .ant-menu-item:hover a {
+    color: #0A92FF !important;
+  }

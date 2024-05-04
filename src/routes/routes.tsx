@@ -1,5 +1,7 @@
 import AdminLayout from 'layouts/admin_layout/AdminLayout';
 import ClientLayout from 'layouts/client_layout/ClientLayout';
+
+import ProfileClient from 'layouts/client_layout/ProfileClient/ProfileClient';
 import LoginLayout from 'layouts/login_layout/LoginLayout';
 import DashboardPage from 'pages/Auth/admin/Dashboard/DashboardPage';
 import LoginPage from 'pages/Auth/login/LoginPage';
@@ -23,7 +25,8 @@ const publicRoutes: RouteProps[] = [
   { path: '/', component: HomePage, layout: ClientLayout },
   { path: '/login', component: LoginPage, layout: LoginLayout },
   { path: '/register', component: RegisterPage, layout: LoginLayout },
-  { path: '/*', component: NotFoundPage, layout: ClientLayout }
+  { path: '/*', component: NotFoundPage, layout: ClientLayout },
+  { path: '/profileclient', component: NotFoundPage, layout: ProfileClient }
 ];
 
 // const privateRoutes: RouteProps[] = [];

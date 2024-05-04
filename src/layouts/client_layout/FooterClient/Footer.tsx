@@ -1,5 +1,6 @@
 import { FacebookOutlined, InstagramOutlined, TwitterOutlined, YoutubeOutlined } from '@ant-design/icons';
 import { Col, Row } from 'antd';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -14,30 +15,62 @@ export default function Footer() {
       <Col span={8} className='text-white pl-40'>
         <div className='mb-6 '>
           <h1 className='mb-4 text-xl'>CHĂM SÓC KHÁCH HÀNG</h1>
-          <p className='mb-4 '>Cách thức thuê trang phục</p>
-          <p className='mb-4 '>Chính sách đổi trả</p>
-          <p className='mb-4'>Điều khoản sử dụng</p>
-          <p>Hình thức thanh toán</p>
+
+          <Link to='#'>
+            <p className='mb-4 '>Cách thức thuê trang phục</p>
+          </Link>
+
+          <Link to='#'>
+            <p className='mb-4 '>Chính sách đổi trả</p>
+          </Link>
+
+          <Link to='#'>
+            <p className='mb-4'>Điều khoản sử dụng</p>
+          </Link>
+
+          <Link to='#'>
+            <p>Hình thức thanh toán</p>
+          </Link>
         </div>
       </Col>
 
       <Col span={8} className='text-white pl-40'>
         <div className='mb-6 '>
           <h1 className='mb-4 text-xl'>VỀ VOGUARY</h1>
-          <p className='mb-4 '>Giới thiệu về Voguary</p>
-          <p className='mb-4 '>Cộng đồng</p>
-          <p className='mb-4'>Quy trình giặt hấp</p>
-          <p>Tuyển dụng</p>
+
+          <Link to='#'>
+            <p className='mb-4 '>Giới thiệu về Voguary</p>
+          </Link>
+
+          <Link to='#'>
+            <p className='mb-4 '>Cộng đồng</p>
+          </Link>
+
+          <Link to='#'>
+            <p className='mb-4'>Quy trình giặt hấp</p>
+          </Link>
+
+          <Link to='#'>
+            <p>Tuyển dụng</p>
+          </Link>
         </div>
       </Col>
 
       <Col span={8} className='text-white pl-40'>
         <div className='mb-6 '>
           <h1 className='mb-4 text-xl'>LIÊN HỆ VỚI CHÚNG TÔI</h1>
-          <p className='mb-4 '>Trung tâm đa phương tiện</p>
-          <p className='mb-4 '>Quyền riêng tư</p>
-          <p className='mb-4'>Liên hệ với chúng tôi</p>
-          <p>Tuyển dụng</p>
+
+          <Link to='#'>
+            <p className='mb-4 '>Trung tâm đa phương tiện</p>
+          </Link>
+
+          <Link to='#'>
+            <p className='mb-4 '>Quyền riêng tư</p>
+          </Link>
+
+          <Link to='#'>
+            <p className='mb-4'>Liên hệ với chúng tôi</p>
+          </Link>
         </div>
       </Col>
 

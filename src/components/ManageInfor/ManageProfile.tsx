@@ -26,7 +26,7 @@ export default function ManageProfile() {
                 }
               ]}
             >
-              <Input placeholder='Vui lòng nhập họ' className='w-auto' />
+              <Input placeholder='Hà' className='w-auto' />
             </FormItem>
           </Col>
 
@@ -43,7 +43,7 @@ export default function ManageProfile() {
                 }
               ]}
             >
-              <Input placeholder='Vui lòng nhập tên' className='w-auto' />
+              <Input placeholder='Minh' className='w-auto' />
             </Form.Item>
           </Col>
 
@@ -103,7 +103,7 @@ export default function ManageProfile() {
                 }
               ]}
             >
-              <Input placeholder='Vui lòng nhập email' style={{ width: '70%' }} />
+              <Input placeholder='abc@example.com' style={{ width: '70%' }} />
             </Form.Item>
           </Col>
 
@@ -120,10 +120,7 @@ export default function ManageProfile() {
                 }
               ]}
             >
-              <Input
-                placeholder='Vui lòng nhập số điện thoại                                '
-                style={{ width: '80%' }}
-              />
+              <Input placeholder='0123456789                                ' style={{ width: '80%' }} />
             </Form.Item>
           </Col>
 
@@ -147,12 +144,12 @@ export default function ManageProfile() {
             </Form.Item>
           </Col>
         </Row>
-        <div className='flex justify-center'>
+        <div className='flex justify-end items-end'>
           <Button
             type='primary'
             htmlType='submit'
             size='large'
-            className='!w-[20%] mt-5                                  '
+            className='!w-[20%]  !mr-12                                 '
           >
             Lưu
           </Button>

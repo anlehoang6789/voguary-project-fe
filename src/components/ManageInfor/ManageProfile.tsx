@@ -120,7 +120,7 @@ export default function ManageProfile() {
                 }
               ]}
             >
-              <Input placeholder='0123456789                                ' style={{ width: '80%' }} />
+              <Input placeholder='0123456789' style={{ width: '80%' }} />
             </Form.Item>
           </Col>
 
@@ -145,12 +145,7 @@ export default function ManageProfile() {
           </Col>
         </Row>
         <div className='flex justify-end items-end'>
-          <Button
-            type='primary'
-            htmlType='submit'
-            size='large'
-            className='!w-[20%]  !mr-12                                 '
-          >
+          <Button type='primary' htmlType='submit' size='large' className='!w-[20%] !mr-12'>
             Lưu
           </Button>
         </div>

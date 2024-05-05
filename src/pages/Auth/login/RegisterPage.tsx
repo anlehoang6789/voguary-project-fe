@@ -16,6 +16,23 @@ export default function RegisterPage() {
           <div className='bg-[#D2DAE2] p-8 pb-14 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]'>
             <Form autoComplete='off' layout='vertical'>
               <Form.Item
+                label='Tên tài khoản'
+                name='username'
+                rules={[
+                  {
+                    required: true,
+                    message: 'Tên hiển thị không được bỏ trống'
+                  },
+                  {
+                    pattern: /^.{5,}$/,
+                    message: 'Tên tài khoản phải từ 5 kí tự trở lên'
+                  }
+                ]}
+                className='font-roboto'
+              >
+                <Input placeholder='abcde' size='large' />
+              </Form.Item>
+              <Form.Item
                 label='Email'
                 name='accountEmail'
                 rules={[
@@ -35,7 +52,7 @@ export default function RegisterPage() {
               </Form.Item>
               <Form.Item
                 label='Tên hiển thị'
-                name='username'
+                name='displayName'
                 rules={[
                   {
                     required: true,
@@ -67,7 +84,18 @@ export default function RegisterPage() {
               <Form.Item
                 label='Xác nhận mật khẩu'
                 name='confirmAccountPassword'
-                rules={[{ required: true, message: 'Xác nhận mật khẩu không được bỏ trống' }]}
+                dependencies={['accountPassword']}
+                rules={[
+                  { required: true, message: 'Xác nhận mật khẩu không được bỏ trống' },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('accountPassword') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
+                    }
+                  })
+                ]}
               >
                 <Input.Password placeholder='Mk@1234' size='large' />
               </Form.Item>

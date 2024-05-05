@@ -1,7 +1,6 @@
 import AdminLayout from 'layouts/admin_layout/AdminLayout';
 import ClientLayout from 'layouts/client_layout/ClientLayout';
 
-import ProfileClient from 'layouts/client_layout/ProfileClient/ProfileClient';
 import LoginLayout from 'layouts/login_layout/LoginLayout';
 import DashboardPage from 'pages/Auth/admin/Dashboard/DashboardPage';
 import LoginPage from 'pages/Auth/login/LoginPage';

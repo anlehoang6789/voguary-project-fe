@@ -25,13 +25,15 @@ const publicRoutes: RouteProps[] = [
   { path: '/', component: HomePage, layout: ClientLayout },
   { path: '/login', component: LoginPage, layout: LoginLayout },
   { path: '/register', component: RegisterPage, layout: LoginLayout },
-  { path: '/*', component: NotFoundPage, layout: ClientLayout },
-  { path: '/profileclient', component: NotFoundPage, layout: ProfileClient }
+  { path: '/*', component: NotFoundPage, layout: ClientLayout }
 ];
 
 // const privateRoutes: RouteProps[] = [];
 
-const adminRoutes: RouteProps[] = [{ path: '/admin', component: DashboardPage, layout: AdminLayout }];
+const adminRoutes: RouteProps[] = [
+  { path: '/admin', component: DashboardPage, layout: AdminLayout },
+  { path: '/user', component: ProfileClient, layout: ClientLayout }
+];
 
 // const staffRoutes: RouteProps[] = [];
 

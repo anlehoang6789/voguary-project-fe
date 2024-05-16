@@ -1,5 +1,5 @@
 import { ShoppingCartOutlined } from '@ant-design/icons';
-import { Button, ConfigProvider, Menu } from 'antd';
+import { Button, Menu } from 'antd';
 import Search from 'antd/es/input/Search';
 import MenuItem from 'antd/es/menu/MenuItem';
 import '../../../App.css';

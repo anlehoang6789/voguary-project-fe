@@ -1,6 +1,11 @@
-import { Button, Divider, Form, Input, Typography } from 'antd';
+import { Button, Divider, Form, Input, Typography, ConfigProvider } from 'antd';
+import { TinyColor } from '@ctrl/tinycolor';
 
 export default function ManagePassword() {
+  const colorGradientButton = ['#00c6ff', '#0072ff'];
+  const getHoverColors = (colors: string[]) => colors.map((color) => new TinyColor(color).lighten(5).toString());
+  const getActiveColors = (colors: string[]) => colors.map((color) => new TinyColor(color).darken(5).toString());
+
   return (
     <div>
       <Typography.Title level={3} className='text-center mt-4'>
@@ -50,14 +55,22 @@ export default function ManagePassword() {
               <Input.Password placeholder='Mk@1234' />
             </Form.Item>
             <div className='flex justify-end items-end'>
-              <Button
-                type='primary'
-                htmlType='submit'
-                size='large'
-                className='!w-full sm:!w-[30%] sm:!mr-11 !mb-2 !rounded-lg'
+              <ConfigProvider
+                theme={{
+                  components: {
+                    Button: {
+                      colorPrimary: `linear-gradient(135deg, ${colorGradientButton.join(', ')})`,
+                      colorPrimaryHover: `linear-gradient(135deg, ${getHoverColors(colorGradientButton).join(', ')})`,
+                      colorPrimaryActive: `linear-gradient(135deg, ${getActiveColors(colorGradientButton).join(', ')})`,
+                      lineWidth: 0
+                    }
+                  }
+                }}
               >
-                Lưu
-              </Button>
+                <Button type='primary' size='large' className='!w-full sm:!w-[30%] sm:!mr-11 !mb-2 !rounded-lg'>
+                  Lưu thay đổi
+                </Button>
+              </ConfigProvider>
             </div>
           </Form>
         </div>

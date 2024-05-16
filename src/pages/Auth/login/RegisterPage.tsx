@@ -1,8 +1,15 @@
-import { Button, Form, Input } from 'antd';
+import { Button, ConfigProvider, FloatButton, Form, Input, Tooltip } from 'antd';
+import { FaHome } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
+import { TinyColor } from '@ctrl/tinycolor';
 
 export default function RegisterPage() {
+  //Custom color gradient cho button đăng nhập
+  const colorGradientButton = ['#00c6ff', '#0072ff'];
+  const getHoverColors = (colors: string[]) => colors.map((color) => new TinyColor(color).lighten(5).toString());
+  const getActiveColors = (colors: string[]) => colors.map((color) => new TinyColor(color).darken(5).toString());
+
   return (
     <div className='flex bg-[#eee] min-h-screen'>
       <div className='w-full bg-white sm:w-[40%]  md:h-screen sm:h-full relative overflow-y-auto'>
@@ -15,6 +22,23 @@ export default function RegisterPage() {
           </div>
           <div className='bg-[#D2DAE2] p-8 pb-14 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]'>
             <Form autoComplete='off' layout='vertical'>
+              <Form.Item
+                label='Tên tài khoản'
+                name='username'
+                rules={[
+                  {
+                    required: true,
+                    message: 'Tên hiển thị không được bỏ trống'
+                  },
+                  {
+                    pattern: /^.{5,}$/,
+                    message: 'Tên tài khoản phải từ 5 kí tự trở lên'
+                  }
+                ]}
+                className='font-roboto'
+              >
+                <Input placeholder='abcde' size='large' />
+              </Form.Item>
               <Form.Item
                 label='Email'
                 name='accountEmail'
@@ -35,7 +59,7 @@ export default function RegisterPage() {
               </Form.Item>
               <Form.Item
                 label='Tên hiển thị'
-                name='username'
+                name='displayName'
                 rules={[
                   {
                     required: true,
@@ -67,19 +91,43 @@ export default function RegisterPage() {
               <Form.Item
                 label='Xác nhận mật khẩu'
                 name='confirmAccountPassword'
-                rules={[{ required: true, message: 'Xác nhận mật khẩu không được bỏ trống' }]}
+                dependencies={['accountPassword']}
+                rules={[
+                  { required: true, message: 'Xác nhận mật khẩu không được bỏ trống' },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('accountPassword') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
+                    }
+                  })
+                ]}
               >
                 <Input.Password placeholder='Mk@1234' size='large' />
               </Form.Item>
               <Form.Item>
-                <Button
-                  type='primary'
-                  htmlType='submit'
-                  size='large'
-                  className='rounded-xl w-full mt-4 text-xl font-[Roboto] shadow-[0_3px_10px_rgb(0,0,0,0.2)]'
+                <ConfigProvider
+                  theme={{
+                    components: {
+                      Button: {
+                        colorPrimary: `linear-gradient(135deg, ${colorGradientButton.join(', ')})`,
+                        colorPrimaryHover: `linear-gradient(135deg, ${getHoverColors(colorGradientButton).join(', ')})`,
+                        colorPrimaryActive: `linear-gradient(135deg, ${getActiveColors(colorGradientButton).join(', ')})`,
+                        lineWidth: 0
+                      }
+                    }
+                  }}
                 >
-                  Đăng ký
-                </Button>
+                  <Button
+                    type='primary'
+                    htmlType='submit'
+                    size='large'
+                    className='rounded-xl w-full mt-4 text-xl font-[Roboto] shadow-[0_3px_10px_rgb(0,0,0,0.2)]'
+                  >
+                    Đăng ký
+                  </Button>
+                </ConfigProvider>
               </Form.Item>
               <div className='text-center font-semibold text-xl mt-1'>Hay</div>
               <Form.Item>
@@ -107,6 +155,11 @@ export default function RegisterPage() {
           alt='banner_register'
           className='absolute h-[100%] w-[60%] top-0 bottom-0'
         />
+        <Link to={'/'}>
+          <Tooltip title='Về trang chủ'>
+            <FloatButton icon={<FaHome />} type='primary' style={{ right: 24 }} />
+          </Tooltip>
+        </Link>
       </div>
     </div>
   );

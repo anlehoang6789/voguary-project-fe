@@ -1,8 +1,15 @@
-import { Button, Form, Input } from 'antd';
+import { Button, ConfigProvider, FloatButton, Form, Input, Tooltip } from 'antd';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
+import { FaHome } from 'react-icons/fa';
+import { TinyColor } from '@ctrl/tinycolor';
 
 export default function LoginPage() {
+  //Custom color gradient cho button đăng nhập
+  const colorGradientButton = ['#00c6ff', '#0072ff'];
+  const getHoverColors = (colors: string[]) => colors.map((color) => new TinyColor(color).lighten(5).toString());
+  const getActiveColors = (colors: string[]) => colors.map((color) => new TinyColor(color).darken(5).toString());
+
   return (
     <div className='flex bg-[#eee] min-h-screen'>
       <div className='w-full bg-white sm:w-[40%]  md:h-screen sm:h-full relative'>
@@ -16,22 +23,21 @@ export default function LoginPage() {
           <div className='bg-[#D2DAE2] p-8 pb-16 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]'>
             <Form autoComplete='off' layout='vertical'>
               <Form.Item
-                label='Email'
-                name='accountEmail'
+                label='Tên tài khoản'
+                name='username'
                 rules={[
                   {
                     required: true,
-                    message: 'Email không được bỏ trống'
+                    message: 'Tên hiển thị không được bỏ trống'
                   },
                   {
-                    pattern:
-                      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                    message: 'Email phải có định dạng user@example.com'
+                    pattern: /^.{5,}$/,
+                    message: 'Tên tài khoản phải từ 5 kí tự trở lên'
                   }
                 ]}
                 className='font-roboto'
               >
-                <Input placeholder='abc@example.com' size='large' />
+                <Input placeholder='abcde' size='large' />
               </Form.Item>
               <Form.Item
                 label='Mật khẩu'
@@ -48,14 +54,27 @@ export default function LoginPage() {
                 <Input.Password placeholder='Mk@1234' size='large' />
               </Form.Item>
               <Form.Item>
-                <Button
-                  type='primary'
-                  htmlType='submit'
-                  size='large'
-                  className='rounded-xl w-full mt-4 text-xl font-[Roboto] shadow-[0_3px_10px_rgb(0,0,0,0.2)]'
+                <ConfigProvider
+                  theme={{
+                    components: {
+                      Button: {
+                        colorPrimary: `linear-gradient(135deg, ${colorGradientButton.join(', ')})`,
+                        colorPrimaryHover: `linear-gradient(135deg, ${getHoverColors(colorGradientButton).join(', ')})`,
+                        colorPrimaryActive: `linear-gradient(135deg, ${getActiveColors(colorGradientButton).join(', ')})`,
+                        lineWidth: 0
+                      }
+                    }
+                  }}
                 >
-                  Đăng nhập
-                </Button>
+                  <Button
+                    type='primary'
+                    htmlType='submit'
+                    size='large'
+                    className='rounded-xl w-full mt-4 text-xl font-[Roboto] shadow-[0_3px_10px_rgb(0,0,0,0.2)]'
+                  >
+                    Đăng nhập
+                  </Button>
+                </ConfigProvider>
               </Form.Item>
               <div className=' text-base text-center'>
                 <Link to={'#'} className='text-blue-500 font-semibold'>
@@ -75,7 +94,7 @@ export default function LoginPage() {
               <div className='text-center text-base  font-semibold'>
                 Bạn chưa có tài khoản?{' '}
                 <Link to={'/register'} className='text-red-500'>
-                  Đăng kí ngay
+                  Đăng ký ngay
                 </Link>
               </div>
             </Form>
@@ -88,6 +107,11 @@ export default function LoginPage() {
           alt='banner_login'
           className='absolute object-cover w-[60%] h-full'
         />
+        <Link to={'/'}>
+          <Tooltip title='Về trang chủ'>
+            <FloatButton icon={<FaHome />} type='primary' style={{ right: 24 }} />
+          </Tooltip>
+        </Link>
       </div>
     </div>
   );

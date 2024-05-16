@@ -9,17 +9,24 @@ export default function Header() {
   return (
     <div className='container-fluid'>
       <div className='header bg-white shadow-md'>
-        <Menu mode='horizontal' className='menu flex items-center'>
-          <img
-            src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Flogo_white_bg.jpg?alt=media&token=d4b8a3be-870c-469c-b93f-a7c8cc6a6bbe'
-            alt='Voguary'
-            style={{ width: '100px', height: '100px' }}
-          ></img>
+        <Menu
+          mode='horizontal'
+          className='menu flex items-center '
+          // triggerSubMenuAction='click'
+          // style={{ borderBottom: 'none', lineHeight: '0px' }}
+        >
+          <Link to={'/'}>
+            <img
+              src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Flogo_white_bg.jpg?alt=media&token=d4b8a3be-870c-469c-b93f-a7c8cc6a6bbe'
+              alt='Voguary'
+              style={{ width: '100px', height: '100px' }}
+            ></img>
+          </Link>
 
-          <MenuItem className='text-xl'>Thể loại</MenuItem>
+          <MenuItem className='text-xl '>Thể loại</MenuItem>
 
           <MenuItem>
-            <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: 640, paddingTop: '6px' }} />
+            <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: 660, paddingTop: '6px' }} />
           </MenuItem>
 
           <MenuItem className='text-xl'>Gói Thành Viên</MenuItem>
@@ -38,7 +45,9 @@ export default function Header() {
 
           <MenuItem>
             <Link to={'/register'}>
-              <Button className='bg-black text-white font-bold'>ĐĂNG KÝ</Button>
+              <Button className='bg-black text-white font-bold' style={{ marginLeft: '-19px' }}>
+                ĐĂNG KÝ
+              </Button>
             </Link>
           </MenuItem>
         </Menu>

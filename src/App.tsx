@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { adminRoutes, publicRoutes } from 'routes/routes';
+import { adminRoutes, privateRoutes, publicRoutes } from 'routes/routes';
 
 function App() {
   return (
@@ -12,6 +12,12 @@ function App() {
         })}
 
         {adminRoutes.map(({ layout, component, path }, index) => {
+          const Layout = layout;
+          const Component = component;
+          return <Route key={index} path={path} element={<Layout children={<Component />} />} />;
+        })}
+
+        {privateRoutes.map(({ layout, component, path }, index) => {
           const Layout = layout;
           const Component = component;
           return <Route key={index} path={path} element={<Layout children={<Component />} />} />;

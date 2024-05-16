@@ -59,8 +59,8 @@ export default function ManageInfor() {
   };
 
   return (
-    <div className='container flex min-h-[80vh] max-w-[1000px] mx-auto flex-col md:flex-row  shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]'>
-      <div className='py-4 w-full sm:w-[30%] border-r-[1px] border-r-[#d1d7dc] md:border-l-[1px] md:border-l-[#d1d7dc]'>
+    <div className='container flex min-h-[80vh] max-w-[1000px] mx-auto flex-col md:flex-row shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] rounded-xl'>
+      <div className='py-4 w-full sm:w-[30%] border-r-[1px] border-r-[#d1d7dc] '>
         <div className='mb-4 flex flex-col items-center'>
           <Avatar
             size={64}

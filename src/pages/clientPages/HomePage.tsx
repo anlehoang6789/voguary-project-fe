@@ -123,7 +123,7 @@ function HomePage() {
       <FloatButton type='primary' style={{ right: 24, bottom: 24 }} icon={<CommentOutlined />} onClick={showChat} />
 
       <Drawer title='Chat Box' placement='right' onClose={closeChat} visible={chatVisible}>
-        <p>Content of the chat box...</p>
+        <p>Content of the chat box messaage...</p>
       </Drawer>
     </div>
   );

@@ -1,7 +1,30 @@
-import React from 'react';
-import { Button, Carousel, Card } from 'antd';
+import React, { useState } from 'react';
+import { Button, Carousel, Card, FloatButton, Drawer } from 'antd';
+import { CommentOutlined } from '@ant-design/icons';
+
+function IntroductionSection() {
+  return (
+    <div className='mt-8 mx-auto max-w-screen-xl'>
+      <h2 className='text-base md:text-lg lg:text-xl xl:text-2xl font-bold font-rounded'>Giới thiệu về Voguary</h2>
+      <p className='mt-4'>
+        Voguary mong muốn mang lại cho Quý khách hàng khi sử dụng dịch vụ cũng như sản phẩm trực tuyến của chúng tôi một
+        cách tin cậy, tiện ích với chi phí hợp lý và thấu hiểu người dùng. Chúng tôi hiểu rằng bạn rất quan tâm đến việc
+        những thông tin cá nhân mà bạn đã tin cậy cung cấp cho chúng tôi được cam kết bảo mật và sử dụng ra sao. Voguary
+        rất trân trọng sự tin tưởng đó và cam kết rằng những thông tin này sẽ được chúng tôi nỗ lực tối đa để bảo mật.
+        Voguary đảm bảo sẽ sử dụng thông tin khách hàng một cách hợp lý, tôn trọng quyền riêng tư của bạn và không ngừng
+        cải thiện chất lượng dịch vụ, đem lại cho Quý Khách Hàng những trải nghiệm thú vị khi mua sắm tại trang web
+        chúng tôi.
+      </p>
+      <Button type='primary' className='mt-4'>
+        Tìm hiểu thêm
+      </Button>
+    </div>
+  );
+}
 
 function HomePage() {
+  const [chatVisible, setChatVisible] = useState(false);
+
   const firebaseImageUrl =
     'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Flogo_blue_bg.jpg?alt=media&token=40f8db55-65d2-4595-834a-3a94baf2e93a';
 
@@ -27,6 +50,14 @@ function HomePage() {
       imageUrl: firebaseImageUrl
     }
   ];
+
+  const showChat = () => {
+    setChatVisible(true);
+  };
+
+  const closeChat = () => {
+    setChatVisible(false);
+  };
 
   return (
     <div className='mx-auto max-w-screen-xl'>
@@ -86,7 +117,14 @@ function HomePage() {
             </Card>
           ))}
         </div>
+        <IntroductionSection />
       </div>
+
+      <FloatButton type='primary' style={{ right: 24, bottom: 24 }} icon={<CommentOutlined />} onClick={showChat} />
+
+      <Drawer title='Chat Box' placement='right' onClose={closeChat} visible={chatVisible}>
+        <p>Content of the chat box...</p>
+      </Drawer>
     </div>
   );
 }

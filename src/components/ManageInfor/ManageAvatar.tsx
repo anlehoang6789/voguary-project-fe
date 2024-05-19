@@ -1,16 +1,11 @@
 import { InboxOutlined } from '@ant-design/icons';
-import { Button, Divider, Typography, Upload, ConfigProvider } from 'antd';
-import { TinyColor } from '@ctrl/tinycolor';
+import { Button, Divider, Typography, Upload } from 'antd';
 import { useState } from 'react';
 import { RcFile } from 'antd/es/upload';
+import CustomGradientButton from 'components/CustomGradientButton';
 
 export default function ManageAvatar() {
   const { Dragger } = Upload;
-
-  //Custom color gradient cho button lưu thay đổi
-  const colorGradientButton = ['#00c6ff', '#0072ff'];
-  const getHoverColors = (colors: string[]) => colors.map((color) => new TinyColor(color).lighten(5).toString());
-  const getActiveColors = (colors: string[]) => colors.map((color) => new TinyColor(color).darken(5).toString());
 
   const defaultAvatar =
     'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Avatar%2Favatar_preview_default.png?alt=media&token=0bbfe019-baaa-4bce-ba00-c9f08f868a1c';
@@ -53,22 +48,11 @@ export default function ManageAvatar() {
             <p className='ant-upload-hint'>Hỗ trợ định dạng: .jpg .jpeg .png</p>
           </Dragger>
         </div>
-        <ConfigProvider
-          theme={{
-            components: {
-              Button: {
-                colorPrimary: `linear-gradient(135deg, ${colorGradientButton.join(', ')})`,
-                colorPrimaryHover: `linear-gradient(135deg, ${getHoverColors(colorGradientButton).join(', ')})`,
-                colorPrimaryActive: `linear-gradient(135deg, ${getActiveColors(colorGradientButton).join(', ')})`,
-                lineWidth: 0
-              }
-            }
-          }}
-        >
+        <CustomGradientButton>
           <Button type='primary' size='large'>
             Lưu thay đổi
           </Button>
-        </ConfigProvider>
+        </CustomGradientButton>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import Search from 'antd/es/input/Search';
 import MenuItem from 'antd/es/menu/MenuItem';
 import '../../../App.css';
 import { Link } from 'react-router-dom';
+import CustomGradientButton from 'components/CustomGradientButton';
 
 export default function Header() {
   return (
@@ -38,16 +39,20 @@ export default function Header() {
           </MenuItem>
 
           <MenuItem>
-            <Link to={'/login'}>
-              <Button className='font-bold'>ĐĂNG NHẬP</Button>
+            <Link to={'/register'}>
+              <Button className='font-bold px-6 ' type='default' style={{ marginRight: '-19px' }}>
+                ĐĂNG KÝ
+              </Button>
             </Link>
           </MenuItem>
 
           <MenuItem>
-            <Link to={'/register'}>
-              <Button className='bg-black text-white font-bold' style={{ marginLeft: '-19px' }}>
-                ĐĂNG KÝ
-              </Button>
+            <Link to={'/login'}>
+              <CustomGradientButton>
+                <Button className='font-bold' type='primary'>
+                  ĐĂNG NHẬP
+                </Button>
+              </CustomGradientButton>
             </Link>
           </MenuItem>
         </Menu>

@@ -1,15 +1,10 @@
-import { Button, ConfigProvider, FloatButton, Form, Input, Tooltip } from 'antd';
+import { Button, FloatButton, Form, Input, Tooltip } from 'antd';
 import { FaHome } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
-import { TinyColor } from '@ctrl/tinycolor';
+import CustomGradientButton from 'components/CustomGradientButton';
 
 export default function RegisterPage() {
-  //Custom color gradient cho button đăng nhập
-  const colorGradientButton = ['#00c6ff', '#0072ff'];
-  const getHoverColors = (colors: string[]) => colors.map((color) => new TinyColor(color).lighten(5).toString());
-  const getActiveColors = (colors: string[]) => colors.map((color) => new TinyColor(color).darken(5).toString());
-
   return (
     <div className='flex bg-[#eee] min-h-screen'>
       <div className='w-full bg-white sm:w-[40%]  md:h-screen sm:h-full relative overflow-y-auto'>
@@ -107,18 +102,7 @@ export default function RegisterPage() {
                 <Input.Password placeholder='Mk@1234' size='large' />
               </Form.Item>
               <Form.Item>
-                <ConfigProvider
-                  theme={{
-                    components: {
-                      Button: {
-                        colorPrimary: `linear-gradient(135deg, ${colorGradientButton.join(', ')})`,
-                        colorPrimaryHover: `linear-gradient(135deg, ${getHoverColors(colorGradientButton).join(', ')})`,
-                        colorPrimaryActive: `linear-gradient(135deg, ${getActiveColors(colorGradientButton).join(', ')})`,
-                        lineWidth: 0
-                      }
-                    }
-                  }}
-                >
+                <CustomGradientButton>
                   <Button
                     type='primary'
                     htmlType='submit'
@@ -127,7 +111,7 @@ export default function RegisterPage() {
                   >
                     Đăng ký
                   </Button>
-                </ConfigProvider>
+                </CustomGradientButton>
               </Form.Item>
               <div className='text-center font-semibold text-xl mt-1'>Hay</div>
               <Form.Item>
@@ -151,7 +135,7 @@ export default function RegisterPage() {
       </div>
       <div className='hidden justify-end sm:block sm:w-[60%] sm:h-screen'>
         <img
-          src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Banner%2FBanner_Register.png?alt=media&token=1da3fd84-a065-4c62-b5e0-028cd9f136eb'
+          src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Banner%2Fbanner_4.jpg?alt=media&token=1a819809-aec3-4b5e-bff6-2cd302f58b75'
           alt='banner_register'
           className='absolute h-[100%] w-[60%] top-0 bottom-0'
         />

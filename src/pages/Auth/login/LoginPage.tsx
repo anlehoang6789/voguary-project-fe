@@ -1,15 +1,10 @@
-import { Button, ConfigProvider, FloatButton, Form, Input, Tooltip } from 'antd';
+import { Button, FloatButton, Form, Input, Tooltip } from 'antd';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
 import { FaHome } from 'react-icons/fa';
-import { TinyColor } from '@ctrl/tinycolor';
+import CustomGradientButton from 'components/CustomGradientButton';
 
 export default function LoginPage() {
-  //Custom color gradient cho button đăng nhập
-  const colorGradientButton = ['#00c6ff', '#0072ff'];
-  const getHoverColors = (colors: string[]) => colors.map((color) => new TinyColor(color).lighten(5).toString());
-  const getActiveColors = (colors: string[]) => colors.map((color) => new TinyColor(color).darken(5).toString());
-
   return (
     <div className='flex bg-[#eee] min-h-screen'>
       <div className='w-full bg-white sm:w-[40%]  md:h-screen sm:h-full relative'>
@@ -54,18 +49,7 @@ export default function LoginPage() {
                 <Input.Password placeholder='Mk@1234' size='large' />
               </Form.Item>
               <Form.Item>
-                <ConfigProvider
-                  theme={{
-                    components: {
-                      Button: {
-                        colorPrimary: `linear-gradient(135deg, ${colorGradientButton.join(', ')})`,
-                        colorPrimaryHover: `linear-gradient(135deg, ${getHoverColors(colorGradientButton).join(', ')})`,
-                        colorPrimaryActive: `linear-gradient(135deg, ${getActiveColors(colorGradientButton).join(', ')})`,
-                        lineWidth: 0
-                      }
-                    }
-                  }}
-                >
+                <CustomGradientButton>
                   <Button
                     type='primary'
                     htmlType='submit'
@@ -74,7 +58,7 @@ export default function LoginPage() {
                   >
                     Đăng nhập
                   </Button>
-                </ConfigProvider>
+                </CustomGradientButton>
               </Form.Item>
               <div className=' text-base text-center'>
                 <Link to={'#'} className='text-blue-500 font-semibold'>

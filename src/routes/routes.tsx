@@ -7,6 +7,7 @@ import LoginPage from 'pages/Auth/login/LoginPage';
 import RegisterPage from 'pages/Auth/login/RegisterPage';
 import HomePage from 'pages/clientPages/HomePage';
 import ManageInfor from 'pages/clientPages/ManageInfo/ManageInfor';
+import ManageProductDetailsPage from 'pages/clientPages/ManageProductDetails/ManageProductDetailsPage';
 import NotFoundPage from 'pages/errorPages/NotFoundPage';
 
 interface LayoutProps {
@@ -25,7 +26,8 @@ const publicRoutes: RouteProps[] = [
   { path: '/', component: HomePage, layout: ClientLayout },
   { path: '/login', component: LoginPage, layout: LoginLayout },
   { path: '/register', component: RegisterPage, layout: LoginLayout },
-  { path: '/*', component: NotFoundPage, layout: ClientLayout }
+  { path: '/*', component: NotFoundPage, layout: ClientLayout },
+  { path: '/product/:id', component: ManageProductDetailsPage, layout: ClientLayout }
 ];
 
 const privateRoutes: RouteProps[] = [{ path: '/user', component: ManageInfor, layout: ClientLayout }];

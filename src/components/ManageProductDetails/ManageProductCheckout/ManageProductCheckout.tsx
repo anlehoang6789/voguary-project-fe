@@ -4,6 +4,7 @@ import RentalPolicy from 'components/RentalPolicy';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import SizeOption from './SizeOption';
 import ColorOption from './ColorOption';
+import SelectDateOption from './SelectDateOption';
 
 export default function ManageProductCheckout() {
   return (
@@ -16,6 +17,10 @@ export default function ManageProductCheckout() {
 
       {/* Hiển thị các loại size của sản phẩm */}
       <SizeOption />
+
+      {/* Hiển thị chọn ngày thuê */}
+      <SelectDateOption />
+
       <CustomGradientButton>
         <Button
           type='primary'

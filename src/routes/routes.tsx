@@ -30,7 +30,7 @@ const publicRoutes: RouteProps[] = [
   { path: '/product/:id', component: ManageProductDetailsPage, layout: ClientLayout }
 ];
 
-const privateRoutes: RouteProps[] = [{ path: '/user', component: ManageInfor, layout: ClientLayout }];
+const privateRoutes: RouteProps[] = [{ path: '/user/:id', component: ManageInfor, layout: ClientLayout }];
 
 const adminRoutes: RouteProps[] = [{ path: '/admin', component: DashboardPage, layout: AdminLayout }];
 

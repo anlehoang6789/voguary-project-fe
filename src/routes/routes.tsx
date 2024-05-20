@@ -1,6 +1,6 @@
 import AdminLayout from 'layouts/admin_layout/AdminLayout';
+import AllProduct from 'layouts/client_layout/AllProductClient/AllProduct';
 import ClientLayout from 'layouts/client_layout/ClientLayout';
-
 import LoginLayout from 'layouts/login_layout/LoginLayout';
 import DashboardPage from 'pages/Auth/admin/Dashboard/DashboardPage';
 import LoginPage from 'pages/Auth/login/LoginPage';
@@ -27,6 +27,7 @@ const publicRoutes: RouteProps[] = [
   { path: '/login', component: LoginPage, layout: LoginLayout },
   { path: '/register', component: RegisterPage, layout: LoginLayout },
   { path: '/*', component: NotFoundPage, layout: ClientLayout },
+  { path: '/product', component: AllProduct, layout: ClientLayout },
   { path: '/product/:id', component: ManageProductDetailsPage, layout: ClientLayout }
 ];
 

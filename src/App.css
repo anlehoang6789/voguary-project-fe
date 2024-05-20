@@ -1,7 +1,18 @@
-.ant-menu-horizontal, .ant-menu-item::after, .ant-menu-submenu::after {
-    border-bottom: none !important;
-  }
-  
-  .ant-menu-item:hover, .ant-menu-item:hover a {
-    color: #0A92FF !important;
-  }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ant-menu-horizontal,
+.ant-menu-item::after,
+.ant-menu-submenu::after {
+  border-bottom: none !important;
+}
+
+.ant-menu-item:hover,
+.ant-menu-item:hover a {
+  color: #0a92ff !important;
+}
+.full-width-dropdown .ant-menu-submenu-popup {
+  width: 100vw !important;
+  left: 0 !important;
+}

@@ -27,10 +27,10 @@ export default function Header() {
           <MenuItem className='text-xl '>Thể loại</MenuItem>
 
           <MenuItem>
-            <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: 660, paddingTop: '6px' }} />
+            <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: 700, paddingTop: '6px' }} />
           </MenuItem>
 
-          <MenuItem className='text-xl'>Gói Thành Viên</MenuItem>
+          <MenuItem className='text-xl'>Blog</MenuItem>
 
           <MenuItem className='text-xl'>Túi đồ của tôi</MenuItem>
 

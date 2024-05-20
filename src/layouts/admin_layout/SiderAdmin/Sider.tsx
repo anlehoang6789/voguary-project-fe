@@ -36,11 +36,11 @@ export default function MySider() {
 
   const getConditionalItems = (): MenuItem[] => {
     return [
-      getItem('Thống kê', 'dashboard', <MdDashboard />),
-      getItem('Xem tất cả hàng tồn kho', 'inventory', <MdInventory />),
-      getItem('Quản lí tài khoản', 'sub2', <MdManageAccounts />, [
-        getItem('Xem tất cả tài khoản', 'accountAll', <FaUsersViewfinder />),
-        getItem('Tạo tài khoản cho nhân viên', 'createAccount', <IoMdPersonAdd />)
+      getItem('Thống kê', 'dashboard', <MdDashboard className='text-base' />),
+      getItem('Xem tất cả hàng tồn kho', 'inventory', <MdInventory className='text-base' />),
+      getItem('Quản lí tài khoản', 'sub2', <MdManageAccounts className='text-base' />, [
+        getItem('Xem tất cả tài khoản', 'accountAll', <FaUsersViewfinder className='text-base' />),
+        getItem('Tạo tài khoản cho nhân viên', 'createAccount', <IoMdPersonAdd className='text-base' />)
       ])
     ];
   };
@@ -88,6 +88,7 @@ export default function MySider() {
               navigate(link);
             }
           }}
+          className='text-base'
         ></Menu>
       </Sider>
     </>

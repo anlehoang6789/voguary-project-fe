@@ -36,16 +36,16 @@ export default function MySider() {
 
   const getConditionalItems = (): MenuItem[] => {
     return [
-      getItem('Thống kê', 'dashboard', <MdDashboard />),
-      getItem('Xem tất cả hàng tồn kho', 'inventory', <MdInventory />),
-      getItem('Quản lí tài khoản', 'sub2', <MdManageAccounts />, [
-        getItem('Xem tất cả tài khoản', 'accountAll', <FaUsersViewfinder />),
-        getItem('Tạo tài khoản cho nhân viên', 'createAccount', <IoMdPersonAdd />)
+      getItem('Thống kê', 'dashboard', <MdDashboard className='text-base' />),
+      getItem('Xem tất cả hàng tồn kho', 'inventory', <MdInventory className='text-base' />),
+      getItem('Quản lí tài khoản', 'sub2', <MdManageAccounts className='text-base' />, [
+        getItem('Xem tất cả tài khoản', 'accountAll', <FaUsersViewfinder className='text-base' />),
+        getItem('Tạo tài khoản cho nhân viên', 'createAccount', <IoMdPersonAdd className='text-base' />)
       ])
     ];
   };
   const navUrl = new Map<string, string>();
-  navUrl.set('dashboard', '/admin/');
+  navUrl.set('dashboard', '/admin/').set('createAccount', '/admin/createAccount');
 
   return (
     <>
@@ -64,14 +64,14 @@ export default function MySider() {
       >
         <div className='border-r-[1px] border-gray-200'>
           <img
-            src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Flogo_white_bg.jpg?alt=media&token=d4b8a3be-870c-469c-b93f-a7c8cc6a6bbe'
+            src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Flogo_white_bg-removebg-preview.png?alt=media&token=09ecf7ee-61fd-4adb-b930-67c29ec60b96'
             alt='logo'
             className={cn('mx-auto max-w-[100px] max-h-[100px]', {
               hidden: collapsed
             })}
           />
           <img
-            src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Flogo_white_bg.jpg?alt=media&token=d4b8a3be-870c-469c-b93f-a7c8cc6a6bbe'
+            src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Flogo_white_bg-removebg-preview.png?alt=media&token=09ecf7ee-61fd-4adb-b930-67c29ec60b96'
             alt='logo'
             className={cn('mx-auto max-w-[50px]  py-2', {
               hidden: !collapsed
@@ -79,7 +79,7 @@ export default function MySider() {
           />
         </div>
         <Menu
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={['dashboard']}
           mode='inline'
           items={getConditionalItems()}
           onSelect={(e) => {
@@ -88,6 +88,7 @@ export default function MySider() {
               navigate(link);
             }
           }}
+          className='text-base'
         ></Menu>
       </Sider>
     </>

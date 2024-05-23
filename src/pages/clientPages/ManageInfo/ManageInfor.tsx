@@ -2,6 +2,7 @@ import { Avatar, Button, Divider, Menu } from 'antd';
 import { CiUser } from 'react-icons/ci';
 import { MdOutlineAccountBox, MdOutlineSecurity, MdOutlineHistory, MdLogout } from 'react-icons/md';
 import { AiOutlinePicture, AiOutlineShoppingCart } from 'react-icons/ai';
+import { TbMedal2 } from 'react-icons/tb';
 import { ManageInforMenu } from './ManageInfor.enum';
 import ManageProfile from 'components/ManageInfor/ManageProfile';
 import ManageAvatar from 'components/ManageInfor/ManageAvatar';
@@ -9,6 +10,11 @@ import ManagePassword from 'components/ManageInfor/ManagePassword';
 import ManageCart from 'components/ManageInfor/ManageCart';
 import ManagePaymentHistory from 'components/ManageInfor/ManagePaymentHistory';
 import { useState } from 'react';
+import ManageAccountLevel from 'components/ManageInfor/ManageAccountLevel';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { logout } from 'slice/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 interface ManageInforProps {
   type: ManageInforMenu;
@@ -50,12 +56,32 @@ export default function ManageInfor() {
       MenuIcons: <MdOutlineHistory className='mr-4' style={{ fontSize: '24px' }} />,
       MenuTitle: 'Lịch sử thanh toán',
       component: <ManagePaymentHistory />
+    },
+    {
+      type: ManageInforMenu.ACCOUNT_LEVEL,
+      MenuIcons: <TbMedal2 className='mr-4' style={{ fontSize: '24px' }} />,
+      MenuTitle: 'Cấp bậc tài khoản',
+      component: <ManageAccountLevel />
     }
   ];
 
   const handleClickMenu = (component: JSX.Element, key: string) => {
     setSelectedComponent(component);
     setDefaultSelectedKey(key);
+  };
+
+  const userDataWithLoginGoogle = useSelector((state: RootState) => state.auth.user);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Xóa dữ liệu từ localStorage
+    localStorage.removeItem('userLoginGoogle');
+
+    // Đưa trạng thái user về null trong Redux
+    dispatch(logout());
+    navigate('/');
   };
 
   return (
@@ -65,9 +91,14 @@ export default function ManageInfor() {
           <Avatar
             size={64}
             icon={<CiUser />}
-            src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Avatar%2Favatar_1.jpg?alt=media&token=c9cc1417-7534-4a4b-b8ff-1e018088cea7'
+            src={
+              userDataWithLoginGoogle?.avatar ||
+              'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Avatar%2Favatar_1.jpg?alt=media&token=c9cc1417-7534-4a4b-b8ff-1e018088cea7'
+            }
           />
-          <h1 className='mt-2 text-center font-bold capitalize'>Cristiano Ronaldo</h1>
+          <h1 className='mt-2 text-center font-bold capitalize'>
+            {userDataWithLoginGoogle?.name || 'Cristiano Ronaldo'}
+          </h1>
           <Menu
             className='!w-[80%] !border-none !text-sm  !text-[#2d2f31] !mt-3'
             defaultSelectedKeys={[defaultSelectedKey]}
@@ -84,7 +115,10 @@ export default function ManageInfor() {
             ))}
           </Menu>
           <Divider />
-          <Button className='!w-[80%] !border-[#2d2f31] !text-sm !font-bold !text-[#2d2f31] hover:!border-[#ef4444] hover:!bg-[#ff5d5d0a] hover:!text-red-500 flex justify-center items-center'>
+          <Button
+            className='!w-[80%] !border-[#2d2f31] !text-sm !font-bold !text-[#2d2f31] hover:!border-[#ef4444] hover:!bg-[#ff5d5d0a] hover:!text-red-500 flex justify-center items-center'
+            onClick={handleLogout}
+          >
             Đăng xuất <MdLogout className='ml-3 !text-lg' />
           </Button>
         </div>

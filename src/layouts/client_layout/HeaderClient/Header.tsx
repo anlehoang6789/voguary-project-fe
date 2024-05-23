@@ -7,6 +7,9 @@ import MenuItem from 'antd/es/menu/MenuItem';
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import { BsCart3 } from 'react-icons/bs';
 import NotificationPopover from 'components/Notification/NotificationPopover';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
+import AvatarHeaderClients from 'components/AvatarHeaderClients';
 
 const { SubMenu } = Menu;
 
@@ -16,6 +19,9 @@ export default function Header() {
   const handleNavigateTo = (route: string) => {
     navigate(route);
   };
+
+  //Lấy data từ redux store sau khi đăng nhập từ google thành công với firebase
+  const dataLoginGoogle = useSelector((state: RootState) => state.auth.user);
 
   return (
     <div className='container-fluid'>
@@ -41,8 +47,8 @@ export default function Header() {
             </Menu.Item>
           </SubMenu>
 
-          <MenuItem>
-            <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: 650, paddingTop: '6px' }} />
+          <MenuItem style={{ width: dataLoginGoogle ? 'calc(78% - 330px)' : '650px' }}>
+            <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: '100%', paddingTop: '5px' }} />
           </MenuItem>
 
           <MenuItem className='text-xl'>Đơn hàng</MenuItem>
@@ -55,25 +61,33 @@ export default function Header() {
 
           <MenuItem>
             <Popover content={<NotificationPopover />} trigger={'hover'} placement='bottom'>
-              <Badge count={5} size='small' className='mt-4'>
+              <Badge count={5} size='small' className='mt-5'>
                 <IoIosNotificationsOutline style={{ fontSize: '25px', cursor: 'pointer' }} />
               </Badge>
             </Popover>
           </MenuItem>
 
-          <MenuItem onClick={() => handleNavigateTo('/register')}>
-            <Button className='font-bold px-6' type='default' style={{ marginRight: '-19px' }}>
-              ĐĂNG KÝ
-            </Button>
-          </MenuItem>
+          {dataLoginGoogle ? (
+            <MenuItem>
+              <AvatarHeaderClients src={dataLoginGoogle.avatar} />
+            </MenuItem>
+          ) : (
+            <>
+              <MenuItem onClick={() => handleNavigateTo('/register')}>
+                <Button className='font-bold px-6' type='default' style={{ marginRight: '-19px' }}>
+                  ĐĂNG KÝ
+                </Button>
+              </MenuItem>
 
-          <MenuItem onClick={() => handleNavigateTo('/login')}>
-            <CustomGradientButton>
-              <Button className='font-bold' type='primary'>
-                ĐĂNG NHẬP
-              </Button>
-            </CustomGradientButton>
-          </MenuItem>
+              <MenuItem onClick={() => handleNavigateTo('/login')}>
+                <CustomGradientButton>
+                  <Button className='font-bold' type='primary'>
+                    ĐĂNG NHẬP
+                  </Button>
+                </CustomGradientButton>
+              </MenuItem>
+            </>
+          )}
         </Menu>
       </div>
     </div>

@@ -11,6 +11,10 @@ import ManageCart from 'components/ManageInfor/ManageCart';
 import ManagePaymentHistory from 'components/ManageInfor/ManagePaymentHistory';
 import { useState } from 'react';
 import ManageAccountLevel from 'components/ManageInfor/ManageAccountLevel';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { logout } from 'slice/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 interface ManageInforProps {
   type: ManageInforMenu;
@@ -66,6 +70,20 @@ export default function ManageInfor() {
     setDefaultSelectedKey(key);
   };
 
+  const userDataWithLoginGoogle = useSelector((state: RootState) => state.auth.user);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Xóa dữ liệu từ localStorage
+    localStorage.removeItem('userLoginGoogle');
+
+    // Đưa trạng thái user về null trong Redux
+    dispatch(logout());
+    navigate('/');
+  };
+
   return (
     <div className='container flex min-h-[80vh] max-w-[1000px] mx-auto flex-col md:flex-row shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] rounded-xl'>
       <div className='py-4 w-full sm:w-[30%] border-r-[1px] border-r-[#d1d7dc] '>
@@ -73,9 +91,14 @@ export default function ManageInfor() {
           <Avatar
             size={64}
             icon={<CiUser />}
-            src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Avatar%2Favatar_1.jpg?alt=media&token=c9cc1417-7534-4a4b-b8ff-1e018088cea7'
+            src={
+              userDataWithLoginGoogle?.avatar ||
+              'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Avatar%2Favatar_1.jpg?alt=media&token=c9cc1417-7534-4a4b-b8ff-1e018088cea7'
+            }
           />
-          <h1 className='mt-2 text-center font-bold capitalize'>Cristiano Ronaldo</h1>
+          <h1 className='mt-2 text-center font-bold capitalize'>
+            {userDataWithLoginGoogle?.name || 'Cristiano Ronaldo'}
+          </h1>
           <Menu
             className='!w-[80%] !border-none !text-sm  !text-[#2d2f31] !mt-3'
             defaultSelectedKeys={[defaultSelectedKey]}
@@ -92,7 +115,10 @@ export default function ManageInfor() {
             ))}
           </Menu>
           <Divider />
-          <Button className='!w-[80%] !border-[#2d2f31] !text-sm !font-bold !text-[#2d2f31] hover:!border-[#ef4444] hover:!bg-[#ff5d5d0a] hover:!text-red-500 flex justify-center items-center'>
+          <Button
+            className='!w-[80%] !border-[#2d2f31] !text-sm !font-bold !text-[#2d2f31] hover:!border-[#ef4444] hover:!bg-[#ff5d5d0a] hover:!text-red-500 flex justify-center items-center'
+            onClick={handleLogout}
+          >
             Đăng xuất <MdLogout className='ml-3 !text-lg' />
           </Button>
         </div>

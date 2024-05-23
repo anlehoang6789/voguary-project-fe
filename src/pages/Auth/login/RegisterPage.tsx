@@ -1,8 +1,8 @@
 import { Button, FloatButton, Form, Input, Tooltip } from 'antd';
 import { FaHome } from 'react-icons/fa';
-import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
 import CustomGradientButton from 'components/CustomGradientButton';
+import LoginGoogle from 'components/LoginGoogle';
 
 export default function RegisterPage() {
   return (
@@ -115,13 +115,7 @@ export default function RegisterPage() {
               </Form.Item>
               <div className='text-center font-semibold text-xl mt-1'>Hay</div>
               <Form.Item>
-                <Button
-                  icon={<FcGoogle style={{ fontSize: '32px' }} />}
-                  size='large'
-                  className='rounded-xl w-full mt-4 text-xl flex items-center justify-center font-[Roboto] shadow-[0_3px_10px_rgb(0,0,0,0.2)]'
-                >
-                  Google
-                </Button>
+                <LoginGoogle />
               </Form.Item>
               <div className='text-center text-base  font-semibold'>
                 Bạn đã có tài khoản?{' '}

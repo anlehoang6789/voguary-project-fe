@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, Col, Rate, Row, Typography } from 'antd';
 import { useState } from 'react';
 import { RxCaretDown } from 'react-icons/rx';
@@ -138,7 +137,7 @@ export default function ProductDetailsReview() {
 
   return (
     <div className='flex flex-col gap-1'>
-      <Typography.Title level={1} className='mr-2'>
+      <Typography.Title level={3} className='mr-2'>
         {rating} <Rate value={rating} disabled />
       </Typography.Title>
 
@@ -170,17 +169,18 @@ export default function ProductDetailsReview() {
           <Row key={review.id} className=' flex flex-col mb-6'>
             <Row className='flex flex-row border-t-2 pt-2'>
               <Col span={10}>
-                <Typography.Text className='text-xs font-bold'>{review.name}</Typography.Text>
+                <Typography.Text className='text-base font-semibold'>{review.name}</Typography.Text>
                 <br></br>
-                <Rate className='mt-2' value={review.rating} disabled />
+                <Rate className='mt-2 text-base' value={review.rating} disabled />
               </Col>
 
               <Col span={14}>
                 <Typography.Text className='text-lg font-bold'>{review.title}</Typography.Text>
-                <Typography.Text className='text-xs font-bold ml-4'>
+                <Typography.Text className='text-xs float-right'>{review.date}</Typography.Text>
+                <br></br>
+                <Typography.Text className='text-xs font-bold'>
                   Size: {review.size}, Màu sắc: {review.color}
                 </Typography.Text>
-                <Typography.Text className='text-xs float-right'>{review.date}</Typography.Text>
                 <br></br>
                 <Typography.Text className='text-sm'>{review.review}</Typography.Text>
               </Col>
@@ -190,9 +190,12 @@ export default function ProductDetailsReview() {
       </div>
       {visibleReviews < reviews.length && (
         <div className='flex justify-center'>
-          <button className='load-more-button border-2 border-black' onClick={loadMoreReviews}>
+          <button
+            className='load-more-button border-2 border-black p-3 transition-all duration-500 hover:-translate-y-2'
+            onClick={loadMoreReviews}
+          >
             <span className='inline-flex items-center'>
-              Xem thêm đánh giá <RxCaretDown></RxCaretDown>
+              Xem thêm đánh giá <RxCaretDown className='text-lg' />
             </span>
           </button>
         </div>

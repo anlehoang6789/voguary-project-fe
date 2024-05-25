@@ -2,11 +2,23 @@ import { Button, Col, DatePicker, Form, Input, Row, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import { Option } from 'antd/es/mentions';
-import moment from 'moment';
+import CustomGradientButton from 'components/CustomGradientButton';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
+
 export default function ManageProfile() {
-  const disabledDate = (current: any) => {
-    return current && current > moment().endOf('day');
+  const userDataWithLoginGoogle = useSelector((state: RootState) => state.auth.user);
+
+  // Hàm phân tách tên thành họ và tên
+  const splitName = (fullName: string) => {
+    const names = fullName.split(' ');
+    const lastName = names.slice(0, -1).join(' '); // Lấy phần họ
+    const firstName = names.slice(-1).join(' '); // Lấy phần tên
+    return { lastName, firstName };
   };
+
+  // Destructure dữ liệu thành họ và tên
+  const { lastName = '', firstName = '' } = userDataWithLoginGoogle ? splitName(userDataWithLoginGoogle.name) : {};
   return (
     <div className='flex-grow'>
       <h1 className='text-3xl text-center mt-5 border-b-2 pb-5'>Thông tin cơ bản</h1>
@@ -26,7 +38,7 @@ export default function ManageProfile() {
                 }
               ]}
             >
-              <Input placeholder='Hà' className='w-auto' />
+              <Input placeholder='Hà' className='w-full max-w-[300px]' defaultValue={lastName} />
             </FormItem>
           </Col>
 
@@ -43,7 +55,7 @@ export default function ManageProfile() {
                 }
               ]}
             >
-              <Input placeholder='Minh' className='w-auto' />
+              <Input placeholder='Minh' className='w-[83%]' defaultValue={firstName} />
             </Form.Item>
           </Col>
 
@@ -60,7 +72,7 @@ export default function ManageProfile() {
                 }
               ]}
             >
-              <Select placeholder='Vui lòng chọn giới tính' style={{ width: '65%' }}>
+              <Select placeholder='Nam' className='w-full max-w-[300px]'>
                 <Option value='male'>Nam</Option>
                 <Option value='female'>Nữ</Option>
                 <Option value='other'>Giới tính khác</Option>
@@ -73,19 +85,9 @@ export default function ManageProfile() {
               className='pl-5 pt-10'
               label='Ngày sinh '
               name='dateofbirth'
-              rules={[
-                { required: true, message: 'Vui lòng chọn ngày sinh' }
-                // {
-                //   validator: (_, value) => {
-                //     if (value && value[0] > new Date()) {
-                //       return Promise.reject('Ngày sinh không được quá ngày hiện tại');
-                //     }
-                //     return Promise.resolve();
-                //   }
-                // }
-              ]}
+              rules={[{ required: true, message: 'Vui lòng chọn ngày sinh' }]}
             >
-              <DatePicker placeholder='Vui lòng chọn ngày sinh' style={{ width: '60%' }} disabledDate={disabledDate} />
+              <DatePicker placeholder='Ngày sinh' style={{ width: '80%' }} />
             </Form.Item>
           </Col>
 
@@ -103,7 +105,11 @@ export default function ManageProfile() {
                 }
               ]}
             >
-              <Input placeholder='abc@example.com' style={{ width: '70%' }} />
+              <Input
+                placeholder='abc@example.com'
+                className='w-full max-w-[300px]'
+                defaultValue={userDataWithLoginGoogle?.email}
+              />
             </Form.Item>
           </Col>
 
@@ -120,24 +126,19 @@ export default function ManageProfile() {
                 }
               ]}
             >
-              <Input placeholder='0123456789' style={{ width: '80%' }} />
+              <Input placeholder='0123456789' style={{ width: '78%' }} />
             </Form.Item>
           </Col>
 
           <Col span={24}>
             <Form.Item
               className='pl-10 pt-10'
-              label='Tiểu sử'
-              rules={[
-                { message: 'Tiểu sử' }
-                // {
-                //   pattern: /^\d{10}$/,
-                //   message: 'Số điện thoại phải định dạng 10 số'
-                // }
-              ]}
+              label='Địa chỉ'
+              name='address'
+              rules={[{ required: true, message: 'Vui lòng nhập địa chỉ' }]}
             >
               <TextArea
-                placeholder='Tiểu sử             '
+                placeholder='123, Đường ABC, Phường DEF, Quận GHI'
                 autoSize={{ minRows: 3, maxRows: 5 }}
                 style={{ width: '92%' }}
               />
@@ -145,9 +146,11 @@ export default function ManageProfile() {
           </Col>
         </Row>
         <div className='flex justify-end items-end'>
-          <Button type='primary' htmlType='submit' size='large' className='!w-[20%] !mr-12'>
-            Lưu
-          </Button>
+          <CustomGradientButton>
+            <Button type='primary' htmlType='submit' size='large' className='!w-[20%] !mr-12'>
+              Lưu
+            </Button>
+          </CustomGradientButton>
         </div>
       </Form>
     </div>

@@ -1,8 +1,9 @@
 import AdminLayout from 'layouts/admin_layout/AdminLayout';
+import AllProduct from 'layouts/client_layout/AllProductClient/AllProduct';
 import ClientLayout from 'layouts/client_layout/ClientLayout';
-
 import LoginLayout from 'layouts/login_layout/LoginLayout';
 import DashboardPage from 'pages/Auth/admin/Dashboard/DashboardPage';
+import CreateAccountForStaff from 'pages/Auth/admin/ManageUser/CreateAccountForStaff';
 import LoginPage from 'pages/Auth/login/LoginPage';
 import RegisterPage from 'pages/Auth/login/RegisterPage';
 import CheckoutPage from 'pages/clientPages/CheckoutPage/CheckoutPage';
@@ -28,15 +29,19 @@ const publicRoutes: RouteProps[] = [
   { path: '/login', component: LoginPage, layout: LoginLayout },
   { path: '/register', component: RegisterPage, layout: LoginLayout },
   { path: '/*', component: NotFoundPage, layout: ClientLayout },
+  { path: '/product', component: AllProduct, layout: ClientLayout },
   { path: '/product/:id', component: ManageProductDetailsPage, layout: ClientLayout }
 ];
 
 const privateRoutes: RouteProps[] = [
-  { path: '/user', component: ManageInfor, layout: ClientLayout },
+  { path: '/user/:id', component: ManageInfor, layout: ClientLayout },
   { path: '/checkout', component: CheckoutPage, layout: ClientLayout }
 ];
 
-const adminRoutes: RouteProps[] = [{ path: '/admin', component: DashboardPage, layout: AdminLayout }];
+const adminRoutes: RouteProps[] = [
+  { path: '/admin', component: DashboardPage, layout: AdminLayout },
+  { path: '/admin/createAccount', component: CreateAccountForStaff, layout: AdminLayout }
+];
 
 // const staffRoutes: RouteProps[] = [];
 

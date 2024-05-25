@@ -3,5 +3,6 @@ export enum ManageInforMenu {
   AVATAR,
   SECURITY,
   MY_CART,
-  PAYMENT_HISTORY
+  PAYMENT_HISTORY,
+  ACCOUNT_LEVEL
 }

@@ -38,7 +38,9 @@ const publicRoutes: RouteProps[] = [
 const privateRoutes: RouteProps[] = [
   { path: '/user/:id', component: ManageInfor, layout: ClientLayout },
 
+
   { path: '/checkout', component: CheckoutPage, layout: ClientLayout },
+
 
   { path: '/admin/user', component: UserAdmin, layout: AdminLayout }
 

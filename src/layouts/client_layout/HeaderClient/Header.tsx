@@ -1,20 +1,27 @@
-import React from 'react';
-import { Menu, Button } from 'antd';
-import { ShoppingCartOutlined } from '@ant-design/icons';
+import { Menu, Button, Badge, Popover } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Search from 'antd/es/input/Search';
 import CustomGradientButton from 'components/CustomGradientButton';
 import '../../../App.css';
 import MenuItem from 'antd/es/menu/MenuItem';
+import { IoIosNotificationsOutline } from 'react-icons/io';
+import { BsCart3 } from 'react-icons/bs';
+import NotificationPopover from 'components/Notification/NotificationPopover';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
+import AvatarHeaderClients from 'components/AvatarHeaderClients';
 
 const { SubMenu } = Menu;
 
 export default function Header() {
   const navigate = useNavigate();
 
-  const handleNavigateTo = (route: any) => {
+  const handleNavigateTo = (route: string) => {
     navigate(route);
   };
+
+  //Lấy data từ redux store sau khi đăng nhập từ google thành công với firebase
+  const dataLoginGoogle = useSelector((state: RootState) => state.auth.user);
 
   return (
     <div className='container-fluid'>
@@ -40,39 +47,47 @@ export default function Header() {
             </Menu.Item>
           </SubMenu>
 
-          <MenuItem>
-            <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: 700, paddingTop: '6px' }} />
+          <MenuItem style={{ width: dataLoginGoogle ? 'calc(78% - 330px)' : '650px' }}>
+            <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: '100%', paddingTop: '5px' }} />
           </MenuItem>
 
-          <SubMenu key='blog' title='Blog' className='text-xl'>
-            <Menu.Item key='blog1'>Blog 1</Menu.Item>
-            <Menu.Item key='blog2'>Blog 2</Menu.Item>
-            <Menu.Item key='blog3'>Blog 3</Menu.Item>
-          </SubMenu>
+          <MenuItem className='text-xl'>Đơn hàng</MenuItem>
 
-          <SubMenu key='myItems' title='Túi đồ của tôi' className='text-xl'>
-            <Menu.Item key='item1'>Item 1</Menu.Item>
-            <Menu.Item key='item2'>Item 2</Menu.Item>
-            <Menu.Item key='item3'>Item 3</Menu.Item>
-          </SubMenu>
+          <MenuItem className='text-xl'>Túi đồ của tôi</MenuItem>
 
           <MenuItem onClick={() => handleNavigateTo('/cart')}>
-            <ShoppingCartOutlined style={{ fontSize: '20px', cursor: 'pointer' }} />
+            <BsCart3 style={{ fontSize: '20px', cursor: 'pointer' }} />
           </MenuItem>
 
-          <MenuItem onClick={() => handleNavigateTo('/register')}>
-            <Button className='font-bold px-6' type='default' style={{ marginRight: '-19px' }}>
-              ĐĂNG KÝ
-            </Button>
+          <MenuItem>
+            <Popover content={<NotificationPopover />} trigger={'hover'} placement='bottom'>
+              <Badge count={5} size='small' className='mt-5'>
+                <IoIosNotificationsOutline style={{ fontSize: '25px', cursor: 'pointer' }} />
+              </Badge>
+            </Popover>
           </MenuItem>
 
-          <MenuItem onClick={() => handleNavigateTo('/login')}>
-            <CustomGradientButton>
-              <Button className='font-bold' type='primary'>
-                ĐĂNG NHẬP
-              </Button>
-            </CustomGradientButton>
-          </MenuItem>
+          {dataLoginGoogle ? (
+            <MenuItem>
+              <AvatarHeaderClients src={dataLoginGoogle.avatar} />
+            </MenuItem>
+          ) : (
+            <>
+              <MenuItem onClick={() => handleNavigateTo('/register')}>
+                <Button className='font-bold px-6' type='default' style={{ marginRight: '-19px' }}>
+                  ĐĂNG KÝ
+                </Button>
+              </MenuItem>
+
+              <MenuItem onClick={() => handleNavigateTo('/login')}>
+                <CustomGradientButton>
+                  <Button className='font-bold' type='primary'>
+                    ĐĂNG NHẬP
+                  </Button>
+                </CustomGradientButton>
+              </MenuItem>
+            </>
+          )}
         </Menu>
       </div>
     </div>

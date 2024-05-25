@@ -3,27 +3,33 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-// import persistStore from 'redux-persist/es/persistStore';
-// import { store } from './store';
-// import { Provider } from 'react-redux';
+import persistStore from 'redux-persist/es/persistStore';
+import { store } from './store';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-// import { PersistGate } from 'redux-persist/integration/react';
+import { PersistGate } from 'redux-persist/integration/react';
+import Lottie from 'lottie-react';
+import voguaryLoading from './assets/voguaryLoading.json';
 
-// const persistor = persistStore(store);
+const persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    {/* <Provider store={store}> */}
-    {/* <PersistGate
-        loading={<div className='flex min-h-screen w-full items-center justify-center'></div>}
+    <Provider store={store}>
+      <PersistGate
+        loading={
+          <div className='flex min-h-screen w-full items-center justify-center'>
+            <Lottie animationData={voguaryLoading} className='max-w-[500px]' />
+          </div>
+        }
         persistor={persistor}
-      > */}
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-    {/* </PersistGate> */}
-    {/* </Provider> */}
+      >
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
 

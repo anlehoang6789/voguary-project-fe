@@ -5,6 +5,7 @@ import LoginLayout from 'layouts/login_layout/LoginLayout';
 import DashboardPage from 'pages/Auth/admin/Dashboard/DashboardPage';
 import LoginPage from 'pages/Auth/login/LoginPage';
 import RegisterPage from 'pages/Auth/login/RegisterPage';
+import CheckoutPage from 'pages/clientPages/CheckoutPage/CheckoutPage';
 import HomePage from 'pages/clientPages/HomePage';
 import ManageInfor from 'pages/clientPages/ManageInfo/ManageInfor';
 import ManageProductDetailsPage from 'pages/clientPages/ManageProductDetails/ManageProductDetailsPage';
@@ -30,7 +31,10 @@ const publicRoutes: RouteProps[] = [
   { path: '/product/:id', component: ManageProductDetailsPage, layout: ClientLayout }
 ];
 
-const privateRoutes: RouteProps[] = [{ path: '/user', component: ManageInfor, layout: ClientLayout }];
+const privateRoutes: RouteProps[] = [
+  { path: '/user', component: ManageInfor, layout: ClientLayout },
+  { path: '/checkout', component: CheckoutPage, layout: ClientLayout }
+];
 
 const adminRoutes: RouteProps[] = [{ path: '/admin', component: DashboardPage, layout: AdminLayout }];
 

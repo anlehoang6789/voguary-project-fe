@@ -1,5 +1,5 @@
 import { Menu, Button, Badge, Popover } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Search from 'antd/es/input/Search';
 import CustomGradientButton from 'components/CustomGradientButton';
 import '../../../App.css';
@@ -51,7 +51,9 @@ export default function Header() {
             <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: '100%', paddingTop: '5px' }} />
           </MenuItem>
 
-          <MenuItem className='text-xl'>Đơn hàng</MenuItem>
+          <MenuItem className='text-xl'>
+            <Link to={'/orderTracking'}>Đơn hàng</Link>
+          </MenuItem>
 
           <MenuItem className='text-xl'>Túi đồ của tôi</MenuItem>
 

@@ -1,7 +1,7 @@
 import { Button, Form } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import CustomGradientButton from 'components/CustomGradientButton';
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function MangeAddressCheckout({
   setCurrentStep

@@ -11,6 +11,7 @@ import CheckoutPage from 'pages/clientPages/CheckoutPage/CheckoutPage';
 import HomePage from 'pages/clientPages/HomePage';
 
 import ManageInfor from 'pages/clientPages/ManageInfo/ManageInfor';
+import ManageOrderTracking from 'pages/clientPages/ManageOrderTracking/ManageOrderTracking';
 import ManageProductDetailsPage from 'pages/clientPages/ManageProductDetails/ManageProductDetailsPage';
 import NotFoundPage from 'pages/errorPages/NotFoundPage';
 
@@ -38,12 +39,13 @@ const publicRoutes: RouteProps[] = [
 const privateRoutes: RouteProps[] = [
   { path: '/user/:id', component: ManageInfor, layout: ClientLayout },
   { path: '/checkout', component: CheckoutPage, layout: ClientLayout },
-  { path: '/admin/user', component: UserAdmin, layout: AdminLayout }
+  { path: '/orderTracking', component: ManageOrderTracking, layout: ClientLayout }
 ];
 
 const adminRoutes: RouteProps[] = [
   { path: '/admin', component: DashboardPage, layout: AdminLayout },
-  { path: '/admin/createAccount', component: CreateAccountForStaff, layout: AdminLayout }
+  { path: '/admin/createAccount', component: CreateAccountForStaff, layout: AdminLayout },
+  { path: '/admin/user', component: UserAdmin, layout: AdminLayout }
 ];
 
 // const staffRoutes: RouteProps[] = [];

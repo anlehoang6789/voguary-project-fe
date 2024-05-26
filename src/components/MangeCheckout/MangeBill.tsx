@@ -1,20 +1,10 @@
-import { Button, FloatButton, Form, Input, Tooltip } from 'antd';
+import { Button } from 'antd';
 import CustomGradientButton from 'components/CustomGradientButton';
 import React from 'react';
-import { FaHome } from 'react-icons/fa';
-import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
 
 export default function MangeBill() {
   return (
-    //     <div className='container mx-auto'>
-    //       <Link to='/'>
-    //         <Button>Xác nhận đơn hàng</Button>
-    //       </Link>
-    //     </div>
-    //   );
-    // }
-
     <div className='w-full bg-white sm:w-[40%]  mx-auto '>
       <div className='mx-10'>
         <div className='my-6'>

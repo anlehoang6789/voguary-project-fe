@@ -9,7 +9,6 @@ import LoginPage from 'pages/Auth/login/LoginPage';
 import RegisterPage from 'pages/Auth/login/RegisterPage';
 import CheckoutPage from 'pages/clientPages/CheckoutPage/CheckoutPage';
 import HomePage from 'pages/clientPages/HomePage';
-
 import ManageInfor from 'pages/clientPages/ManageInfo/ManageInfor';
 import ManageOrderTracking from 'pages/clientPages/ManageOrderTracking/ManageOrderTracking';
 import ManageProductDetailsPage from 'pages/clientPages/ManageProductDetails/ManageProductDetailsPage';

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { Divider, Menu, Typography } from 'antd';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
+import ManageOrderCancelled from 'components/ManageOrderTracking/ManageOrderCancelled';
 
 interface ManageOrderTrackingProps {
   type: ManageOrderTrackingMenu;
@@ -46,6 +47,11 @@ export default function ManageOrderTracking() {
       type: ManageOrderTrackingMenu.COMPLETED,
       MenuTitle: 'Đã hoàn thành',
       component: <ManageOrderCompleted />
+    },
+    {
+      type: ManageOrderTrackingMenu.CANCELLED,
+      MenuTitle: 'Đã hủy',
+      component: <ManageOrderCancelled />
     }
   ];
 

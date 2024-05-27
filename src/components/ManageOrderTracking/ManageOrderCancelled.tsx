@@ -8,74 +8,74 @@ const mockData = [
     orderId: 'ORD001',
     price: '100.00',
     transactionDate: '2023-05-01',
-    status: 'Hoàn thành'
+    status: 'Đã hủy'
   },
   {
     key: '2',
     orderId: 'ORD002',
     price: '200.00',
     transactionDate: '2023-05-02',
-    status: 'Hoàn thành'
+    status: 'Đã hủy'
   },
   {
     key: '3',
     orderId: 'ORD003',
     price: '150.00',
     transactionDate: '2023-05-03',
-    status: 'Hoàn thành'
+    status: 'Đã hủy'
   },
   {
     key: '4',
     orderId: 'ORD004',
     price: '150.00',
     transactionDate: '2023-05-04',
-    status: 'Hoàn thành'
+    status: 'Đã hủy'
   },
   {
     key: '5',
     orderId: 'ORD005',
     price: '300.00',
     transactionDate: '2023-05-05',
-    status: 'Hoàn thành'
+    status: 'Đã hủy'
   },
   {
     key: '6',
     orderId: 'ORD006',
     price: '250.00',
     transactionDate: '2023-05-06',
-    status: 'Hoàn thành'
+    status: 'Đã hủy'
   },
   {
     key: '7',
     orderId: 'ORD007',
     price: '400.00',
     transactionDate: '2023-05-07',
-    status: 'Hoàn thành'
+    status: 'Đã hủy'
   },
   {
     key: '8',
     orderId: 'ORD008',
     price: '350.00',
     transactionDate: '2023-05-08',
-    status: 'Hoàn thành'
+    status: 'Đã hủy'
   },
   {
     key: '9',
     orderId: 'ORD009',
     price: '450.00',
     transactionDate: '2023-05-09',
-    status: 'Hoàn thành'
+    status: 'Đã hủy'
   },
   {
     key: '10',
     orderId: 'ORD010',
     price: '450.00',
     transactionDate: '2023-05-09',
-    status: 'Hoàn thành'
+    status: 'Đã hủy'
   }
 ];
 
-export default function ManageOrderCompleted() {
+export default function ManageOrderCancelled() {
   const [pagination, setPagination] = useState({ current: 1, pageSize: 5, total: mockData.length });
   const [currentData, setCurrentData] = useState(mockData.slice(0, pagination.pageSize));
 

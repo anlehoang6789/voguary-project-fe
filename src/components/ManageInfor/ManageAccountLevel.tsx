@@ -1,5 +1,9 @@
-import React from 'react';
+import ComingSoon from 'components/ComingSoon';
 
 export default function ManageAccountLevel() {
-  return <div>ManageAccountLevel</div>;
+  return (
+    <div>
+      <ComingSoon />
+    </div>
+  );
 }

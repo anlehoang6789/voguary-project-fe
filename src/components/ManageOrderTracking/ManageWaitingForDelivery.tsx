@@ -142,6 +142,9 @@ export default function ManageWaitingForDelivery() {
           case 'Hoàn thành':
             color = 'green';
             break;
+          case 'Đã hủy':
+            color = 'red';
+            break;
           default:
             color = 'default';
         }

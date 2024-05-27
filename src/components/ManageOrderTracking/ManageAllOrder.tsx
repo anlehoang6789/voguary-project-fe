@@ -36,7 +36,7 @@ const mockData = [
     orderId: 'ORD005',
     price: '300.00',
     transactionDate: '2023-05-05',
-    status: 'Đang vận chuyển'
+    status: 'Đã hủy'
   },
   {
     key: '6',
@@ -71,7 +71,7 @@ const mockData = [
     orderId: 'ORD010',
     price: '450.00',
     transactionDate: '2023-05-09',
-    status: 'Hoàn thành'
+    status: 'Đã hủy'
   }
 ];
 
@@ -141,6 +141,9 @@ const ManageAllOrder = () => {
             break;
           case 'Hoàn thành':
             color = 'green';
+            break;
+          case 'Đã hủy':
+            color = 'red';
             break;
           default:
             color = 'default';

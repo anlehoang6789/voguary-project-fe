@@ -1,13 +1,4 @@
-import {
-  CloseOutlined,
-  CreditCardOutlined,
-  MinusCircleOutlined,
-  MinusOutlined,
-  PlusCircleOutlined,
-  PlusOutlined,
-  ShoppingCartOutlined,
-  TruckOutlined
-} from '@ant-design/icons';
+import { CloseOutlined, CreditCardOutlined, MinusOutlined, PlusOutlined, TruckOutlined } from '@ant-design/icons';
 import { Button, Form } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import CustomGradientButton from 'components/CustomGradientButton';
@@ -54,6 +45,7 @@ export default function ManagePaymentMethod({
                   className='inline-block'
                   width='35px'
                   src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Momo%2Fkisspng-paypal-logo-e-commerce-payment-system-paypal-5ad78137f1e9c2.9153968515240727599909.jpg?alt=media&token=6d96d5eb-0b34-471d-afed-05e4ccb72301'
+                  alt='Paypal'
                 />
                 <span className='inline-block'>PayPal</span>
               </button>
@@ -67,6 +59,7 @@ export default function ManagePaymentMethod({
                     className='inline-block'
                     width='30px'
                     src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Momo%2FPrimary%20logo%402x.png?alt=media&token=df32290b-904a-430e-aa4d-3cf08359560b'
+                    alt='Momo'
                   />
                   <span className='inline-block'>Momo</span>
                 </Button>

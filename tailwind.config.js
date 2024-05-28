@@ -17,7 +17,8 @@ module.exports = {
         dimGray: 'hsl(0, 0%, 39%)',
         davysGray: 'hsl(0, 0%, 30%)',
         spanishGray: 'hsl(0, 0%, 62%)',
-        quickSilver: 'hsl(0, 0%, 64%)'
+        quickSilver: 'hsl(0, 0%, 64%)',
+        gold: '#FFC107'
       }
     }
   },

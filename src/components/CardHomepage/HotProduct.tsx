@@ -8,7 +8,7 @@ export default function HotProduct() {
           <a href='#'>
             <img
               className='p-8 rounded-t-lg max-w-full h-auto'
-              src='https://dosi-in.com/images/detailed/361/dosiin-mlb-mlb-ao-sweatshirt-phom-suong-graffiti-361845361845.jpg'
+              src='https://via.placeholder.com/200x250'
               alt='product image'
             />
           </a>
@@ -34,7 +34,7 @@ export default function HotProduct() {
               </span>
             </div>
             <div className='flex items-center justify-between'>
-              <span className='text-xl font-bold text-gray-900 dark:text-black'>$599</span>
+              <span className='text-2xl font-bold text-gray-900 dark:text-black'>$599</span>
               <a
                 href='#'
                 className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
@@ -48,11 +48,7 @@ export default function HotProduct() {
         {/* Sản phẩm 2 */}
         <div className='w-full max-w-56 max-h-96 bg-white border border-gray-200 rounded-lg shadow'>
           <a href='#'>
-            <img
-              className='p-8 rounded-t-lg'
-              src='https://dosi-in.com/images/detailed/361/dosiin-mlb-mlb-ao-sweatshirt-phom-suong-graffiti-361845361845.jpg'
-              alt='product image'
-            />
+            <img className='p-8 rounded-t-lg' src='https://via.placeholder.com/200x250' alt='product image' />
           </a>
           <div className='px-5 pb-5'>
             <a href='#'>
@@ -76,10 +72,10 @@ export default function HotProduct() {
               </span>
             </div>
             <div className='flex items-center justify-between'>
-              <span className='text-3xl font-bold text-gray-900 dark:text-black'>$599</span>
+              <span className='text-2xl font-bold text-gray-900 dark:text-black'>$599</span>
               <a
                 href='#'
-                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
               >
                 Add to cart
               </a>
@@ -90,11 +86,7 @@ export default function HotProduct() {
         {/* Sản phẩm 3 */}
         <div className='w-full max-w-56 max-h-96 bg-white border border-gray-200 rounded-lg shadow'>
           <a href='#'>
-            <img
-              className='p-8 rounded-t-lg'
-              src='https://dosi-in.com/images/detailed/361/dosiin-mlb-mlb-ao-sweatshirt-phom-suong-graffiti-361845361845.jpg'
-              alt='product image'
-            />
+            <img className='p-8 rounded-t-lg' src='https://via.placeholder.com/200x250' alt='product image' />
           </a>
           <div className='px-5 pb-5'>
             <a href='#'>
@@ -118,10 +110,10 @@ export default function HotProduct() {
               </span>
             </div>
             <div className='flex items-center justify-between'>
-              <span className='text-3xl font-bold text-gray-900 dark:text-black'>$599</span>
+              <span className='text-2xl font-bold text-gray-900 dark:text-black'>$599</span>
               <a
                 href='#'
-                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
               >
                 Add to cart
               </a>
@@ -132,11 +124,7 @@ export default function HotProduct() {
         {/* Sản phẩm 4 */}
         <div className='w-full max-w-56 max-h-96 bg-white border border-gray-200 rounded-lg shadow'>
           <a href='#'>
-            <img
-              className='p-8 rounded-t-lg'
-              src='https://dosi-in.com/images/detailed/361/dosiin-mlb-mlb-ao-sweatshirt-phom-suong-graffiti-361845361845.jpg'
-              alt='product image'
-            />
+            <img className='p-8 rounded-t-lg' src='https://via.placeholder.com/200x250' alt='product image' />
           </a>
           <div className='px-5 pb-5'>
             <a href='#'>
@@ -160,10 +148,10 @@ export default function HotProduct() {
               </span>
             </div>
             <div className='flex items-center justify-between'>
-              <span className='text-3xl font-bold text-gray-900 dark:text-black'>$599</span>
+              <span className='text-2xl font-bold text-gray-900 dark:text-black'>$599</span>
               <a
                 href='#'
-                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
               >
                 Add to cart
               </a>
@@ -172,11 +160,7 @@ export default function HotProduct() {
         </div>
         <div className='w-full max-w-56 max-h-96 bg-white border border-gray-200 rounded-lg shadow'>
           <a href='#'>
-            <img
-              className='p-8 rounded-t-lg'
-              src='https://dosi-in.com/images/detailed/361/dosiin-mlb-mlb-ao-sweatshirt-phom-suong-graffiti-361845361845.jpg'
-              alt='product image'
-            />
+            <img className='p-8 rounded-t-lg' src='https://via.placeholder.com/200x250' alt='product image' />
           </a>
           <div className='px-5 pb-5'>
             <a href='#'>
@@ -200,10 +184,10 @@ export default function HotProduct() {
               </span>
             </div>
             <div className='flex items-center justify-between'>
-              <span className='text-3xl font-bold text-gray-900 dark:text-black'>$599</span>
+              <span className='text-2xl font-bold text-gray-900 dark:text-black'>$599</span>
               <a
                 href='#'
-                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
               >
                 Add to cart
               </a>
@@ -212,11 +196,7 @@ export default function HotProduct() {
         </div>
         <div className='w-full max-w-56 max-h-96 bg-white border border-gray-200 rounded-lg shadow'>
           <a href='#'>
-            <img
-              className='p-8 rounded-t-lg'
-              src='https://dosi-in.com/images/detailed/361/dosiin-mlb-mlb-ao-sweatshirt-phom-suong-graffiti-361845361845.jpg'
-              alt='product image'
-            />
+            <img className='p-8 rounded-t-lg' src='https://via.placeholder.com/200x250' alt='product image' />
           </a>
           <div className='px-5 pb-5'>
             <a href='#'>
@@ -240,10 +220,10 @@ export default function HotProduct() {
               </span>
             </div>
             <div className='flex items-center justify-between'>
-              <span className='text-3xl font-bold text-gray-900 dark:text-black'>$599</span>
+              <span className='text-2xl font-bold text-gray-900 dark:text-black'>$599</span>
               <a
                 href='#'
-                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
               >
                 Add to cart
               </a>
@@ -252,11 +232,7 @@ export default function HotProduct() {
         </div>
         <div className='w-full max-w-56 max-h-96 bg-white border border-gray-200 rounded-lg shadow'>
           <a href='#'>
-            <img
-              className='p-8 rounded-t-lg'
-              src='https://dosi-in.com/images/detailed/361/dosiin-mlb-mlb-ao-sweatshirt-phom-suong-graffiti-361845361845.jpg'
-              alt='product image'
-            />
+            <img className='p-8 rounded-t-lg' src='https://via.placeholder.com/200x250' alt='product image' />
           </a>
           <div className='px-5 pb-5'>
             <a href='#'>
@@ -280,10 +256,10 @@ export default function HotProduct() {
               </span>
             </div>
             <div className='flex items-center justify-between'>
-              <span className='text-3xl font-bold text-gray-900 dark:text-black'>$599</span>
+              <span className='text-2xl font-bold text-gray-900 dark:text-black'>$599</span>
               <a
                 href='#'
-                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
               >
                 Add to cart
               </a>
@@ -292,11 +268,7 @@ export default function HotProduct() {
         </div>
         <div className='w-full max-w-56 max-h-96 bg-white border border-gray-200 rounded-lg shadow'>
           <a href='#'>
-            <img
-              className='p-8 rounded-t-lg'
-              src='https://dosi-in.com/images/detailed/361/dosiin-mlb-mlb-ao-sweatshirt-phom-suong-graffiti-361845361845.jpg'
-              alt='product image'
-            />
+            <img className='p-8 rounded-t-lg' src='https://via.placeholder.com/200x250' alt='product image' />
           </a>
           <div className='px-5 pb-5'>
             <a href='#'>
@@ -320,10 +292,10 @@ export default function HotProduct() {
               </span>
             </div>
             <div className='flex items-center justify-between'>
-              <span className='text-3xl font-bold text-gray-900 dark:text-black'>$599</span>
+              <span className='text-2xl font-bold text-gray-900 dark:text-black'>$599</span>
               <a
                 href='#'
-                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
               >
                 Add to cart
               </a>

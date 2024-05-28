@@ -1,8 +1,8 @@
 import ComingSoon from 'components/ComingSoon';
 
-export default function ManageCart() {
+export default function ManageProduct() {
   return (
-    <div>
+    <div className='min-h-screen my-4'>
       <ComingSoon />
     </div>
   );

@@ -45,7 +45,7 @@ export default function MySider() {
     ];
   };
   const navUrl = new Map<string, string>();
-  navUrl.set('dashboard', '/admin/').set('createAccount', '/admin/createAccount');
+  navUrl.set('dashboard', '/admin').set('accountAll', '/admin/user').set('createAccount', '/admin/createAccount');
 
   return (
     <>

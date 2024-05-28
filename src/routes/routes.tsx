@@ -1,10 +1,10 @@
 import AdminLayout from 'layouts/admin_layout/AdminLayout';
-import UserAdmin from 'layouts/admin_layout/UserAdmin/UserAdmin';
 import AllProduct from 'layouts/client_layout/AllProductClient/AllProduct';
 import ClientLayout from 'layouts/client_layout/ClientLayout';
 import LoginLayout from 'layouts/login_layout/LoginLayout';
 import DashboardPage from 'pages/Auth/admin/Dashboard/DashboardPage';
 import CreateAccountForStaff from 'pages/Auth/admin/ManageUser/CreateAccountForStaff';
+import UserAdmin from 'pages/Auth/admin/UserAdmin/UserAdmin';
 import LoginPage from 'pages/Auth/login/LoginPage';
 import RegisterPage from 'pages/Auth/login/RegisterPage';
 import CheckoutPage from 'pages/clientPages/CheckoutPage/CheckoutPage';
@@ -38,12 +38,9 @@ const publicRoutes: RouteProps[] = [
 const privateRoutes: RouteProps[] = [
   { path: '/user/:id', component: ManageInfor, layout: ClientLayout },
 
-
   { path: '/checkout', component: CheckoutPage, layout: ClientLayout },
 
-
   { path: '/admin/user', component: UserAdmin, layout: AdminLayout }
-
 ];
 
 const adminRoutes: RouteProps[] = [

@@ -10,6 +10,7 @@ import NotificationPopover from 'components/Notification/NotificationPopover';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import AvatarHeaderClients from 'components/AvatarHeaderClients';
+import Dropdown from 'components/Dropdown/Dropdown';
 
 const { SubMenu } = Menu;
 
@@ -35,17 +36,11 @@ export default function Header() {
             />
           </div>
 
-          <SubMenu key='categories' title='Thể loại' className='text-xl'>
-            <Menu.Item key='category1' onClick={() => handleNavigateTo('/product')}>
-              Thuê quần áo
-            </Menu.Item>
-            <Menu.Item key='category2' onClick={() => handleNavigateTo('/product')}>
-              Thuê phụ kiện
-            </Menu.Item>
-            <Menu.Item key='category3' onClick={() => handleNavigateTo('/product')}>
-              Thuê giày, dép
-            </Menu.Item>
-          </SubMenu>
+          <MenuItem>
+            <Popover content={<Dropdown />} trigger={'hover'} placement='bottom'>
+              <span className='text-xl text-black hover:text-black'>Thể loại</span>
+            </Popover>
+          </MenuItem>
 
           <MenuItem style={{ width: dataLoginGoogle ? 'calc(78% - 330px)' : '650px' }}>
             <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: '100%', paddingTop: '5px' }} />

@@ -12,8 +12,6 @@ import { RootState } from 'store';
 import AvatarHeaderClients from 'components/AvatarHeaderClients';
 import Dropdown from 'components/Dropdown/Dropdown';
 
-const { SubMenu } = Menu;
-
 export default function Header() {
   const navigate = useNavigate();
 
@@ -66,7 +64,12 @@ export default function Header() {
 
           {dataLoginGoogle ? (
             <MenuItem>
-              <AvatarHeaderClients src={dataLoginGoogle.avatar} />
+              <AvatarHeaderClients
+                src={
+                  dataLoginGoogle.avatar ||
+                  'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Avatar%2Favatar_1.jpg?alt=media&token=c9cc1417-7534-4a4b-b8ff-1e018088cea7'
+                }
+              />
             </MenuItem>
           ) : (
             <>

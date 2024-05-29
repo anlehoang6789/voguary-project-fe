@@ -4,6 +4,7 @@ import { BsCart3 } from 'react-icons/bs';
 import { TbFilter } from 'react-icons/tb';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import SiderFilterProduct from './SiderFilterProduct';
 
 const mockData = Array.from({ length: 16 }, (_, i) => ({
   id: i + 1,
@@ -34,8 +35,19 @@ export default function ManageProduct() {
         </Button>
       </div>
       <Divider />
-      <Drawer title='Bộ Lọc' placement='right' onClose={closeDrawer} open={drawerVisible}>
-        <p>Filter content goes here...</p>
+      <Drawer
+        title='Bộ Lọc & Sắp Xếp'
+        placement='right'
+        onClose={closeDrawer}
+        open={drawerVisible}
+        closable={false}
+        extra={
+          <Button type='link' className=' text-gray-500  hover:!bg-gray-500 hover:!text-red-200'>
+            Bỏ chọn tất cả
+          </Button>
+        }
+      >
+        <SiderFilterProduct />
       </Drawer>
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4'>
         {currentData.map((product) => (

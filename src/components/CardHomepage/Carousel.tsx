@@ -6,7 +6,7 @@ const firebaseImageUrl1 =
 
 export default function CustomCarousel() {
   return (
-    <Carousel autoplay>
+    <Carousel autoplay dots>
       <div>
         <img src={firebaseImageUrl1} alt='Slide 1' className='w-full h-48 md:h-64 lg:h-72 xl:h-80' />
       </div>

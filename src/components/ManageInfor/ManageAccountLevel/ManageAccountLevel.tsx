@@ -1,11 +1,9 @@
-import { Avatar, Button, Col, Divider, List, Modal, Progress, Row } from 'antd';
-import ComingSoon from 'components/ComingSoon';
-import { useState } from 'react';
-import { CiCircleQuestion, CiUser } from 'react-icons/ci';
+import { Avatar, Col, List, Progress, Row } from 'antd';
+import { CiUser } from 'react-icons/ci';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
-import DiscountPolicy from './DiscountPolicy';
 import { GoDotFill } from 'react-icons/go';
+import DiscountPolicy from './DiscountPolicy';
 
 export default function ManageAccountLevel() {
   const userDataWithLoginGoogle = useSelector((state: RootState) => state.auth.user);

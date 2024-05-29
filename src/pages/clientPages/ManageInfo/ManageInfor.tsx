@@ -10,7 +10,7 @@ import ManagePassword from 'components/ManageInfor/ManagePassword';
 import ManageCart from 'components/ManageInfor/ManageCart';
 import ManagePaymentHistory from 'components/ManageInfor/ManagePaymentHistory';
 import { useState } from 'react';
-import ManageAccountLevel from 'components/ManageInfor/ManageAccountLevel';
+import ManageAccountLevel from 'components/ManageInfor/ManageAccountLevel/ManageAccountLevel';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { logout } from 'slice/authSlice';

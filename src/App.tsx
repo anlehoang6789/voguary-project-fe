@@ -1,7 +1,28 @@
+import MobileMaintenance from 'components/MobileMaintenance';
+import { useEffect, useState } from 'react';
+import { isMobile as initialIsMobile, isTablet, isAndroid, isIOS, isWinPhone } from 'react-device-detect';
 import { Route, Routes } from 'react-router-dom';
 import { adminRoutes, privateRoutes, publicRoutes } from 'routes/routes';
 
 function App() {
+  const [isMobile, setIsMobile] = useState(initialIsMobile || isTablet || isAndroid || isIOS || isWinPhone);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      const tablet = /iPad|Tablet|Surface/.test(navigator.userAgent);
+      setIsMobile(mobile || tablet);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  if (isMobile) return <MobileMaintenance />;
   return (
     <>
       <Routes>

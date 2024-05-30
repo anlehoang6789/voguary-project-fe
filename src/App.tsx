@@ -2,7 +2,7 @@ import MobileMaintenance from 'components/MobileMaintenance';
 import { useEffect, useState } from 'react';
 import { isMobile as initialIsMobile, isTablet, isAndroid, isIOS, isWinPhone } from 'react-device-detect';
 import { Route, Routes } from 'react-router-dom';
-import { adminRoutes, privateRoutes, publicRoutes } from 'routes/routes';
+import { adminRoutes, privateRoutes, publicRoutes, staffRoutes } from 'routes/routes';
 
 function App() {
   const [isMobile, setIsMobile] = useState(initialIsMobile || isTablet || isAndroid || isIOS || isWinPhone);
@@ -39,6 +39,12 @@ function App() {
         })}
 
         {privateRoutes.map(({ layout, component, path }, index) => {
+          const Layout = layout;
+          const Component = component;
+          return <Route key={index} path={path} element={<Layout children={<Component />} />} />;
+        })}
+
+        {staffRoutes.map(({ layout, component, path }, index) => {
           const Layout = layout;
           const Component = component;
           return <Route key={index} path={path} element={<Layout children={<Component />} />} />;

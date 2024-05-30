@@ -2,7 +2,7 @@ export enum ManageInforMenu {
   PROFILE,
   AVATAR,
   SECURITY,
-  MY_CART,
+  MY_BAG,
   PAYMENT_HISTORY,
   ACCOUNT_LEVEL
 }

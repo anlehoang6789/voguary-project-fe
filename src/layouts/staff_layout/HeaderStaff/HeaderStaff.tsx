@@ -2,7 +2,7 @@ import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, MenuProps, Modal, Spin } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 
-export default function HeaderAdmin() {
+export default function HeaderStaff() {
   const items: MenuProps['items'] = [
     {
       key: '1',
@@ -13,6 +13,7 @@ export default function HeaderAdmin() {
 
   return (
     <Header className='fixed z-50 flex w-full justify-between border-b border-gray-200 bg-white px-5'>
+      <h1 className='text-lg font-semibold flex items-center'>Chào mừng nhân viên Ronaldo </h1>
       <Dropdown menu={{ items }} placement='bottomRight' trigger={['click']} arrow>
         <Avatar
           className='fixed right-4 top-3 cursor-pointer'

@@ -1,6 +1,6 @@
 import ComingSoon from 'components/ComingSoon';
 
-export default function ManageCart() {
+export default function ViewAllRefundForStaff() {
   return (
     <div>
       <ComingSoon />

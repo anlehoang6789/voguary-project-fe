@@ -3,6 +3,7 @@ import ClientLayout from 'layouts/client_layout/ClientLayout';
 import LoginLayout from 'layouts/login_layout/LoginLayout';
 import StaffLayout from 'layouts/staff_layout/StaffLayout';
 import DashboardPage from 'pages/Auth/admin/Dashboard/DashboardPage';
+import InventoryPage from 'pages/Auth/admin/Inventory/InventoryPage';
 import CreateAccountForStaff from 'pages/Auth/admin/ManageUser/CreateAccountForStaff';
 import UserAdmin from 'pages/Auth/admin/UserAdmin/UserAdmin';
 import LoginPage from 'pages/Auth/login/LoginPage';
@@ -52,7 +53,8 @@ const privateRoutes: RouteProps[] = [
 const adminRoutes: RouteProps[] = [
   { path: '/admin', component: DashboardPage, layout: AdminLayout },
   { path: '/admin/createAccount', component: CreateAccountForStaff, layout: AdminLayout },
-  { path: '/admin/user', component: UserAdmin, layout: AdminLayout }
+  { path: '/admin/user', component: UserAdmin, layout: AdminLayout },
+  { path: '/admin/inventory', component: InventoryPage, layout: AdminLayout }
 ];
 
 const staffRoutes: RouteProps[] = [

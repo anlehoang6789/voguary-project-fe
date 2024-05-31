@@ -10,7 +10,7 @@ const mockData = Array.from({ length: 16 }, (_, i) => ({
   id: i + 1,
   name: `Product ${i + 1}`,
   price: (i + 1) * 10000,
-  image: `https://via.placeholder.com/150`,
+  image: `https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380`,
   colors: Math.floor(Math.random() * 10) + 1
 }));
 

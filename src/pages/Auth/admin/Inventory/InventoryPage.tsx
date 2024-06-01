@@ -186,7 +186,7 @@ export default function InventoryPage() {
 
         <tbody>
           {currentProducts.map((product, index) => (
-            <tr key={index} className='bg-white border-b hover:bg-gray-50'>
+            <tr key={product.id} className='bg-white border-b hover:bg-gray-50'>
               <th scope='row' className='flex items-center px-6 py-4 text-gray-900 whitespace-nowrap'>
                 <img className='w-10 h-10 rounded-full' src={product.imgSrc} alt={`${product.name} image`} />
                 <div className='ps-3'>

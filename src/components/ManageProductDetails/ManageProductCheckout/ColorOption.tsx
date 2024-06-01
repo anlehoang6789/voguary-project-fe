@@ -3,12 +3,12 @@ import { useState } from 'react';
 export default function ColorOption() {
   const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
   const colors = [
-    'https://via.placeholder.com/600x600',
-    'https://via.placeholder.com/600x600',
-    'https://via.placeholder.com/600x600',
-    'https://via.placeholder.com/600x600',
-    'https://via.placeholder.com/600x600',
-    'https://via.placeholder.com/600x600'
+    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380'
   ];
 
   console.log('selectedColorIndex', selectedColorIndex);

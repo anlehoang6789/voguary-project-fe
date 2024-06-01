@@ -7,25 +7,29 @@ const products = [
     id: 1,
     name: 'Áo MU',
     price: '100,000 VND',
-    image: 'https://via.placeholder.com/150'
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
   },
   {
     id: 2,
     name: 'Áo MU',
     price: '200,000 VND',
-    image: 'https://via.placeholder.com/150'
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
   },
   {
     id: 3,
     name: 'Áo MU',
     price: '300,000 VND',
-    image: 'https://via.placeholder.com/150'
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
   },
   {
     id: 4,
     name: 'Áo MU',
     price: '400,000 VND',
-    image: 'https://via.placeholder.com/150'
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
   }
 ];
 

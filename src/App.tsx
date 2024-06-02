@@ -1,17 +1,16 @@
 import MobileMaintenance from 'components/MobileMaintenance';
 import { useEffect, useState } from 'react';
-import { isMobile as initialIsMobile, isTablet, isAndroid, isIOS, isWinPhone } from 'react-device-detect';
+import { isMobile, isTablet } from 'react-device-detect';
 import { Route, Routes } from 'react-router-dom';
 import { adminRoutes, privateRoutes, publicRoutes, staffRoutes } from 'routes/routes';
 
 function App() {
-  const [isMobile, setIsMobile] = useState(initialIsMobile || isTablet || isAndroid || isIOS || isWinPhone);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(isMobile || isTablet); // Sử dụng hàm isMobile và isTablet từ thư viện react-device-detect
 
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth <= 768;
-      const tablet = /iPad|Tablet|Surface/.test(navigator.userAgent);
-      setIsMobile(mobile || tablet);
+      // Không cần kiểm tra kích thước màn hình nữa, sử dụng hàm isMobile và isTablet từ thư viện react-device-detect để bắt thiết bị đăng nhập
+      setIsMobileOrTablet(isMobile || isTablet);
     };
 
     window.addEventListener('resize', handleResize);
@@ -22,7 +21,7 @@ function App() {
     };
   }, []);
 
-  if (isMobile) return <MobileMaintenance />;
+  if (isMobileOrTablet) return <MobileMaintenance />;
   return (
     <>
       <Routes>

@@ -4,25 +4,31 @@ import { MdLogout } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
-import { logout } from 'slice/authSlice';
+import { logout } from 'slice/authLoginGoogleSlice';
+import { logoutUser } from 'slice/authLoginAPISlice';
 
 interface AvatarHeaderClientsProps {
   src: string;
 }
 
 export default function AvatarHeaderClients({ src }: AvatarHeaderClientsProps) {
-  const id = useSelector((state: RootState) => state.auth.user?.uid);
+  const id = useSelector((state: RootState) => state.authLoginGoogle.user?.uid);
+  const userLoginID = useSelector((state: RootState) => state.authLoginAPI.user?.userID);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     // Xóa dữ liệu từ localStorage
     localStorage.removeItem('userLoginGoogle');
+    localStorage.removeItem('userLogin');
 
     // Đưa trạng thái user về null trong Redux
     dispatch(logout());
+    dispatch(logoutUser());
     navigate('/');
   };
+
+  const userID = id || userLoginID;
 
   const items: MenuProps['items'] = [
     {
@@ -30,7 +36,7 @@ export default function AvatarHeaderClients({ src }: AvatarHeaderClientsProps) {
       icon: <CiUser style={{ fontSize: '18px' }} />,
       label: (
         <span className='text-lg'>
-          <Link to={`/user/${id}`} className='hover:text-black'>
+          <Link to={`/user/${userID}`} className='hover:text-black'>
             Xem thông tin cá nhân
           </Link>
         </span>

@@ -18,7 +18,7 @@ interface ManageOrderTrackingProps {
 const { Title } = Typography;
 
 export default function ManageOrderTracking() {
-  const userDataWithLoginGoogle = useSelector((state: RootState) => state.auth.user);
+  const userDataWithLoginGoogle = useSelector((state: RootState) => state.authLoginGoogle.user);
   const [selectedComponent, setSelectedComponent] = useState<JSX.Element | null>(<ManageAllOrder />);
   const [defaultSelectedKey, setDefaultSelectedKey] = useState<string>('0');
 

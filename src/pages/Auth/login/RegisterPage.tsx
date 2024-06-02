@@ -1,10 +1,55 @@
-import { Button, FloatButton, Form, Input, Tooltip } from 'antd';
+import { Button, FloatButton, Form, Input, notification, Tooltip } from 'antd';
 import { FaHome } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CustomGradientButton from 'components/CustomGradientButton';
 import LoginGoogle from 'components/LoginGoogle';
+import { useUserRegisterMutation } from 'services/auth.services';
+import { UserRegister } from 'types/Account.type';
+import { useEffect } from 'react';
+import { ErrorRegisterResponse } from 'types/ErrorResponse.type';
 
 export default function RegisterPage() {
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const [userRegister, { isLoading, isSuccess, isError, error }] = useUserRegisterMutation();
+
+  // Nếu đăng kí thành công
+  useEffect(() => {
+    if (isSuccess) {
+      notification.success({
+        message: 'Đăng ký thành công',
+        description: 'Bạn đã đăng ký thành công. Vui lòng kiểm tra email để xác nhận tài khoản.'
+      });
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000); // Điều hướng sau 2 giây
+    }
+
+    // Nếu đăng kí thất bại
+    if (isError && error) {
+      const err = error as ErrorRegisterResponse;
+      const errorMessage = err.message ? err.message : 'Email hoặc tên tài khoản đã tồn tại';
+      notification.error({
+        message: 'Đăng ký thất bại',
+        description: errorMessage
+      });
+    }
+  }, [isSuccess, navigate, isError, error]);
+
+  const handleSubmit = async (values: UserRegister) => {
+    // await userRegister(values);
+    try {
+      await userRegister(values);
+    } catch (error) {
+      const err = error as ErrorRegisterResponse;
+      const errorMessage = err.message ? err.message : 'Email hoặc tên tài khoản đã tồn tại';
+      notification.error({
+        message: 'Đăng ký thất bại',
+        description: errorMessage
+      });
+    }
+  };
+
   return (
     <div className='flex bg-[#eee] min-h-screen'>
       <div className='w-full bg-white sm:w-[40%]  md:h-screen sm:h-full relative overflow-y-auto'>
@@ -16,7 +61,7 @@ export default function RegisterPage() {
             </p>
           </div>
           <div className='bg-[#D2DAE2] p-8 pb-14 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]'>
-            <Form autoComplete='off' layout='vertical'>
+            <Form autoComplete='off' layout='vertical' form={form} onFinish={handleSubmit}>
               <Form.Item
                 label='Tên tài khoản'
                 name='username'
@@ -36,7 +81,7 @@ export default function RegisterPage() {
               </Form.Item>
               <Form.Item
                 label='Email'
-                name='accountEmail'
+                name='email'
                 rules={[
                   {
                     required: true,
@@ -54,7 +99,7 @@ export default function RegisterPage() {
               </Form.Item>
               <Form.Item
                 label='Tên hiển thị'
-                name='displayName'
+                name='fullname'
                 rules={[
                   {
                     required: true,
@@ -71,7 +116,7 @@ export default function RegisterPage() {
               </Form.Item>
               <Form.Item
                 label='Mật khẩu'
-                name='accountPassword'
+                name='password'
                 rules={[
                   { required: true, message: 'Mật khẩu không được bỏ trống' },
                   {
@@ -85,13 +130,13 @@ export default function RegisterPage() {
               </Form.Item>
               <Form.Item
                 label='Xác nhận mật khẩu'
-                name='confirmAccountPassword'
-                dependencies={['accountPassword']}
+                name='confirmPassword'
+                dependencies={['password']}
                 rules={[
                   { required: true, message: 'Xác nhận mật khẩu không được bỏ trống' },
                   ({ getFieldValue }) => ({
                     validator(_, value) {
-                      if (!value || getFieldValue('accountPassword') === value) {
+                      if (!value || getFieldValue('password') === value) {
                         return Promise.resolve();
                       }
                       return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
@@ -107,6 +152,7 @@ export default function RegisterPage() {
                     type='primary'
                     htmlType='submit'
                     size='large'
+                    loading={isLoading}
                     className='rounded-xl w-full mt-4 text-xl font-[Roboto] shadow-[0_3px_10px_rgb(0,0,0,0.2)]'
                   >
                     Đăng ký

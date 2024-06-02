@@ -20,7 +20,15 @@ export default function Header() {
   };
 
   //Lấy data từ redux store sau khi đăng nhập từ google thành công với firebase
-  const dataLoginGoogle = useSelector((state: RootState) => state.auth.user);
+  const dataLoginGoogle = useSelector((state: RootState) => state.authLoginGoogle.user);
+
+  //Lấy data từ redux store sau khi đăng nhập từ api thành công
+  const dataLoginAPI = useSelector((state: RootState) => state.authLoginAPI.user);
+
+  //Chọn data đăng nhập từ google hoặc từ api
+  const userData = dataLoginGoogle || dataLoginAPI;
+
+  const userAvatar = userData ? ('photoURL' in userData ? userData.photoURL : userData.image) : null;
 
   return (
     <div className='container-fluid'>
@@ -40,7 +48,7 @@ export default function Header() {
             </Popover>
           </MenuItem>
 
-          <MenuItem style={{ width: dataLoginGoogle ? 'calc(78% - 330px)' : '650px' }}>
+          <MenuItem style={{ width: userData ? 'calc(78% - 330px)' : '650px' }}>
             <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: '100%', paddingTop: '5px' }} />
           </MenuItem>
 
@@ -62,11 +70,11 @@ export default function Header() {
             </Popover>
           </MenuItem>
 
-          {dataLoginGoogle ? (
+          {userData ? (
             <MenuItem>
               <AvatarHeaderClients
                 src={
-                  dataLoginGoogle.avatar ||
+                  userAvatar ||
                   'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Avatar%2Favatar_1.jpg?alt=media&token=c9cc1417-7534-4a4b-b8ff-1e018088cea7'
                 }
               />

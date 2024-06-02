@@ -2,7 +2,7 @@ export interface LoginGoogleResponse {
   uid: string;
   name: string;
   email: string;
-  avatar: string;
+  photoURL: string;
   accessToken: string;
 }
 export interface User {
@@ -28,9 +28,21 @@ export interface User {
   roles: any[];
 }
 
-export interface UserLogin {
+export interface UserLoginRequest {
   username: string;
   password: string;
+}
+
+export interface UserLoginResponse {
+  userID: number;
+  userName: string;
+  fullName: string;
+  phone: string;
+  gender: number;
+  dateOfBirth: string;
+  email: string;
+  image: string;
+  status: string;
 }
 
 export interface UserRegister {

@@ -3,7 +3,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { loginGoogle } from 'slice/authSlice';
+import { loginGoogle } from 'slice/authLoginGoogleSlice';
 import app from 'utils/firebase';
 
 export default function LoginGoogle() {
@@ -15,7 +15,7 @@ export default function LoginGoogle() {
       const auth = getAuth(app);
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      console.log(result);
+      // console.log(result);
       const { uid, displayName, email, photoURL } = result.user;
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const accessToken = credential?.accessToken || ''; // Use empty string if accessToken is undefined
@@ -24,7 +24,7 @@ export default function LoginGoogle() {
         uid: uid || '',
         name: displayName || '', // Handle potential undefined values
         email: email || '',
-        avatar: photoURL || '',
+        photoURL: photoURL || '',
         accessToken
       };
 

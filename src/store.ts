@@ -1,21 +1,24 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import authSlice from 'slice/authSlice';
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import { authApi } from 'services/auth.services';
 import storage from 'redux-persist/lib/storage';
+import authLoginGoogleSlice from 'slice/authLoginGoogleSlice';
+import authLoginAPISlice from 'slice/authLoginAPISlice';
 
 export const persistConfig = {
   key: 'root',
   storage: storage,
   whitelist: [
     // Add reducer keys that you do NOT want to store to persistence here
-    'auth'
+    'authLoginGoogle',
+    'authLoginAPI'
   ]
 };
 
 const rootReducer = combineReducers({
   // Add reducers here
-  auth: authSlice,
+  authLoginGoogle: authLoginGoogleSlice,
+  authLoginAPI: authLoginAPISlice,
   [authApi.reducerPath]: authApi.reducer
 });
 

@@ -13,7 +13,7 @@ import { useState } from 'react';
 import ManageAccountLevel from 'components/ManageInfor/ManageAccountLevel/ManageAccountLevel';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
-import { logout } from 'slice/authSlice';
+import { logout } from 'slice/authLoginGoogleSlice';
 import { useNavigate } from 'react-router-dom';
 import ManageMyBag from 'components/ManageInfor/ManageMyBag';
 
@@ -71,7 +71,7 @@ export default function ManageInfor() {
     setDefaultSelectedKey(key);
   };
 
-  const userDataWithLoginGoogle = useSelector((state: RootState) => state.auth.user);
+  const userDataWithLoginGoogle = useSelector((state: RootState) => state.authLoginGoogle.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -93,7 +93,7 @@ export default function ManageInfor() {
             size={64}
             icon={<CiUser />}
             src={
-              userDataWithLoginGoogle?.avatar ||
+              userDataWithLoginGoogle?.photoURL ||
               'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Avatar%2Favatar_1.jpg?alt=media&token=c9cc1417-7534-4a4b-b8ff-1e018088cea7'
             }
           />

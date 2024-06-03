@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import AvatarHeaderClients from 'components/AvatarHeaderClients';
 import Dropdown from 'components/Dropdown/Dropdown';
+import MyBagComponent from 'components/MyBag/MyBagPopover';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -56,7 +57,11 @@ export default function Header() {
             <Link to={'/orderTracking'}>Đơn hàng</Link>
           </MenuItem>
 
-          <MenuItem className='text-xl'>Túi đồ của tôi</MenuItem>
+          <MenuItem className='text-xl'>
+            <Popover content={<MyBagComponent />} trigger={'hover'} placement='bottom' className='text-xl'>
+              Túi đồ của tôi
+            </Popover>
+          </MenuItem>
 
           <MenuItem onClick={() => handleNavigateTo('/cart')}>
             <BsCart3 style={{ fontSize: '20px', cursor: 'pointer' }} />

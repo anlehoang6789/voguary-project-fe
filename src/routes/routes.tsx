@@ -15,6 +15,7 @@ import ManageOrderCancelledForStaff from 'pages/Auth/staff/ManageOrderCancelled/
 import AddProductForStaff from 'pages/Auth/staff/ManageProduct/AddProductForStaff';
 import ViewAllProductForStaff from 'pages/Auth/staff/ManageProduct/ViewAllProductForStaff';
 import ViewAllRefundForStaff from 'pages/Auth/staff/Refund/ViewAllRefundForStaff';
+import CheckCart from 'pages/clientPages/CheckCart/CheckCart';
 import CheckoutPage from 'pages/clientPages/CheckoutPage/CheckoutPage';
 import HomePage from 'pages/clientPages/HomePage';
 import ManageInfor from 'pages/clientPages/ManageInfo/ManageInfor';
@@ -41,7 +42,8 @@ const publicRoutes: RouteProps[] = [
   { path: '/register', component: RegisterPage, layout: LoginLayout },
   { path: '/*', component: NotFoundPage, layout: ClientLayout },
   { path: '/product', component: ManageProduct, layout: ClientLayout },
-  { path: '/product/:id', component: ManageProductDetailsPage, layout: ClientLayout }
+  { path: '/product/:id', component: ManageProductDetailsPage, layout: ClientLayout },
+  { path: '/cart', component: CheckCart, layout: ClientLayout }
 ];
 
 const privateRoutes: RouteProps[] = [

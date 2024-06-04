@@ -17,25 +17,19 @@ export default function AddCategoryForStaff() {
               className='pl-10 pt-10 '
               label={<span className='font-semibold'>Tên loại hàng</span>}
               name='typename'
-              rules={[
-                { required: true, message: 'Vui lòng chọn loại hàng' },
-                {
-                  pattern: /^[a-zA-Z ]{2,10}$/,
-                  message: 'Họ phải có từ 2 đến 10 ký tự'
-                }
-              ]}
+              rules={[{ required: true, message: 'Vui lòng chọn loại hàng' }]}
             >
               <Select placeholder='Quần dài' className='w-full max-w-[300px]'>
                 <Option value='pants'>Quần dài</Option>
                 <Option value='shorts'>Quần ngắn</Option>
                 <Option value='trouser'>Quần tây</Option>
                 <Option value='t-shirt'>Áo thun</Option>
-                <Option value='t-shirt'>Áo thun</Option>
                 <Option value='shirt'>Áo sơ mi</Option>
                 <Option value='vest'>Áo vest</Option>
                 <Option value='dress'>Đầm</Option>
                 <Option value='vay'>Váy</Option>
                 <Option value='aodai'>Áo dài</Option>
+                <Option value='jewelry'>Trang sức</Option>
               </Select>
             </FormItem>
           </Col>

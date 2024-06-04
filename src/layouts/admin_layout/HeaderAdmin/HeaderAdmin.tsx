@@ -6,11 +6,6 @@ export default function HeaderAdmin() {
   const items: MenuProps['items'] = [
     {
       key: '1',
-      icon: <UserOutlined></UserOutlined>,
-      label: 'Profile'
-    },
-    {
-      key: '2',
       icon: <LogoutOutlined></LogoutOutlined>,
       label: 'Logout'
     }

@@ -1,14 +1,12 @@
-import { Avatar, Button, Col, Divider, List, Modal, Progress, Row } from 'antd';
-import ComingSoon from 'components/ComingSoon';
-import { useState } from 'react';
-import { CiCircleQuestion, CiUser } from 'react-icons/ci';
+import { Avatar, Col, List, Progress, Row } from 'antd';
+import { CiUser } from 'react-icons/ci';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
-import DiscountPolicy from './DiscountPolicy';
 import { GoDotFill } from 'react-icons/go';
+import DiscountPolicy from './DiscountPolicy';
 
 export default function ManageAccountLevel() {
-  const userDataWithLoginGoogle = useSelector((state: RootState) => state.auth.user);
+  const userDataWithLoginGoogle = useSelector((state: RootState) => state.authLoginGoogle.user);
 
   const data = [
     'Giảm giá 10% cho mỗi lần thuê tiếp theo.',
@@ -25,7 +23,7 @@ export default function ManageAccountLevel() {
             size={64}
             icon={<CiUser />}
             src={
-              userDataWithLoginGoogle?.avatar ||
+              userDataWithLoginGoogle?.photoURL ||
               'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Avatar%2Favatar_1.jpg?alt=media&token=c9cc1417-7534-4a4b-b8ff-1e018088cea7'
             }
           />

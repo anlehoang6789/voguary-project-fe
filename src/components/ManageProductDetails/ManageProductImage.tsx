@@ -9,12 +9,12 @@ interface ManageProductImageProps {
 export default function ManageProductImage({ selectedColorIndex }: ManageProductImageProps) {
   const [showMoreImages, setShowMoreImages] = useState<boolean>(false);
   const images = [
-    'https://via.placeholder.com/600x600',
-    'https://via.placeholder.com/600x600',
-    'https://via.placeholder.com/600x600',
-    'https://via.placeholder.com/600x600',
-    'https://via.placeholder.com/600x600',
-    'https://via.placeholder.com/600x600'
+    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380'
   ];
 
   // Bắt nó ban đầu chỉ hiển thị 4 ảnh, khi click vào nút "Xem thêm" thì hiển thị tất cả ảnh

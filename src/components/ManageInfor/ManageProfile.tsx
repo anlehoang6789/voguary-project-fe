@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 
 export default function ManageProfile() {
-  const userDataWithLoginGoogle = useSelector((state: RootState) => state.auth.user);
+  const userDataWithLoginGoogle = useSelector((state: RootState) => state.authLoginGoogle.user);
 
   // Hàm phân tách tên thành họ và tên
   const splitName = (fullName: string) => {

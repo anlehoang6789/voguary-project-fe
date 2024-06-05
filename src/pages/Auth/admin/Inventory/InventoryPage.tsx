@@ -92,7 +92,7 @@ const fakeDataProducts = [
     imgSrc: dam
   },
   {
-    id: 9,
+    id: 10,
     name: 'Áo dài Tết 6',
     producttype: 'Áo dài',
     quantity: '10',

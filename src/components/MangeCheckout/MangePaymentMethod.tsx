@@ -25,7 +25,7 @@ export default function ManagePaymentMethod({
     <div className='container mx-auto min-h-screen flex flex-col lg:flex-col xl:flex-row'>
       <div className='item-flex flex flex-grow border-t-2 mt-7 '>
         {/* Checkout section */}
-        <section className='check-out w-2/3 pt-6 pb-10 pr-14 bg-white border-r-2'>
+        <section className='check-out w-2/3 pt-6 pb-10 pr-12 bg-white border-r-2 ml-4'>
           <h2 className='text-оnух text-2xl mb-7 font-medium'>Chi tiết thanh toán</h2>
           <div className='mb-10'>
             <div className='flex items-center gap-7 mb-10'>
@@ -43,7 +43,7 @@ export default function ManagePaymentMethod({
               <button className='border border-quickSilver rounded-md w-1/4 flex items-center py-4 px-8 gap-2  cursor-not-allowed opacity-50 disabled:opacity-100 disabled:bg-gray-300 font-medium  '>
                 <img
                   className='inline-block'
-                  width='35px'
+                  width='28px'
                   src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Momo%2Fkisspng-paypal-logo-e-commerce-payment-system-paypal-5ad78137f1e9c2.9153968515240727599909.jpg?alt=media&token=6d96d5eb-0b34-471d-afed-05e4ccb72301'
                   alt='Paypal'
                 />

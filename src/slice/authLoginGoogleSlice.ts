@@ -9,8 +9,8 @@ const initialState: AuthLoginGoogleState = {
   user: null
 };
 
-const authSlice = createSlice({
-  name: 'auth',
+const authLoginGoogleSlice = createSlice({
+  name: 'authLoginGoogle',
   initialState,
   reducers: {
     loginGoogle: (state, action: PayloadAction<LoginGoogleResponse>) => {
@@ -22,5 +22,5 @@ const authSlice = createSlice({
   }
 });
 
-export const { loginGoogle, logout } = authSlice.actions;
-export default authSlice.reducer;
+export const { loginGoogle, logout } = authLoginGoogleSlice.actions;
+export default authLoginGoogleSlice.reducer;

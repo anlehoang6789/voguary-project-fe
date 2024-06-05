@@ -51,7 +51,7 @@ export default function SelectDateOption() {
         <Button
           type='link'
           size='large'
-          className='text-gray-500 flex items-center justify-between'
+          className='text-gray-500 flex items-center justify-between !border-none'
           onClick={showModal}
         >
           Hướng dẫn đặt lịch <IoCalendarNumberOutline className='text-xl ml-2' />

@@ -5,6 +5,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { Order } from 'types/Order.type';
 import { FaEye } from 'react-icons/fa6';
 import { CiSearch } from 'react-icons/ci';
+import CustomGradientButton from 'components/CustomGradientButton';
 
 // Mock data
 const mockOrders: Order[] = [
@@ -157,9 +158,11 @@ const columns: ColumnsType<Order> = [
     key: 'action',
     render: () => (
       <div className='flex justify-center space-x-2 items-center'>
-        <Button type='primary' className='flex items-center'>
-          <FaEye className='mr-2' /> Xem chi tiết
-        </Button>
+        <CustomGradientButton>
+          <Button type='primary' className='flex items-center'>
+            <FaEye className='mr-2' /> Xem chi tiết
+          </Button>
+        </CustomGradientButton>
       </div>
     ),
     align: 'center'

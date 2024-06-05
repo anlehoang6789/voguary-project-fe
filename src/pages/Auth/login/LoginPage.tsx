@@ -1,11 +1,60 @@
-import { Button, FloatButton, Form, Input, Tooltip } from 'antd';
-import { Link } from 'react-router-dom';
+import { Button, FloatButton, Form, Input, notification, Tooltip } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaHome } from 'react-icons/fa';
 import CustomGradientButton from 'components/CustomGradientButton';
-
 import LoginGoogle from 'components/LoginGoogle';
+import { useUserLoginMutation } from 'services/auth.services';
+import { useEffect } from 'react';
+import { UserLoginRequest } from 'types/Account.type';
+import { ErrorRegisterResponse } from 'types/ErrorResponse.type';
+import { useDispatch } from 'react-redux';
+import { setUser } from 'slice/authLoginAPISlice';
 
 export default function LoginPage() {
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [userLogin, { isLoading, isSuccess, isError, error, data }] = useUserLoginMutation();
+
+  // Nếu đăng nhập thành công
+  useEffect(() => {
+    if (isSuccess && data) {
+      notification.success({
+        message: 'Đăng nhập thành công',
+        description: 'Chào mừng bạn trở lại hệ thống'
+      });
+      setTimeout(() => {
+        navigate('/');
+      }, 2000); // Điều hướng sau 2 giây
+      //console.log(data);
+      dispatch(setUser(data));
+      localStorage.setItem('userLogin', JSON.stringify(data));
+    }
+
+    // Nếu đăng nhập thất bại
+    if (isError && error) {
+      const err = error as ErrorRegisterResponse;
+      const errorMessage = err.message ? err.message : 'Tên tài khoản hoặc mật khẩu không đúng';
+      notification.error({
+        message: 'Đăng nhập thất bại',
+        description: errorMessage
+      });
+    }
+  }, [isSuccess, navigate, isError, error, data, dispatch]);
+
+  const handleSubmit = async (values: UserLoginRequest) => {
+    try {
+      await userLogin(values);
+    } catch (error) {
+      const err = error as ErrorRegisterResponse;
+      const errorMessage = err.message ? err.message : 'Tên tài khoản hoặc mật khẩu không đúng';
+      notification.error({
+        message: 'Đăng nhập thất bại',
+        description: errorMessage
+      });
+    }
+  };
+
   return (
     <div className='flex bg-[#eee] min-h-screen'>
       <div className='w-full bg-white sm:w-[40%]  md:h-screen sm:h-full relative'>
@@ -17,7 +66,7 @@ export default function LoginPage() {
             </p>
           </div>
           <div className='bg-[#D2DAE2] p-8 pb-16 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]'>
-            <Form autoComplete='off' layout='vertical'>
+            <Form autoComplete='off' layout='vertical' form={form} onFinish={handleSubmit}>
               <Form.Item
                 label='Tên tài khoản'
                 name='username'
@@ -25,10 +74,6 @@ export default function LoginPage() {
                   {
                     required: true,
                     message: 'Tên hiển thị không được bỏ trống'
-                  },
-                  {
-                    pattern: /^.{5,}$/,
-                    message: 'Tên tài khoản phải từ 5 kí tự trở lên'
                   }
                 ]}
                 className='font-roboto'
@@ -37,15 +82,8 @@ export default function LoginPage() {
               </Form.Item>
               <Form.Item
                 label='Mật khẩu'
-                name='accountPassword'
-                rules={[
-                  { required: true, message: 'Mật khẩu không được bỏ trống' },
-                  {
-                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{7,}$/,
-                    message:
-                      'Mật khẩu phải chứa ít nhất 1 chữ thường, 1 chữ hoa, 1 số, 1 kí tự đặc biệt và có độ dài ít nhất 7 kí tự'
-                  }
-                ]}
+                name='password'
+                rules={[{ required: true, message: 'Mật khẩu không được bỏ trống' }]}
               >
                 <Input.Password placeholder='Mk@1234' size='large' />
               </Form.Item>
@@ -55,6 +93,7 @@ export default function LoginPage() {
                     type='primary'
                     htmlType='submit'
                     size='large'
+                    loading={isLoading}
                     className='rounded-xl w-full mt-4 text-xl font-[Roboto] shadow-[0_3px_10px_rgb(0,0,0,0.2)]'
                   >
                     Đăng nhập

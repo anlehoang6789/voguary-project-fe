@@ -100,7 +100,7 @@ export default function MangeAddressCheckout({
                 className='btn btn-primary cursor-pointer font-medium pb-5 pt-1 px-6 text-base mt-3 mb-3'
                 disabled={isFormInvalid}
               >
-                Phương thức thanh toán
+                Xác nhận địa chỉ
               </Button>
             </CustomGradientButton>
           </div>

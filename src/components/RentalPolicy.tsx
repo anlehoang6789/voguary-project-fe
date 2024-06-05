@@ -18,7 +18,12 @@ export default function RentalPolicy() {
   };
   return (
     <div>
-      <Button type='link' size='large' className='text-gray-500 flex items-center justify-between' onClick={showModal}>
+      <Button
+        type='link'
+        size='large'
+        className='text-gray-500 flex items-center justify-between !border-none'
+        onClick={showModal}
+      >
         Chính sách cho thuê đồ <CiCircleQuestion className='text-xl ml-2' />
       </Button>
       <Modal

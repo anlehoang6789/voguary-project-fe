@@ -42,14 +42,14 @@ const publicRoutes: RouteProps[] = [
   { path: '/register', component: RegisterPage, layout: LoginLayout },
   { path: '/*', component: NotFoundPage, layout: ClientLayout },
   { path: '/product', component: ManageProduct, layout: ClientLayout },
-  { path: '/product/:id', component: ManageProductDetailsPage, layout: ClientLayout },
-  { path: '/cart', component: CheckCart, layout: ClientLayout }
+  { path: '/product/:id', component: ManageProductDetailsPage, layout: ClientLayout }
 ];
 
 const privateRoutes: RouteProps[] = [
   { path: '/user/:id', component: ManageInfor, layout: ClientLayout },
   { path: '/checkout', component: CheckoutPage, layout: ClientLayout },
-  { path: '/orderTracking', component: ManageOrderTracking, layout: ClientLayout }
+  { path: '/orderTracking', component: ManageOrderTracking, layout: ClientLayout },
+  { path: '/cart', component: CheckCart, layout: ClientLayout }
 ];
 
 const adminRoutes: RouteProps[] = [

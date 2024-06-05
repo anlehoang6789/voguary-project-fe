@@ -25,7 +25,7 @@ export default function ManageProductCheckout() {
         <Button
           type='primary'
           size='large'
-          className='mb-4 !rounded-none shadow-[5px_5px_0px_0px_rgba(4,131,229)] w-full flex items-center justify-between font-semibold'
+          className='mb-4 !rounded-none shadow-[5px_5px_0px_0px_rgba(255,141,107)] w-full flex items-center justify-between font-semibold'
         >
           THÊM VÀO GIỎ HÀNG <FaArrowRightLong />
         </Button>

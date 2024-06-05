@@ -68,7 +68,7 @@ export default function MyBagPopover() {
           renderItem={(item) => (
             <List.Item>
               <div style={{ flex: '1' }}>
-                <img className='w-20 ' src={item.img} alt={`${item.name} image`} />
+                <img className='w-20 ' src={item.img} alt={`${item.name} ảnh`} />
               </div>
               <div style={{ flex: '5' }}>
                 <p style={{ fontSize: '13px', marginLeft: '12px' }}>
@@ -104,7 +104,7 @@ export default function MyBagPopover() {
         />
         <div className='flex justify-end'>
           <Link to={'/user/:id'}>
-            <Button type='link' size='large' className='text-gray-500 flex items-center justify-between'>
+            <Button type='link' size='large' className='text-gray-500 flex items-center justify-between !border-none'>
               Xem tất cả <ArrowRightOutlined className='text-lg ml-2 mb-1' />
             </Button>
           </Link>

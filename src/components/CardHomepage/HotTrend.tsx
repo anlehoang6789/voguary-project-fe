@@ -17,7 +17,7 @@ export default function HotTrend() {
               <button
                 className='absolute bottom-0 right-0 m-2 font-bold py-2 px-4 rounded'
                 style={{
-                  background: 'linear-gradient(to right, #00c6ff, #007bff 99%)',
+                  background: 'linear-gradient(to right, #fdc830, #f37335 99%)',
                   color: 'white',
                   border: 'none',
                   cursor: 'pointer',
@@ -42,7 +42,7 @@ export default function HotTrend() {
               <button
                 className='absolute bottom-0 right-0 m-2 font-bold py-2 px-4 rounded'
                 style={{
-                  background: 'linear-gradient(to right, #00c6ff, #007bff 99%)',
+                  background: 'linear-gradient(to right, #fdc830, #f37335 99%)',
                   color: 'white',
                   border: 'none',
                   cursor: 'pointer',

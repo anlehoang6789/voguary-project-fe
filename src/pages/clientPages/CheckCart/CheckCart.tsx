@@ -1,15 +1,41 @@
-import React, { useState } from 'react';
-import { Row, Col, Card, Button, Space, Input } from 'antd';
+import { useState } from 'react';
+import { Row, Col, Card, Button } from 'antd';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { TiDelete } from 'react-icons/ti';
+import CustomGradientButton from 'components/CustomGradientButton';
+import { Link } from 'react-router-dom';
 
 export default function CheckCart() {
   // Dữ liệu giả
   const initialCartItems = [
-    { name: 'Item 1', quantity: 2, price: 500000, image: 'https://via.placeholder.com/150' },
-    { name: 'Item 2', quantity: 1, price: 300000, image: 'https://via.placeholder.com/150' },
-    { name: 'Item 3', quantity: 3, price: 200000, image: 'https://via.placeholder.com/150' },
-    { name: 'Item 4', quantity: 1, price: 100000, image: 'https://via.placeholder.com/150' }
+    {
+      name: 'Item 1',
+      quantity: 2,
+      price: 500000,
+      image:
+        'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
+    },
+    {
+      name: 'Item 2',
+      quantity: 1,
+      price: 300000,
+      image:
+        'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
+    },
+    {
+      name: 'Item 3',
+      quantity: 3,
+      price: 200000,
+      image:
+        'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
+    },
+    {
+      name: 'Item 4',
+      quantity: 1,
+      price: 100000,
+      image:
+        'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
+    }
   ];
 
   // Sử dụng state để quản lý giỏ hàng
@@ -61,7 +87,7 @@ export default function CheckCart() {
               </span>
             }
             extra={
-              <Button onClick={removeAllItems} style={{ border: 'none', color: 'red' }}>
+              <Button onClick={removeAllItems} type='text' danger>
                 Xóa tất cả
               </Button>
             }
@@ -112,12 +138,12 @@ export default function CheckCart() {
             className='rounded-3xl bg-gray-200 p-5'
             style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)' }}
           >
-            <Space.Compact className='w-full h-12'>
+            {/* <Space.Compact className='w-full h-12'>
               <Input variant='filled' defaultValue='Nhập mã giảm giá' />
               <Button type='primary' className='bg-black h-12'>
                 Áp dụng
               </Button>
-            </Space.Compact>
+            </Space.Compact> */}
             <div className='flex justify-between mt-3'>
               <div>
                 <p className='text-gray-600 font-bold mb-2'>Tạm tính: </p>
@@ -130,9 +156,13 @@ export default function CheckCart() {
                 <p className='text-gray-600 mb-2 justify-end'>{total.toLocaleString('vi-VN')}VND </p>
               </div>
             </div>
-            <Button type='primary' className='mt-4 bg-black h-10 rounded-3xl w-full'>
-              Checkout
-            </Button>
+            <Link to={'/checkout'}>
+              <CustomGradientButton>
+                <Button type='primary' className='mt-4 h-10 rounded-3xl w-full'>
+                  Thanh toán
+                </Button>
+              </CustomGradientButton>
+            </Link>
           </Card>
         </Col>
       </Row>

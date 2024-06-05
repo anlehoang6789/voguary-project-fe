@@ -20,7 +20,7 @@ export default function FilterSize() {
           size='large'
           key={index}
           className={`inline-block text-sm px-3 py-1 !rounded-none mr-2 mb-2 ${
-            selectedSizes.includes(size) ? 'bg-gradient-to-r from-[#00c6ff] to-blue-700 text-white' : ' text-gray-700'
+            selectedSizes.includes(size) ? 'bg-gradient-to-r from-[#fdc830] to-[#f37335] text-white' : ' text-gray-700'
           }`}
           onClick={() => handleSizeClick(size)}
         >

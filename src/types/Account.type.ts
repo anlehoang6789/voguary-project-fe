@@ -34,15 +34,9 @@ export interface UserLoginRequest {
 }
 
 export interface UserLoginResponse {
-  userID: number;
-  userName: string;
-  fullName: string;
-  phone: string;
-  gender: number;
-  dateOfBirth: string;
-  email: string;
-  image: string;
-  status: string;
+  token: string;
+  refreshToken: string;
+  expired: string;
 }
 
 export interface UserRegister {
@@ -51,4 +45,12 @@ export interface UserRegister {
   confirmPassword: string;
   email: string;
   fullName: string;
+}
+export interface UserRegisterResponse {
+  userId: number;
+}
+
+export interface verifyCodeRequest {
+  userId: number;
+  code: string;
 }

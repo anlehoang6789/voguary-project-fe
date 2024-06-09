@@ -24,12 +24,12 @@ export default function Header() {
   const dataLoginGoogle = useSelector((state: RootState) => state.authLoginGoogle.user);
 
   //Lấy data từ redux store sau khi đăng nhập từ api thành công
-  const dataLoginAPI = useSelector((state: RootState) => state.authLoginAPI.user);
+  const dataLoginAPI = useSelector((state: RootState) => state.authLoginAPI?.user);
 
   //Chọn data đăng nhập từ google hoặc từ api
   const userData = dataLoginGoogle || dataLoginAPI;
 
-  const userAvatar = userData ? ('photoURL' in userData ? userData.photoURL : userData.image) : null;
+  const userAvatar = userData && 'photoURL' in userData ? userData.photoURL : null;
 
   return (
     <div className='container-fluid'>
@@ -37,7 +37,7 @@ export default function Header() {
         <Menu mode='horizontal' className='menu flex items-center'>
           <div onClick={() => handleNavigateTo('/')}>
             <img
-              src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Flogo_white_bg.jpg?alt=media&token=d4b8a3be-870c-469c-b93f-a7c8cc6a6bbe'
+              src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Fvoguary_logo_orange.jpg?alt=media&token=82366765-ee4d-4cf0-92c4-e6d6d3fa0e89'
               alt='Voguary'
               style={{ width: '100px', height: '100px', cursor: 'pointer' }}
             />
@@ -49,7 +49,7 @@ export default function Header() {
             </Popover>
           </MenuItem>
 
-          <MenuItem style={{ width: userData ? 'calc(78% - 330px)' : '650px' }}>
+          <MenuItem style={{ width: userData ? 'calc(75% - 330px)' : '650px' }}>
             <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: '100%', paddingTop: '5px' }} />
           </MenuItem>
 

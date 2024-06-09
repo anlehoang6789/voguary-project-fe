@@ -16,6 +16,7 @@ import { RootState } from 'store';
 import { logout } from 'slice/authLoginGoogleSlice';
 import { useNavigate } from 'react-router-dom';
 import ManageMyBag from 'components/ManageInfor/ManageMyBag';
+import { logoutUser } from 'slice/authLoginAPISlice';
 
 interface ManageInforProps {
   type: ManageInforMenu;
@@ -79,9 +80,11 @@ export default function ManageInfor() {
   const handleLogout = () => {
     // Xóa dữ liệu từ localStorage
     localStorage.removeItem('userLoginGoogle');
+    localStorage.removeItem('userLogin');
 
     // Đưa trạng thái user về null trong Redux
     dispatch(logout());
+    dispatch(logoutUser());
     navigate('/');
   };
 

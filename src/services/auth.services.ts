@@ -1,6 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import baseUrl from '../utils/http';
-import { UserLoginRequest, UserLoginResponse, UserRegister } from 'types/Account.type';
+import {
+  UserLoginRequest,
+  UserLoginResponse,
+  UserRegister,
+  UserRegisterResponse,
+  verifyCodeRequest
+} from 'types/Account.type';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -19,7 +25,7 @@ export const authApi = createApi({
   }),
   refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
-    userRegister: build.mutation<UserRegister, UserRegister>({
+    userRegister: build.mutation<UserRegisterResponse, UserRegister>({
       query: (body: UserRegister) => ({
         url: 'User/RegisterUser',
         method: 'POST',
@@ -32,8 +38,15 @@ export const authApi = createApi({
         method: 'POST',
         body
       })
+    }),
+    verifyAccount: build.mutation<void, verifyCodeRequest>({
+      query: (body: verifyCodeRequest) => ({
+        url: 'User/VerifyCode?userId=' + body.userId + '&code=' + body.code,
+        method: 'POST',
+        body
+      })
     })
   })
 });
 
-export const { useUserRegisterMutation, useUserLoginMutation } = authApi;
+export const { useUserRegisterMutation, useUserLoginMutation, useVerifyAccountMutation } = authApi;

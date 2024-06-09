@@ -1,27 +1,33 @@
-import { Button, FloatButton, Form, Input, notification, Tooltip } from 'antd';
+import { Button, FloatButton, Form, Input, Modal, notification, Tooltip } from 'antd';
 import { FaHome } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import CustomGradientButton from 'components/CustomGradientButton';
 import LoginGoogle from 'components/LoginGoogle';
-import { useUserRegisterMutation } from 'services/auth.services';
+import { useUserRegisterMutation, useVerifyAccountMutation } from 'services/auth.services';
 import { UserRegister } from 'types/Account.type';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ErrorRegisterResponse } from 'types/ErrorResponse.type';
 
 export default function RegisterPage() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [userRegister, { isLoading, isSuccess, isError, error }] = useUserRegisterMutation();
+  const [userRegister, { isLoading, isSuccess, isError, error, data }] = useUserRegisterMutation();
+  const [userId, setUserId] = useState<number | null>(null);
+  //State quản lí verify email
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
+  const [verifyAccount, { isLoading: isVerifying }] = useVerifyAccountMutation();
 
   // Nếu đăng kí thành công
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && data) {
+      setUserId(data.userId);
       notification.success({
         message: 'Đăng ký thành công',
-        description: 'Bạn đã đăng ký thành công. Vui lòng kiểm tra email để xác nhận tài khoản.'
+        description: 'Bạn đã đăng ký thành công. Vui lòng kiểm tra email để lấy mã xác nhận tài khoản.'
       });
       setTimeout(() => {
-        navigate('/login');
+        setIsModalVisible(true);
       }, 2000); // Điều hướng sau 2 giây
     }
 
@@ -34,10 +40,9 @@ export default function RegisterPage() {
         description: errorMessage
       });
     }
-  }, [isSuccess, navigate, isError, error]);
+  }, [isSuccess, navigate, isError, error, data]);
 
   const handleSubmit = async (values: UserRegister) => {
-    // await userRegister(values);
     try {
       await userRegister(values);
     } catch (error) {
@@ -47,6 +52,25 @@ export default function RegisterPage() {
         message: 'Đăng ký thất bại',
         description: errorMessage
       });
+    }
+  };
+
+  const handleVerify = async () => {
+    if (userId) {
+      const payload = { userId, code: verificationCode };
+      try {
+        await verifyAccount(payload).unwrap();
+        notification.success({
+          message: 'Xác thực thành công',
+          description: 'Tài khoản của bạn đã được xác thực thành công.'
+        });
+        navigate('/login');
+      } catch (error) {
+        notification.error({
+          message: 'Xác thực thất bại',
+          description: 'Mã xác thực không đúng. Vui lòng thử lại.'
+        });
+      }
     }
   };
 
@@ -185,6 +209,36 @@ export default function RegisterPage() {
           </Tooltip>
         </Link>
       </div>
+      <Modal
+        title='Xác thực tài khoản'
+        open={isModalVisible}
+        footer={[
+          <CustomGradientButton key='verifyButton'>
+            <Button key='submit' type='primary' onClick={handleVerify} loading={isVerifying}>
+              Xác thực
+            </Button>
+          </CustomGradientButton>
+        ]}
+        maskClosable={false}
+        closable={false}
+      >
+        <Form layout='vertical'>
+          <Form.Item
+            label='Mã xác thực OTP'
+            rules={[
+              { required: true, message: 'Mã xác thực không được bỏ trống' },
+              { pattern: /^\d{6}$/, message: 'Mã xác thực phải là 6 chữ số' }
+            ]}
+            name='code'
+          >
+            <Input
+              placeholder='Nhập mã xác thực'
+              value={verificationCode}
+              onChange={(e) => setVerificationCode(e.target.value)}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 }

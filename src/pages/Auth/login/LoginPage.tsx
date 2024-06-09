@@ -26,7 +26,7 @@ export default function LoginPage() {
       setTimeout(() => {
         navigate('/');
       }, 2000); // Điều hướng sau 2 giây
-      //console.log(data);
+
       dispatch(setUser(data));
       localStorage.setItem('userLogin', JSON.stringify(data));
     }

@@ -24,3 +24,8 @@
   color: #efdca5 !important;
   border-color: #fdc830 !important;
 }
+
+.ant-float-btn-body {
+  background-color: #f37335 !important;
+  color: #fff !important;
+}

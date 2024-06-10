@@ -35,7 +35,7 @@ export default function SizeOption() {
           size='large'
           key={index}
           className={`inline-block text-sm px-3 py-1 !rounded-none mr-2 mb-2 ${
-            selectedSize === size ? 'bg-gradient-to-r from-[#00c6ff] to-blue-700 text-white' : ' text-gray-700'
+            selectedSize === size ? 'bg-gradient-to-r from-[#fdc830] to-[#f37335] text-white' : ' text-gray-700'
           }`}
           onClick={() => handleSizeClick(size)}
         >
@@ -46,7 +46,7 @@ export default function SizeOption() {
         <Button
           type='link'
           size='large'
-          className='text-gray-500 flex items-center justify-between'
+          className='text-gray-500 flex items-center justify-between !border-none'
           onClick={showModal}
         >
           Hướng dẫn Sizes <LiaRulerHorizontalSolid className='text-xl ml-2' />

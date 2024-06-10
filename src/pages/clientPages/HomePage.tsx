@@ -6,7 +6,7 @@ import Map from 'components/CardHomepage/Map/Map';
 
 export default function HomePage() {
   return (
-    <div className='max-w-full  bg-gray-300 max-h-full'>
+    <div className='w-full bg-gray-300 h-full overflow-x-hidden'>
       <div className='mb-11'>
         <Carousel />
       </div>

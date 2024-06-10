@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, Menu } from 'antd';
+import { Avatar, Divider, Menu } from 'antd';
 import { CiUser } from 'react-icons/ci';
 import { MdOutlineAccountBox, MdOutlineSecurity, MdOutlineHistory, MdLogout } from 'react-icons/md';
 import { AiOutlinePicture } from 'react-icons/ai';
@@ -16,6 +16,7 @@ import { RootState } from 'store';
 import { logout } from 'slice/authLoginGoogleSlice';
 import { useNavigate } from 'react-router-dom';
 import ManageMyBag from 'components/ManageInfor/ManageMyBag';
+import { logoutUser } from 'slice/authLoginAPISlice';
 
 interface ManageInforProps {
   type: ManageInforMenu;
@@ -79,9 +80,11 @@ export default function ManageInfor() {
   const handleLogout = () => {
     // Xóa dữ liệu từ localStorage
     localStorage.removeItem('userLoginGoogle');
+    localStorage.removeItem('userLogin');
 
     // Đưa trạng thái user về null trong Redux
     dispatch(logout());
+    dispatch(logoutUser());
     navigate('/');
   };
 
@@ -116,12 +119,12 @@ export default function ManageInfor() {
             ))}
           </Menu>
           <Divider />
-          <Button
-            className='!w-[80%] !border-[#2d2f31] !text-sm !font-bold !text-[#2d2f31] hover:!border-[#ef4444] hover:!bg-[#ff5d5d0a] hover:!text-red-500 flex justify-center items-center'
+          <button
+            className='!w-[80%] !border-[#2d2f31] !text-sm !font-bold !text-[#2d2f31] hover:!border-[#ef4444] hover:!bg-[#ff5d5d0a] hover:!text-red-500 flex justify-center items-center border-2 py-2 rounded-lg'
             onClick={handleLogout}
           >
             Đăng xuất <MdLogout className='ml-3 !text-lg' />
-          </Button>
+          </button>
         </div>
       </div>
       <div className='w-full sm:w-[70%]'>{selectedComponent}</div>

@@ -18,7 +18,12 @@ export default function DiscountPolicy() {
   };
   return (
     <div>
-      <Button type='link' size='large' className='text-gray-500 flex items-center justify-between' onClick={showModal}>
+      <Button
+        type='link'
+        size='large'
+        className='text-gray-500 flex items-center justify-between !border-none'
+        onClick={showModal}
+      >
         Chính sách ưu đãi cấp bậc <CiCircleQuestion className='text-xl ml-2' />
       </Button>
       <Modal

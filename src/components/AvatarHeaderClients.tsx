@@ -13,7 +13,7 @@ interface AvatarHeaderClientsProps {
 
 export default function AvatarHeaderClients({ src }: AvatarHeaderClientsProps) {
   const id = useSelector((state: RootState) => state.authLoginGoogle.user?.uid);
-  const userLoginID = useSelector((state: RootState) => state.authLoginAPI.user?.userID);
+  const userLoginID = useSelector((state: RootState) => state.authLoginAPI?.userId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

@@ -6,5 +6,26 @@
 
 .ant-menu-item:hover,
 .ant-menu-item:hover a {
-  color: #5492ef !important;
+  color: #fdc830 !important;
+}
+
+/* Active state */
+.ant-menu-item-active,
+.ant-menu-item-active a,
+.ant-menu-item-selected,
+.ant-menu-item-selected a {
+  color: #fdc830 !important;
+}
+
+/* Button styles */
+/* Change button text color on hover */
+.ant-btn:hover,
+.ant-btn:focus {
+  color: #efdca5 !important;
+  border-color: #fdc830 !important;
+}
+
+.ant-float-btn-body {
+  background-color: #f37335 !important;
+  color: #fff !important;
 }

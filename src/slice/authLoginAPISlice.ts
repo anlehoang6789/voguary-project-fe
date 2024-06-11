@@ -38,6 +38,8 @@ const authLoginAPISlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<UserLoginResponse>) => {
       const decodedToken = jwtDecode(action.payload.token) as DecodedToken;
+      console.log('decodedToken', decodedToken); // Kiểm tra decoded token
+      console.log('UserLoginResponse', action.payload); // Kiểm tra response
       state.user = action.payload;
       state.isAuthenticated = true;
       state.userId = decodedToken.sub;

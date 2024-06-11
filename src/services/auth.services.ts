@@ -13,17 +13,18 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl,
     prepareHeaders: (headers) => {
-      // Thêm logic để lấy accessToken từ localStorage và đặt vào header Authorization
-      const user = localStorage.getItem('user');
+      const user = localStorage.getItem('userLogin');
       if (user) {
-        const userData = JSON.parse(user);
-        const accessToken = userData ? userData.accessToken : null;
-        headers.set('Authorization', `Bearer ${accessToken}`);
+        const userData = JSON.parse(user) as UserLoginResponse;
+        // console.log('userData', userData);
+        const token = userData ? userData.token : '';
+        // console.log('token', token);
+        headers.set('authorization', `Bearer ${token}`);
       }
       return headers;
     }
   }),
-  refetchOnMountOrArgChange: true,
+  // refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
     userRegister: build.mutation<UserRegisterResponse, UserRegister>({
       query: (body: UserRegister) => ({

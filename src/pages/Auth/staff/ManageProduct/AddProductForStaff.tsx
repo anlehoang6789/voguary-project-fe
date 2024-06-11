@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Col, Form, Input, Row, Select, Tag } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import { Option } from 'antd/es/mentions';
@@ -16,6 +16,30 @@ export default function AddProductForStaff() {
   const [previewImage, setPreviewImage] = useState(defaultAvatar);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isImageFile, setIsImageFile] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState('');
+  const [inputFilled, setInputFilled] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    setInputFilled(false);
+  };
+
+  const handleInputConfirm = () => {
+    if (inputValue && !tags.includes(inputValue)) {
+      setTags([...tags, inputValue]);
+    }
+    setInputValue('');
+    setInputFilled(true);
+  };
+
+  const handleTagClose = (removedTag: string) => {
+    const newTags = tags.filter((tag) => tag !== removedTag);
+    setTags(newTags);
+    if (newTags.length === 0) {
+      setInputFilled(false);
+    }
+  };
 
   const colors = ['#FF0000', '#00FF00', '#310dd351', '#FFFF00', '#FF00FF', '#00FFFF', '#000000', '#FFFFFF'];
   const [selectedColors, setSelectedColors] = useState<string[]>([colors[0]]);
@@ -109,7 +133,7 @@ export default function AddProductForStaff() {
             </FormItem>
           </Col>
 
-          <Col span={24}>
+          <Col span={12}>
             <FormItem
               className='pl-10 pt-6'
               label={<span className='font-semibold'>Giá sản phẩm</span>}
@@ -123,6 +147,32 @@ export default function AddProductForStaff() {
               ]}
             >
               <Input placeholder='500.000' className='w-full max-w-[300px]' />
+            </FormItem>
+          </Col>
+
+          <Col span={12}>
+            <FormItem
+              className='pl-10 pt-6'
+              label={<span className='font-semibold'>Chi tiết sản phẩm</span>}
+              name='productDetails'
+              rules={[{ required: !inputFilled, message: 'Vui lòng nhập chi tiết sản phẩm' }]}
+            >
+              <>
+                <Input
+                  placeholder='Nhập chi tiết sản phẩm '
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  onPressEnter={handleInputConfirm}
+                  className='w-full max-w-[250px]'
+                />
+                <div className='pt-2'>
+                  {tags.map((tag, index) => (
+                    <Tag key={index} closable onClose={() => handleTagClose(tag)}>
+                      {tag}
+                    </Tag>
+                  ))}
+                </div>
+              </>
             </FormItem>
           </Col>
 

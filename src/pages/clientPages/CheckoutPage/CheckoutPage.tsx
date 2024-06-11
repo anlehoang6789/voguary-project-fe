@@ -22,11 +22,11 @@ export default function CheckoutPage() {
     {
       type: CheckoutPageMenu.PAYMENT,
       component: <MangePaymentMethod setCurrentStep={setCurrentStep} />
-    },
-    {
-      type: CheckoutPageMenu.SUCCESS,
-      component: <MangeBill />
     }
+    // {
+    //   type: CheckoutPageMenu.SUCCESS,
+    //   component: <MangeBill />
+    // }
   ];
 
   const currentCheckoutPage = checkoutList[currentStep].component;
@@ -47,12 +47,12 @@ export default function CheckoutPage() {
             icon={<WalletOutlined />}
             className='w-30'
           />
-          <Steps.Step
+          {/* <Steps.Step
             title={<span className='text-xl'>Hóa đơn</span>}
             status={currentStep >= 2 ? 'finish' : 'wait'}
             icon={<SmileOutlined />}
             className='w-30'
-          />
+          /> */}
         </Steps>
       </div>
       {currentCheckoutPage}

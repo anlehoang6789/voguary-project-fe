@@ -36,9 +36,19 @@ export default function ManageAccountLevel() {
             strokeWidth={20}
             status='active'
             strokeColor={{ from: '#108ee9', to: '#87d068' }}
+            showInfo={false}
           />
         </Col>
-        <Col span={24} className='border-t-2 mt-10'>
+
+        <Col span={24} className='flex justify-center'>
+          <div className='flex justify-center pt-5'>
+            <div>
+              <span className='font-semibold'>Số tiền để lên hạng tiếp theo: </span>1.500.000 / 3.000.000{' '}
+            </div>
+          </div>
+        </Col>
+
+        <Col span={24} className='border-t-2 mt-5'>
           <div className='flex justify-center'>
             <div className='w-1/2 p-4'>
               <List

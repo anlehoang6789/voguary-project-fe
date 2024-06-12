@@ -17,6 +17,7 @@ import { logout } from 'slice/authLoginGoogleSlice';
 import { useNavigate } from 'react-router-dom';
 import ManageMyBag from 'components/ManageInfor/ManageMyBag';
 import { logoutUser } from 'slice/authLoginAPISlice';
+import { resetUserProfile } from 'slice/userProfileSlice';
 
 interface ManageInforProps {
   type: ManageInforMenu;
@@ -28,6 +29,7 @@ interface ManageInforProps {
 export default function ManageInfor() {
   const [selectedComponent, setSelectedComponent] = useState<JSX.Element | null>(<ManageProfile />);
   const [defaultSelectedKey, setDefaultSelectedKey] = useState<string>('0');
+  const userProfile = useSelector((state: RootState) => state.userProfile.userProfile);
   const menuList: ManageInforProps[] = [
     {
       type: ManageInforMenu.PROFILE,
@@ -85,6 +87,7 @@ export default function ManageInfor() {
     // Đưa trạng thái user về null trong Redux
     dispatch(logout());
     dispatch(logoutUser());
+    dispatch(resetUserProfile());
     navigate('/');
   };
 
@@ -97,11 +100,12 @@ export default function ManageInfor() {
             icon={<CiUser />}
             src={
               userDataWithLoginGoogle?.photoURL ||
+              userProfile?.profileImage ||
               'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Avatar%2Favatar_1.jpg?alt=media&token=c9cc1417-7534-4a4b-b8ff-1e018088cea7'
             }
           />
           <h1 className='mt-2 text-center font-bold capitalize'>
-            {userDataWithLoginGoogle?.name || 'Cristiano Ronaldo'}
+            {userDataWithLoginGoogle?.name || userProfile?.fullName || 'Cristiano Ronaldo'}
           </h1>
           <Menu
             className='!w-[80%] !border-none !text-sm  !text-[#2d2f31] !mt-3'

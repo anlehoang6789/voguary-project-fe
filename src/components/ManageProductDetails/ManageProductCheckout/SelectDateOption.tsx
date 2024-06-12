@@ -2,6 +2,7 @@ import { Button, DatePicker, Divider, Modal } from 'antd';
 import { useState } from 'react';
 import { IoCalendarNumberOutline } from 'react-icons/io5';
 import dayjs, { Dayjs } from 'dayjs';
+import { stringToDate } from 'utils/convertTypeDayjs';
 
 const { RangePicker } = DatePicker;
 
@@ -29,7 +30,8 @@ export default function SelectDateOption() {
   const onCalendarChange = (dates: [Dayjs | null, Dayjs | null] | null) => {
     if (dates && dates[0]) {
       const startDate = dates[0];
-      const calculatedEndDate = startDate.add(3, 'day');
+      // const calculatedEndDate = startDate.add(3, 'day');
+      const calculatedEndDate = stringToDate(startDate.format('YYYY-MM-DD')).add(3, 'day');
       setDates([startDate, calculatedEndDate]);
     } else {
       setDates(null);

@@ -3,6 +3,7 @@ import { Button, Form } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import CustomGradientButton from 'components/CustomGradientButton';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function ManagePaymentMethod({
   setCurrentStep
@@ -11,9 +12,11 @@ export default function ManagePaymentMethod({
 }) {
   const [selectedMethod, setSelectedMethod] = useState('');
   const [formDisabled, setFormDisabled] = useState(true);
+  const navigate = useNavigate();
 
   function handleNextStep() {
-    setCurrentStep(2);
+    // Navigate to /orderTracking
+    navigate('/orderTracking');
   }
 
   function handleMethodSelect(method: string) {
@@ -27,8 +30,8 @@ export default function ManagePaymentMethod({
         {/* Checkout section */}
         <section className='check-out w-2/3 pt-6 pb-10 pr-12 bg-white border-r-2 ml-4'>
           <h2 className='text-оnух text-2xl mb-7 font-medium'>Chi tiết thanh toán</h2>
-          <div className='mb-10'>
-            <div className='flex items-center gap-7 mb-10'>
+          <div className=''>
+            <div className='flex items-center gap-7 mb-6'>
               <CustomGradientButton>
                 <Button
                   onClick={() => handleMethodSelect('bank')}
@@ -76,7 +79,26 @@ export default function ManagePaymentMethod({
               </CustomGradientButton>
             </div>
 
-            <Form action='#'>
+            {selectedMethod === 'bank' && (
+              <div className='flex justify-center'>
+                <img
+                  src='https://bizweb.dktcdn.net/100/150/781/files/vnpayqr-code.jpg?v=1563855957237'
+                  alt='vnpay'
+                  className='w-2/3'
+                />
+              </div>
+            )}
+
+            {selectedMethod === 'momo' && (
+              <div className='flex justify-center mt-[-40px]'>
+                <img
+                  src='https://homepage.momocdn.net/img/momo-upload-api-220418155002-637858938029609599.png'
+                  alt='momo'
+                />
+              </div>
+            )}
+
+            {/* <Form action='#'>
               <div className='mb-5'>
                 <label htmlFor='cardholder-name' className='pl-2 mb-1 text-sm text-spanishGray block'>
                   Tên chủ thẻ
@@ -203,7 +225,7 @@ export default function ManagePaymentMethod({
                   </FormItem>
                 </div>
               </div>
-            </Form>
+            </Form> */}
           </div>
           <CustomGradientButton>
             <Button

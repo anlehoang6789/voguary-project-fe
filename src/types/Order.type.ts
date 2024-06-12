@@ -9,4 +9,5 @@ export interface Order {
   returnDate: string;
   returnReason: string;
   orderTotal: number;
+  orderImg: string;
 }

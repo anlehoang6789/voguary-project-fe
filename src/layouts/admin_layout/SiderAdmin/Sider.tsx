@@ -68,14 +68,14 @@ export default function MySider() {
       >
         <div className='border-r-[1px] border-gray-200'>
           <img
-            src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Flogo_white_bg-removebg-preview.png?alt=media&token=09ecf7ee-61fd-4adb-b930-67c29ec60b96'
+            src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Fvoguary_logo_orange.jpg?alt=media&token=82366765-ee4d-4cf0-92c4-e6d6d3fa0e89'
             alt='logo'
             className={cn('mx-auto max-w-[100px] max-h-[100px]', {
               hidden: collapsed
             })}
           />
           <img
-            src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Flogo_white_bg-removebg-preview.png?alt=media&token=09ecf7ee-61fd-4adb-b930-67c29ec60b96'
+            src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Fvoguary_logo_orange.jpg?alt=media&token=82366765-ee4d-4cf0-92c4-e6d6d3fa0e89'
             alt='logo'
             className={cn('mx-auto max-w-[50px]  py-2', {
               hidden: !collapsed

@@ -1,5 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query';
-import { UserLoginResponse } from 'types/Account.type';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { UserLoginResponse, UserProfileResponse } from 'types/Account.type';
 import baseUrl from 'utils/http';
 
 export const userApi = createApi({
@@ -10,14 +10,21 @@ export const userApi = createApi({
       const user = localStorage.getItem('userLogin');
       if (user) {
         const userData = JSON.parse(user) as UserLoginResponse;
-        // console.log('userData', userData);
         const token = userData ? userData.token : '';
-        // console.log('token', token);
         headers.set('authorization', `Bearer ${token}`);
       }
       return headers;
     }
   }),
   refetchOnMountOrArgChange: true,
-  endpoints: (build) => ({})
+  endpoints: (build) => ({
+    getUserProfile: build.query<UserProfileResponse, number>({
+      query: (userId) => ({
+        url: `User/ViewProfile/${userId}`,
+        method: 'GET'
+      })
+    })
+  })
 });
+
+export const { useGetUserProfileQuery } = userApi;

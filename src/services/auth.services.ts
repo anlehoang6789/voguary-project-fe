@@ -24,7 +24,7 @@ export const authApi = createApi({
       return headers;
     }
   }),
-  // refetchOnMountOrArgChange: true,
+  refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
     userRegister: build.mutation<UserRegisterResponse, UserRegister>({
       query: (body: UserRegister) => ({

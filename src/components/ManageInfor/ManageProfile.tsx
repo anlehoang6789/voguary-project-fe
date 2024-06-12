@@ -1,13 +1,41 @@
 import { Button, Col, DatePicker, Form, Input, Row, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
-import { Option } from 'antd/es/mentions';
 import CustomGradientButton from 'components/CustomGradientButton';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserProfile } from 'slice/userProfileSlice';
 import { RootState } from 'store';
+import { stringToDate } from 'utils/convertTypeDayjs';
 
 export default function ManageProfile() {
   const userDataWithLoginGoogle = useSelector((state: RootState) => state.authLoginGoogle.user);
+  const userProfile = useSelector((state: RootState) => state.userProfile.userProfile);
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userProfile) {
+      const { lastName, firstName } = splitName(userProfile.fullName);
+      form.setFieldsValue({
+        lastname: lastName,
+        name: firstName,
+        gender: userProfile.gender === 0 ? 'Nữ' : userProfile.gender === 1 ? 'Nam' : 'Giới tính khác',
+        dateOfBirth: stringToDate(userProfile.dateOfBirth),
+        email: userProfile.email,
+        phone: userProfile.phone,
+        address: userProfile.address
+      });
+      dispatch(setUserProfile(userProfile));
+    } else if (userDataWithLoginGoogle) {
+      const { lastName, firstName } = splitName(userDataWithLoginGoogle.name);
+      form.setFieldsValue({
+        lastname: lastName,
+        name: firstName,
+        email: userDataWithLoginGoogle.email
+      });
+    }
+  }, [userProfile, form, userDataWithLoginGoogle, dispatch]);
 
   // Hàm phân tách tên thành họ và tên
   const splitName = (fullName: string) => {
@@ -17,13 +45,11 @@ export default function ManageProfile() {
     return { lastName, firstName };
   };
 
-  // Destructure dữ liệu thành họ và tên
-  const { lastName = '', firstName = '' } = userDataWithLoginGoogle ? splitName(userDataWithLoginGoogle.name) : {};
   return (
     <div className='flex-grow'>
       <h1 className='text-3xl text-center mt-5 border-b-2 pb-5'>Thông tin cơ bản</h1>
 
-      <Form>
+      <Form form={form}>
         <Row>
           <Col span={12}>
             <FormItem
@@ -38,7 +64,7 @@ export default function ManageProfile() {
                 }
               ]}
             >
-              <Input placeholder='Hà' className='w-full max-w-[300px]' defaultValue={lastName} />
+              <Input placeholder='Hà' className='w-full max-w-[300px]' />
             </FormItem>
           </Col>
 
@@ -55,7 +81,7 @@ export default function ManageProfile() {
                 }
               ]}
             >
-              <Input placeholder='Minh' className='w-[83%]' defaultValue={firstName} />
+              <Input placeholder='Minh' className='w-[83%]' />
             </Form.Item>
           </Col>
 
@@ -73,9 +99,9 @@ export default function ManageProfile() {
               ]}
             >
               <Select placeholder='Nam' className='w-full max-w-[300px]'>
-                <Option value='male'>Nam</Option>
-                <Option value='female'>Nữ</Option>
-                <Option value='other'>Giới tính khác</Option>
+                <Select.Option value='male'>Nam</Select.Option>
+                <Select.Option value='female'>Nữ</Select.Option>
+                <Select.Option value='other'>Giới tính khác</Select.Option>
               </Select>
             </Form.Item>
           </Col>
@@ -84,7 +110,7 @@ export default function ManageProfile() {
             <Form.Item
               className='pl-5 pt-10'
               label='Ngày sinh '
-              name='dateofbirth'
+              name='dateOfBirth'
               rules={[{ required: true, message: 'Vui lòng chọn ngày sinh' }]}
             >
               <DatePicker placeholder='Ngày sinh' style={{ width: '80%' }} />
@@ -105,11 +131,7 @@ export default function ManageProfile() {
                 }
               ]}
             >
-              <Input
-                placeholder='abc@example.com'
-                className='w-full max-w-[300px]'
-                defaultValue={userDataWithLoginGoogle?.email}
-              />
+              <Input placeholder='abc@example.com' className='w-full max-w-[300px]' />
             </Form.Item>
           </Col>
 

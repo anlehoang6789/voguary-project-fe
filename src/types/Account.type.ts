@@ -63,6 +63,7 @@ export interface UserProfileResponse {
   gender: number;
   dateOfBirth: string;
   email: string;
+  address: string;
   profileImage: string;
   accountStatus: string;
   roles: string;

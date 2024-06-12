@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { logout } from 'slice/authLoginGoogleSlice';
 import { logoutUser } from 'slice/authLoginAPISlice';
+import { resetUserProfile } from 'slice/userProfileSlice';
 
 interface AvatarHeaderClientsProps {
   src: string;
@@ -25,6 +26,7 @@ export default function AvatarHeaderClients({ src }: AvatarHeaderClientsProps) {
     // Đưa trạng thái user về null trong Redux
     dispatch(logout());
     dispatch(logoutUser());
+    dispatch(resetUserProfile());
     navigate('/');
   };
 

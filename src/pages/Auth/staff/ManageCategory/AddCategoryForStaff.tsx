@@ -1,8 +1,8 @@
-import { Button, Col, DatePicker, Form, Input, Row, Select } from 'antd';
+import { Button, Col, Form, Row, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import { Option } from 'antd/es/mentions';
-import ComingSoon from 'components/ComingSoon';
+// import ComingSoon from 'components/ComingSoon';
 import CustomGradientButton from 'components/CustomGradientButton';
 
 export default function AddCategoryForStaff() {

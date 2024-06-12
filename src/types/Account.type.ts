@@ -54,3 +54,18 @@ export interface verifyCodeRequest {
   userId: number;
   code: string;
 }
+
+export interface UserProfileResponse {
+  userId: number;
+  userName: string;
+  fullName: string;
+  phone: string;
+  gender: number;
+  dateOfBirth: string;
+  email: string;
+  address: string;
+  profileImage: string;
+  accountStatus: string;
+  roles: string;
+  membershipTypeName: any;
+}

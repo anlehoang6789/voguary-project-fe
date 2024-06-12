@@ -7,14 +7,18 @@ import MenuItem from 'antd/es/menu/MenuItem';
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import { BsCart3 } from 'react-icons/bs';
 import NotificationPopover from 'components/Notification/NotificationPopover';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import AvatarHeaderClients from 'components/AvatarHeaderClients';
 import Dropdown from 'components/Dropdown/Dropdown';
 import MyBagComponent from 'components/MyBag/MyBagPopover';
+import { useGetUserProfileQuery } from 'services/user.services';
+import { useEffect } from 'react';
+import { setUserProfile } from 'slice/userProfileSlice';
 
 export default function Header() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleNavigateTo = (route: string) => {
     navigate(route);
@@ -24,12 +28,19 @@ export default function Header() {
   const dataLoginGoogle = useSelector((state: RootState) => state.authLoginGoogle.user);
 
   //Lấy data từ redux store sau khi đăng nhập từ api thành công
-  const dataLoginAPI = useSelector((state: RootState) => state.authLoginAPI?.user);
+  const userIdString = useSelector((state: RootState) => state.authLoginAPI.userId);
+  const userId = parseInt(userIdString || '0');
+  const { data: userProfile } = useGetUserProfileQuery(userId);
+  useEffect(() => {
+    if (userProfile) {
+      dispatch(setUserProfile(userProfile));
+    }
+  }, [userProfile, dispatch]);
 
-  //Chọn data đăng nhập từ google hoặc từ api
-  const userData = dataLoginGoogle || dataLoginAPI;
-
-  const userAvatar = userData && 'photoURL' in userData ? userData.photoURL : null;
+  const isAuthenticatedFromGoogle = useSelector((state: RootState) => state.authLoginGoogle.isAuthenticated);
+  const isAuthenticatedFromApi = useSelector((state: RootState) => state.authLoginAPI.isAuthenticated);
+  //Check trạng thái xem người dùng đã đăng nhập hay chưa
+  const isLogin = isAuthenticatedFromGoogle || isAuthenticatedFromApi;
 
   return (
     <div className='container-fluid'>
@@ -49,7 +60,7 @@ export default function Header() {
             </Popover>
           </MenuItem>
 
-          <MenuItem style={{ width: userData ? 'calc(75% - 330px)' : '650px' }}>
+          <MenuItem style={{ width: isLogin ? 'calc(75% - 330px)' : '650px' }}>
             <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: '100%', paddingTop: '5px' }} />
           </MenuItem>
 
@@ -75,11 +86,12 @@ export default function Header() {
             </Popover>
           </MenuItem>
 
-          {userData ? (
+          {isLogin ? (
             <MenuItem>
               <AvatarHeaderClients
                 src={
-                  userAvatar ||
+                  dataLoginGoogle?.photoURL ||
+                  userProfile?.profileImage ||
                   'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Avatar%2Favatar_1.jpg?alt=media&token=c9cc1417-7534-4a4b-b8ff-1e018088cea7'
                 }
               />

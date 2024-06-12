@@ -8,70 +8,70 @@ const mockData = [
     orderId: 'ORD001',
     price: '100.00',
     transactionDate: '2023-05-01',
-    status: 'Chờ thanh toán'
+    status: 'Chờ xác nhận'
   },
   {
     key: '2',
     orderId: 'ORD002',
     price: '200.00',
     transactionDate: '2023-05-02',
-    status: 'Chờ thanh toán'
+    status: 'Chờ xác nhận'
   },
   {
     key: '3',
     orderId: 'ORD003',
     price: '150.00',
     transactionDate: '2023-05-03',
-    status: 'Chờ thanh toán'
+    status: 'Chờ xác nhận'
   },
   {
     key: '4',
     orderId: 'ORD004',
     price: '150.00',
     transactionDate: '2023-05-04',
-    status: 'Chờ thanh toán'
+    status: 'Chờ xác nhận'
   },
   {
     key: '5',
     orderId: 'ORD005',
     price: '300.00',
     transactionDate: '2023-05-05',
-    status: 'Chờ thanh toán'
+    status: 'Chờ xác nhận'
   },
   {
     key: '6',
     orderId: 'ORD006',
     price: '250.00',
     transactionDate: '2023-05-06',
-    status: 'Chờ thanh toán'
+    status: 'Chờ xác nhận'
   },
   {
     key: '7',
     orderId: 'ORD007',
     price: '400.00',
     transactionDate: '2023-05-07',
-    status: 'Chờ thanh toán'
+    status: 'Chờ xác nhận'
   },
   {
     key: '8',
     orderId: 'ORD008',
     price: '350.00',
     transactionDate: '2023-05-08',
-    status: 'Chờ thanh toán'
+    status: 'Chờ xác nhận'
   },
   {
     key: '9',
     orderId: 'ORD009',
     price: '450.00',
     transactionDate: '2023-05-09',
-    status: 'Chờ thanh toán'
+    status: 'Chờ xác nhận'
   },
   {
     key: '10',
     orderId: 'ORD010',
     price: '450.00',
     transactionDate: '2023-05-09',
-    status: 'Chờ thanh toán'
+    status: 'Chờ xác nhận'
   }
 ];
 
@@ -150,7 +150,7 @@ export default function ManageWaitingForPayment() {
       render: (status: string) => {
         let color;
         switch (status) {
-          case 'Chờ thanh toán':
+          case 'Chờ xác nhận':
             color = 'yellow';
             break;
           case 'Đang vận chuyển':

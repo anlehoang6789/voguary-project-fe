@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { SmileOutlined, SolutionOutlined, WalletOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import { SolutionOutlined, WalletOutlined } from '@ant-design/icons';
 import { Steps } from 'antd';
 import { CheckoutPageMenu } from './CheckoutPage.enum';
 import MangePaymentMethod from 'components/MangeCheckout/MangePaymentMethod';
-import MangeBill from 'components/MangeCheckout/MangeBill';
+// import MangeBill from 'components/MangeCheckout/MangeBill';
 import MangeAddressCheckout from 'components/MangeCheckout/MangeAddressCheckout';
 
 interface CheckoutPageProps {

@@ -30,7 +30,7 @@ export default function ManageOrderTracking() {
     },
     {
       type: ManageOrderTrackingMenu.WAITING_FOR_PAYMENT,
-      MenuTitle: 'Chờ thanh toán',
+      MenuTitle: 'Chờ Voguary xác nhận',
       component: <ManageWaitingForPayment />
     },
     {

@@ -19,6 +19,8 @@ export default function LoginPage() {
   // Nếu đăng nhập thành công
   useEffect(() => {
     if (isSuccess && data) {
+      dispatch(setUser(data));
+      localStorage.setItem('userLogin', JSON.stringify(data));
       notification.success({
         message: 'Đăng nhập thành công',
         description: 'Chào mừng bạn trở lại hệ thống'
@@ -26,9 +28,6 @@ export default function LoginPage() {
       setTimeout(() => {
         navigate('/');
       }, 2000); // Điều hướng sau 2 giây
-
-      dispatch(setUser(data));
-      localStorage.setItem('userLogin', JSON.stringify(data));
     }
 
     // Nếu đăng nhập thất bại

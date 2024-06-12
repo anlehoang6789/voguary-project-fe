@@ -2,14 +2,13 @@ import { useState, useEffect } from 'react';
 import { Table, Tooltip, Button, Pagination, Tag, Modal } from 'antd';
 import { FaEye } from 'react-icons/fa';
 
-
 const mockData = [
   {
     key: '1',
     orderId: 'ORD001',
     price: '100.00',
     transactionDate: '2023-05-01',
-    status: 'Chờ thanh toán'
+    status: 'Chờ xác nhận'
   },
   {
     key: '2',
@@ -44,7 +43,7 @@ const mockData = [
     orderId: 'ORD006',
     price: '250.00',
     transactionDate: '2023-05-06',
-    status: 'Chờ thanh toán'
+    status: 'Chờ xác nhận'
   },
   {
     key: '7',
@@ -151,7 +150,7 @@ const ManageAllOrder = () => {
       render: (status: string) => {
         let color;
         switch (status) {
-          case 'Chờ thanh toán':
+          case 'Chờ xác nhận':
             color = 'yellow';
             break;
           case 'Đang vận chuyển':

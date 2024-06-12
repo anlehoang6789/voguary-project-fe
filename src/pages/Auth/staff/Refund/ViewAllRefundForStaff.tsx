@@ -1,5 +1,5 @@
 // src/components/ViewAllRefundForStaff.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Table, Button, Input, Tag, Modal } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Refund } from 'types/Refund.type';
@@ -54,9 +54,9 @@ export default function ViewAllRefundForStaff() {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
+  // const handleOk = () => {
+  //   setIsModalVisible(false);
+  // };
 
   const handleCancel = () => {
     setIsModalVisible(false);

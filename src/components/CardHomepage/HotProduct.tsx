@@ -69,7 +69,7 @@ export default function HotProduct() {
             to={`/product/${product.id}`}
             className='w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow transition-all duration-500 hover:-translate-y-2 cursor-pointer'
           >
-            <img className='p-8 rounded-t-lg max-w-full h-auto' src={product.image} alt='product image' />
+            <img className='p-8 rounded-t-lg max-w-full h-auto' src={product.image} alt='product' />
             <div className='px-5 pb-5'>
               <div className='flex items-center justify-between'>
                 <h5 className='text-xl font-semibold tracking-tight text-gray-900'>{product.name}</h5>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaMoneyCheckAlt, FaFilter } from 'react-icons/fa';
 import { Pagination, Select, Modal, Tag } from 'antd';
-import { FilterOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 

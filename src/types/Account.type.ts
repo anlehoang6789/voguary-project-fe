@@ -101,5 +101,5 @@ export interface ChangePasswordResponse {
   rentalOrders: any[];
   tokens: any[];
   verifyCodes: any[];
-  roles: any[]
+  roles: any[];
 }

@@ -6,6 +6,7 @@ import authLoginGoogleSlice from 'slice/authLoginGoogleSlice';
 import authLoginAPISlice from 'slice/authLoginAPISlice';
 import { userApi } from 'services/user.services';
 import userProfileSlice from 'slice/userProfileSlice';
+import { productApi } from 'services/product.services';
 
 export const persistConfig = {
   key: 'root',
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   userProfile: userProfileSlice,
   [authApi.reducerPath]: authApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
+  [productApi.reducerPath]: productApi.reducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -39,6 +41,7 @@ export const store = configureStore({
     })
       .concat(authApi.middleware)
       .concat(userApi.middleware)
+      .concat(productApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -2,10 +2,8 @@ import { Button, Divider, Form, Input, Typography, notification } from 'antd';
 import CustomGradientButton from 'components/CustomGradientButton';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-
 import { useChangePasswordMutation } from 'services/user.services';
 import { RootState } from 'store';
-
 
 export default function ManagePassword() {
   //Lấy data từ redux store sau khi đăng nhập từ api thành công

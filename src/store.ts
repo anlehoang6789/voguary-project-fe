@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
   authLoginAPI: authLoginAPISlice,
   userProfile: userProfileSlice,
   [authApi.reducerPath]: authApi.reducer,
-  [userApi.reducerPath]: userApi.reducer
+  [userApi.reducerPath]: userApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

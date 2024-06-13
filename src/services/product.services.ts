@@ -1,21 +1,37 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-import { Product } from 'types/Product.type';
-
-// Đảm bảo rằng bạn import fetchBaseQuery nếu bạn sử dụng baseUrl
+import { GetProductResponse, Product } from 'types/Product.type';
 import baseUrl from 'utils/http';
+import { UserLoginResponse } from 'types/Account.type';
 
 export const productApi = createApi({
   reducerPath: 'productApi',
   baseQuery: fetchBaseQuery({
-    baseUrl
+    baseUrl,
+    prepareHeaders: (headers) => {
+      const user = localStorage.getItem('userLogin');
+      if (user) {
+        const userData = JSON.parse(user) as UserLoginResponse;
+        const token = userData ? userData.token : '';
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      return headers;
+    }
   }),
   refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
-    getHotProductRecommendations: build.query<Product, number>({
-      query: (topN) => `Product/RecommendHot?topN=${topN}`
+    getAllProducts: build.query<GetProductResponse, void>({
+      query: () => ({
+        url: 'Product/PagingAndFilteredProducts',
+        method: 'GET'
+      })
+    }),
+    getHotProductRecommendations: build.query<Product[], number>({
+      query: (topN) => ({
+        url: `Product/RecommendHot?topN=${topN}`,
+        method: 'GET'
+      })
     })
   })
 });
 
-export const { useGetHotProductRecommendationsQuery } = productApi;
+export const { useGetAllProductsQuery, useGetHotProductRecommendationsQuery } = productApi;

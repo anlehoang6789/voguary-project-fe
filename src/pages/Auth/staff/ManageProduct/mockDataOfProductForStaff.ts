@@ -22,7 +22,7 @@ const mockProducts: Product[] = Array.from({ length: 15 }, (_, index) => ({
   category: [mockCategory],
   feedbacks: [],
   inventories: [],
-  ratings: [],
+  averageRating: [],
   rentalOrderDetails: []
 }));
 

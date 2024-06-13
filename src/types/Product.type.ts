@@ -14,7 +14,7 @@ export interface Product {
   category: Category[];
   feedbacks: any[];
   inventories: any[];
-  ratings: any[];
+  averageRating: any[];
   rentalOrderDetails: any[];
 }
 

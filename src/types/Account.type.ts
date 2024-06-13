@@ -69,3 +69,37 @@ export interface UserProfileResponse {
   roles: string;
   membershipTypeName: any;
 }
+
+export interface ChangePasswordRequest {
+  userId: number;
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface ChangePasswordResponse {
+  userId: number;
+  userName: string;
+  fullName: string;
+  password: string;
+  phone: string;
+  gender: number;
+  dateOfBirth: string;
+  email: string;
+  profileImage: any;
+  userStatus: string;
+  address: string;
+  carts: any[];
+  conversationUser1s: any[];
+  conversationUser2s: any[];
+  deposits: any[];
+  feedbacks: any[];
+  memberships: any[];
+  messages: any[];
+  notifications: any[];
+  payments: any[];
+  ratings: any[];
+  rentalOrders: any[];
+  tokens: any[];
+  verifyCodes: any[];
+  roles: any[]
+}

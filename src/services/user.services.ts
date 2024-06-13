@@ -1,5 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ChangePasswordRequest, ChangePasswordResponse, UserLoginResponse, UserProfileResponse } from 'types/Account.type';
+import {
+  ChangePasswordRequest,
+  ChangePasswordResponse,
+  UserLoginResponse,
+  UserProfileResponse
+} from 'types/Account.type';
 import baseUrl from 'utils/http';
 
 export const userApi = createApi({
@@ -28,10 +33,10 @@ export const userApi = createApi({
       query: (changePasswordRequest) => ({
         url: `User/ChangePassword?userId=${changePasswordRequest.userId}`,
         method: 'PUT',
-        body: changePasswordRequest,
+        body: changePasswordRequest
       })
     })
   })
 });
 
-export const { useGetUserProfileQuery,  useChangePasswordMutation } = userApi;
+export const { useGetUserProfileQuery, useChangePasswordMutation } = userApi;

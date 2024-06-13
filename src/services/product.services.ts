@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { UserLoginResponse } from 'types/Account.type';
-import { GetProductResponse } from 'types/Product.type';
+import { GetProductResponse, Product } from 'types/Product.type';
 import baseUrl from 'utils/http';
+import { UserLoginResponse } from 'types/Account.type';
+
 export const productApi = createApi({
   reducerPath: 'productApi',
   baseQuery: fetchBaseQuery({
@@ -23,7 +24,14 @@ export const productApi = createApi({
         url: 'Product/PagingAndFilteredProducts',
         method: 'GET'
       })
+    }),
+    getHotProductRecommendations: build.query<Product[], number>({
+      query: (topN) => ({
+        url: `Product/RecommendHot?topN=${topN}`,
+        method: 'GET'
+      })
     })
   })
 });
-export const { useGetAllProductsQuery } = productApi;
+
+export const { useGetAllProductsQuery, useGetHotProductRecommendationsQuery } = productApi;

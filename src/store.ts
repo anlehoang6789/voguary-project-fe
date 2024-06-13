@@ -1,26 +1,20 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
-import { authApi } from 'services/auth.services';
 import storage from 'redux-persist/lib/storage';
 import authLoginGoogleSlice from 'slice/authLoginGoogleSlice';
 import authLoginAPISlice from 'slice/authLoginAPISlice';
 import { userApi } from 'services/user.services';
 import userProfileSlice from 'slice/userProfileSlice';
 import { productApi } from 'services/product.services';
+import { authApi } from 'services/auth.services';
 
 export const persistConfig = {
   key: 'root',
   storage: storage,
-  whitelist: [
-    // Add reducer keys that you do NOT want to store to persistence here
-    'authLoginGoogle',
-    'authLoginAPI',
-    'userProfile'
-  ]
+  whitelist: ['authLoginGoogle', 'authLoginAPI', 'userProfile', 'productApi']
 };
 
 const rootReducer = combineReducers({
-  // Add reducers here
   authLoginGoogle: authLoginGoogleSlice,
   authLoginAPI: authLoginAPISlice,
   userProfile: userProfileSlice,
@@ -39,7 +33,7 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
     })
-      .concat(authApi.middleware)
+      .concat(productApi.middleware) // Thêm productApi.middleware vào middleware của configureStore
       .concat(userApi.middleware)
       .concat(productApi.middleware)
 });
@@ -49,4 +43,3 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export const persistor = persistStore(store);
-// export default store;

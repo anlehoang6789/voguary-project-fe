@@ -39,3 +39,18 @@ export interface GetProductItemsResponse {
   averageRating: number;
   colorCount: number;
 }
+
+export interface GetHotProductResponse {
+  productId: number;
+  productName: string;
+  productDescription: string;
+  productImage: string[];
+  productPrice: number;
+  productSize: string[];
+  productColor: string[];
+  productStatus: string;
+  categoryName: string;
+  averageRating: number;
+  numberOfPurchases: number;
+  createdAt: any;
+}

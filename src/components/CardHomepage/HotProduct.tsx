@@ -1,23 +1,12 @@
 import { Button } from 'antd';
 import CustomGradientButton from 'components/CustomGradientButton';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BsCart3 } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useGetHotProductRecommendationsQuery } from 'services/product.services';
-import { setHotProducts } from 'slice/hotProductSlice';
-import { Product } from 'types/Product.type';
 
 const HotProduct: React.FC = () => {
-  const dispatch = useDispatch();
   const { data: products } = useGetHotProductRecommendationsQuery(10);
-
-  useEffect(() => {
-    if (products) {
-      const productsArray: Product[] = Array.isArray(products) ? products : [products];
-      dispatch(setHotProducts(productsArray));
-    }
-  }, [dispatch, products]);
 
   const handleCartClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.stopPropagation();
@@ -34,7 +23,7 @@ const HotProduct: React.FC = () => {
               to={`/product/${product.productId}`}
               className='w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow transition-all duration-500 hover:-translate-y-2 cursor-pointer'
             >
-              <img className='p-8 rounded-t-lg max-w-full h-auto' src={product.productImage} alt='product image' />
+              <img className='p-8 rounded-t-lg max-w-full h-auto' src={product.productImage[0]} alt='product' />
               <div className='px-5 pb-5'>
                 <div className='flex items-center justify-between'>
                   <h5 className='text-xl font-semibold tracking-tight text-gray-900'>{product.productName}</h5>
@@ -54,7 +43,7 @@ const HotProduct: React.FC = () => {
                   </div>
                 </div>
                 <div className='flex items-center justify-between mt-2.5 mb-5'>
-                  <span className='text-2xl font-bold text-gray-900'>
+                  <span className='text-lg font-bold text-gray-900'>
                     {product.productPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                   </span>
 

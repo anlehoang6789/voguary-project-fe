@@ -68,3 +68,19 @@ export interface GetProductDetailByProductIdResponse {
   moreProducts: string;
   productPolicies: string;
 }
+
+export interface GetProductDescriptionByProductIdResponse {
+  productId: number;
+  productName: string;
+  productTitle: string;
+  productDescription: string;
+  productImage: string[];
+  productPrice: number;
+  productSize: string[];
+  productColor: string[];
+  productStatus: string;
+  categoryName: string;
+  averageRating: number;
+}
+
+

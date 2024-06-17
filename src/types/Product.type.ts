@@ -54,3 +54,17 @@ export interface GetHotProductResponse {
   numberOfPurchases: number;
   createdAt: any;
 }
+
+export interface GetProductDetailByProductIdResponse {
+  productDetailId: number;
+  productId: number;
+  description: string;
+  additionalInformation: string;
+  shippingAndReturns: string;
+  sizeChart: string;
+  reviews: string;
+  questions: string;
+  vendorInfo: string;
+  moreProducts: string;
+  productPolicies: string;
+}

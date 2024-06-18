@@ -3,10 +3,10 @@ import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, R
 import storage from 'redux-persist/lib/storage';
 import authLoginGoogleSlice from 'slice/authLoginGoogleSlice';
 import authLoginAPISlice from 'slice/authLoginAPISlice';
-import { userApi } from 'services/user.services';
 import userProfileSlice from 'slice/userProfileSlice';
 import { productApi } from 'services/product.services';
 import { authApi } from 'services/auth.services';
+import { userApi } from 'services/user.services';
 import { notiApi } from 'services/notification.services';
 
 export const persistConfig = {
@@ -35,7 +35,7 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
     })
-      .concat(productApi.middleware) // Thêm productApi.middleware vào middleware của configureStore
+      .concat(authApi.middleware)
       .concat(userApi.middleware)
       .concat(productApi.middleware)
       .concat(notiApi.middleware)

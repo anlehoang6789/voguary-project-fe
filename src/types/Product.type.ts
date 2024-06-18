@@ -93,4 +93,17 @@ export interface GetFeedbackResponse {
   feedbackImage: string;
 }
 
-
+export interface ProductRecommendation {
+  productId: number;
+  productName: string;
+  productDescription: string;
+  productImage: string;
+  productPrice: number;
+  productSize: string | null;
+  productColor: string | null;
+  productStatus: string;
+  categoryName: string;
+  averageRating: number;
+  numberOfPurchases: number;
+  createdAt: string;
+}

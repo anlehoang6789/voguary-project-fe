@@ -1,39 +1,12 @@
+import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
-const products = [
-  {
-    id: 1,
-    name: 'Áo MU',
-    price: '100,000 VND',
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
-  },
-  {
-    id: 2,
-    name: 'Áo MU',
-    price: '200,000 VND',
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
-  },
-  {
-    id: 3,
-    name: 'Áo MU',
-    price: '300,000 VND',
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
-  },
-  {
-    id: 4,
-    name: 'Áo MU',
-    price: '400,000 VND',
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
-  }
-];
+import { useGetProductRecommendationsQuery } from 'services/product.services'; // Adjust the import path as needed
 
 export default function MayAlsoLike() {
+  const { data: products, error, isLoading } = useGetProductRecommendationsQuery();
+
   const settings = {
     dots: true,
     infinite: true,
@@ -60,17 +33,30 @@ export default function MayAlsoLike() {
     ]
   };
 
+  if (isLoading) return <div>Loading...</div>;
+
+  if (error) {
+    // Check the type of the error object to safely access its properties
+    const errorMessage =
+      'status' in error ? (error.data as { message?: string }).message || 'An error occurred' : error.message;
+    return <div>Error: {errorMessage}</div>;
+  }
+
+  if (!products) return <div>No products found</div>;
+  const formatPrice = (price: number) =>
+    new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+
   return (
     <div className='mt-8 mx-4'>
       <h1 className='font-bold text-xl mb-4'>Bạn có thể thích</h1>
       <Slider {...settings}>
         {products.map((product) => (
-          <div key={product.id} className='p-4'>
+          <div key={product.productId} className='p-4'>
             <div className='border rounded-lg overflow-hidden'>
-              <img src={product.image} alt={product.name} className='w-full h-48 object-cover' />
+              <img src={product.productImage} alt={product.productName} className='w-full h-48 object-cover' />
               <div className='p-4'>
-                <h2 className='font-semibold text-lg'>{product.name}</h2>
-                <p className='text-gray-700'>{product.price}</p>
+                <h2 className='font-semibold text-lg'>{product.productName}</h2>
+                <p className='text-gray-700'>{formatPrice(product.productPrice)}</p>
               </div>
             </div>
           </div>

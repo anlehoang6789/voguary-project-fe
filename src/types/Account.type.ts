@@ -14,7 +14,7 @@ export interface User {
   gender: number;
   dateOfBirth: string;
   email: string;
-  profileImage: any;
+  profileImage: string;
   accountStatus: string;
   addresses: any[];
   carts: any[];
@@ -102,4 +102,33 @@ export interface ChangePasswordResponse {
   tokens: any[];
   verifyCodes: any[];
   roles: any[];
+}
+export interface UpdateAvatarRequest {
+  userId: number;
+  profileImage: string;
+}
+
+export interface UpdateAvatarResponse {
+  userId: number;
+  profileImage: string;
+}
+
+export interface AdminGetListUser {
+  pageNumber: number;
+  pageSize: number;
+  totalCount: number;
+  items: AdminGetListUserChildrenResponse[];
+}
+export interface AdminGetListUserChildrenResponse {
+  userId: number;
+  userName: string;
+  fullName: string;
+  password: string;
+  phone: string;
+  gender: number;
+  dateOfBirth: string;
+  email: string;
+  profileImage: string;
+  accountStatus: string;
+  membershipTypeName: any;
 }

@@ -15,6 +15,7 @@ import MyBagComponent from 'components/MyBag/MyBagPopover';
 import { useGetUserProfileQuery } from 'services/user.services';
 import { useEffect } from 'react';
 import { setUserProfile } from 'slice/userProfileSlice';
+import { useGetNotiByUserIdQuery } from 'services/notification.services';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -41,6 +42,8 @@ export default function Header() {
   const isAuthenticatedFromApi = useSelector((state: RootState) => state.authLoginAPI.isAuthenticated);
   //Check trạng thái xem người dùng đã đăng nhập hay chưa
   const isLogin = isAuthenticatedFromGoogle || isAuthenticatedFromApi;
+
+  const { data: notifications } = useGetNotiByUserIdQuery(userId);
 
   return (
     <div className='container-fluid'>
@@ -80,7 +83,7 @@ export default function Header() {
 
           <MenuItem>
             <Popover content={<NotificationPopover />} trigger={'hover'} placement='bottom'>
-              <Badge count={5} size='small' className='mt-5'>
+              <Badge count={notifications?.length} size='small' className='mt-5'>
                 <IoIosNotificationsOutline style={{ fontSize: '25px', cursor: 'pointer' }} />
               </Badge>
             </Popover>

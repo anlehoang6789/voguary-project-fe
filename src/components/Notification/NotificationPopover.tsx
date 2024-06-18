@@ -1,48 +1,25 @@
 import { List, Typography } from 'antd';
+import { useSelector } from 'react-redux';
+import { useGetNotiByUserIdQuery } from 'services/notification.services';
+import { RootState } from 'store';
 
 export default function NotificationPopover() {
-  const data = [
-    {
-      notificationId: 1,
-      title: 'Thông báo',
-      action: 'Đơn hàng SPX1234567890',
-      message: ' đã thanh toán thành công',
-      sendDate: '2022-10-10T10:00:00',
-      isRead: false,
-      modelId: 1,
-      type: 'fashion'
-    },
-    {
-      notificationId: 2,
-      title: 'Thông báo',
-      action: 'Đơn hàng SPX1234567890',
-      message: ' đã thanh toán thành công',
-      sendDate: '2022-10-10T10:00:00',
-      isRead: false,
-      modelId: 1,
-      type: 'fashion'
-    },
-    {
-      notificationId: 3,
-      title: 'Thông báo',
-      action: 'Đơn hàng SPX1234567890',
-      message: ' đã thanh toán thành công',
-      sendDate: '2022-10-10T10:00:00',
-      isRead: false,
-      modelId: 1,
-      type: 'fashion'
-    },
-    {
-      notificationId: 4,
-      title: 'Thông báo',
-      action: 'Đơn hàng SPX1234567890',
-      message: ' đã thanh toán thành công',
-      sendDate: '2022-10-10T10:00:00',
-      isRead: false,
-      modelId: 1,
-      type: 'fashion'
-    }
-  ];
+  const userIdString = useSelector((state: RootState) => state.authLoginAPI.userId);
+  const userId = parseInt(userIdString || '0');
+  const { data: notifications, error, isLoading } = useGetNotiByUserIdQuery(userId);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.toString()}</div>;
+  }
+
+  if (!notifications) {
+    return <div>Không có thông báo nào</div>;
+  }
+
   return (
     <div className='w-[400px]'>
       <div className='p-[5px]'>
@@ -50,9 +27,9 @@ export default function NotificationPopover() {
       </div>
       <div className='max-h-[300px] cursor-pointer overflow-auto rounded-lg'>
         <List
-          dataSource={data}
+          dataSource={notifications}
           renderItem={(item) => (
-            <List.Item className={`hover:bg-[#fcffc4] ${item.isRead ? '' : 'bg-[#F9E79F]'}`} key={item.notificationId}>
+            <List.Item className={`hover:bg-[#fcffc4] ${item.seen ? '' : 'bg-[#F9E79F]'}`} key={item.notificationId}>
               <div style={{ flex: '1' }}>
                 <img
                   className='h-[40px]'
@@ -69,14 +46,9 @@ export default function NotificationPopover() {
                     color: '#ff8228'
                   }}
                 >
-                  <Typography.Text>{item.title}</Typography.Text>
+                  <Typography.Text>Thông báo</Typography.Text>
                 </p>
-                <p style={{ fontSize: '13px', margin: 0 }}>
-                  <span style={{ fontWeight: 'bold' }}>
-                    <Typography.Text>{item.action}</Typography.Text>{' '}
-                  </span>
-                  {item.message}
-                </p>
+                <p style={{ fontSize: '13px', margin: 0 }}>{item.notificationMessage}</p>
                 <div
                   className='mt-1'
                   style={{
@@ -86,11 +58,11 @@ export default function NotificationPopover() {
                   }}
                 >
                   <span>
-                    <Typography.Text>{item.sendDate}</Typography.Text>
+                    <Typography.Text>{item.dateSent}</Typography.Text>
                   </span>
                   <span>
                     <Typography.Text style={{ paddingRight: '8px' }}>
-                      {item.isRead ? 'Đã đọc' : 'Chưa đọc'}
+                      {item.seen ? 'Đã đọc' : 'Chưa đọc'}
                     </Typography.Text>
                   </span>
                 </div>

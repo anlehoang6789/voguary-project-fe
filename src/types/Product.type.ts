@@ -83,4 +83,14 @@ export interface GetProductDescriptionByProductIdResponse {
   averageRating: number;
 }
 
+export interface GetFeedbackResponse {
+  ratingId: number;
+  userId: number;
+  userName: string;
+  ratingValue: number;
+  dateGiven: string;
+  feedbackComment: string;
+  feedbackImage: string;
+}
+
 

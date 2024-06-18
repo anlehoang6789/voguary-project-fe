@@ -7,29 +7,41 @@ import ProductDetailsInfor from 'components/ManageProductDetails/ManageProductIn
 import ProductDetailsReview from 'components/ManageProductDetails/ManageProductInfor/ProductInforChildren/ProductDetailsReview/ProductDetailsReview';
 import MayAlsoLike from 'components/ManageProductDetails/MayAlsoLike';
 import { useState } from 'react';
-
-const productInfoList = [
-  {
-    type: ManageProductInforCollapseChildren.PRODUCT_REVIEWS,
-    title: 'Đánh giá',
-    component: <ProductDetailsReview />,
-    reviewCount: 1,
-    averageRating: 5
-  },
-  {
-    type: ManageProductInforCollapseChildren.PRODUCT_DESCRIPTION,
-    title: 'Mô tả sản phẩm',
-    component: <ProductDetailsDescription />
-  },
-  {
-    type: ManageProductInforCollapseChildren.PRODUCT_INFORMATION,
-    title: 'Chi tiết sản phẩm',
-    component: <ProductDetailsInfor />
-  }
-];
+import { useParams } from 'react-router-dom';
+import { useGetFeedbackQuery } from 'services/product.services';
 
 export default function ManageProductDetailsPage() {
+  const { id } = useParams<{ id: string }>();
+  const { data: feedbackData, isLoading, error } = useGetFeedbackQuery(Number(id));
   const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.toString()}</div>;
+  if (!feedbackData || !Array.isArray(feedbackData)) return <div>No feedback found.</div>;
+
+  const reviewCount = feedbackData.length;
+  const averageRating = feedbackData.reduce((acc, feedback) => acc + feedback.ratingValue, 0) / reviewCount;
+
+  const productInfoList = [
+    {
+      type: ManageProductInforCollapseChildren.PRODUCT_REVIEWS,
+      title: 'Đánh giá',
+      component: <ProductDetailsReview />,
+      reviewCount: reviewCount,
+      averageRating: averageRating
+    },
+    {
+      type: ManageProductInforCollapseChildren.PRODUCT_DESCRIPTION,
+      title: 'Mô tả sản phẩm',
+      component: <ProductDetailsDescription />
+    },
+    {
+      type: ManageProductInforCollapseChildren.PRODUCT_INFORMATION,
+      title: 'Chi tiết sản phẩm',
+      component: <ProductDetailsInfor />
+    }
+  ];
+
   return (
     <div className='container mx-auto p-4 flex flex-col md:flex-row'>
       <div className='w-full md:w-[70%]  border-r border-gray-200'>

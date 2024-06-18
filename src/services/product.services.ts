@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { GetHotProductResponse, GetProductDescriptionByProductIdResponse, GetProductDetailByProductIdResponse, GetProductResponse } from 'types/Product.type';
+import { GetFeedbackResponse, GetHotProductResponse, GetProductDescriptionByProductIdResponse, GetProductDetailByProductIdResponse, GetProductResponse } from 'types/Product.type';
 import { UserLoginResponse } from 'types/Account.type';
 
 const baseUrl = 'http://localhost';
@@ -43,8 +43,14 @@ export const productApi = createApi({
         url: `api/Product/GetProductById?productId=${productId}`,
         method: 'GET'
       })
+    }),
+    getFeedback: build.query<GetFeedbackResponse[], number>({
+      query: (productId) => ({
+        url: `api/Rating/ProductRatingsAndFeedback/${productId}`,
+        method: 'GET'
+      })
     })
   })
 });
 
-export const { useGetAllProductsQuery, useGetHotProductRecommendationsQuery, useGetProductDetailByProductIdQuery, useGetProductDescriptionByProductIdQuery } = productApi;
+export const { useGetAllProductsQuery, useGetHotProductRecommendationsQuery, useGetProductDetailByProductIdQuery, useGetProductDescriptionByProductIdQuery, useGetFeedbackQuery } = productApi;

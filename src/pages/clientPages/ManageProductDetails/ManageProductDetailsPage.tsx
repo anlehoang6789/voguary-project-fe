@@ -13,7 +13,7 @@ const productInfoList = [
     type: ManageProductInforCollapseChildren.PRODUCT_REVIEWS,
     title: 'Đánh giá',
     component: <ProductDetailsReview />,
-    reviewCount: 120,
+    reviewCount: 1,
     averageRating: 5
   },
   {

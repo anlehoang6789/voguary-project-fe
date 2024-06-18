@@ -7,6 +7,7 @@ import { userApi } from 'services/user.services';
 import userProfileSlice from 'slice/userProfileSlice';
 import { productApi } from 'services/product.services';
 import { authApi } from 'services/auth.services';
+import { notiApi } from 'services/notification.services';
 
 export const persistConfig = {
   key: 'root',
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   userProfile: userProfileSlice,
   [authApi.reducerPath]: authApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
-  [productApi.reducerPath]: productApi.reducer
+  [productApi.reducerPath]: productApi.reducer,
+  [notiApi.reducerPath]: notiApi.reducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -36,6 +38,7 @@ export const store = configureStore({
       .concat(productApi.middleware) // Thêm productApi.middleware vào middleware của configureStore
       .concat(userApi.middleware)
       .concat(productApi.middleware)
+      .concat(notiApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

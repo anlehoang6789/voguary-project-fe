@@ -12,6 +12,7 @@ interface ProtectedRoutesProps {
 
 export default function ProtectedRoutes({ children, allowedRoles, redirectPath }: ProtectedRoutesProps) {
   const role = useSelector((state: RootState) => state.authLoginAPI.role);
+  console.log('role', role);
   if (!allowedRoles.includes(role)) {
     if (role === RoleType.GUEST) {
       return <Navigate to={redirectPath} />;

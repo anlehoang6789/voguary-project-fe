@@ -2,10 +2,12 @@ import { Button, Card, Divider, Drawer, Pagination, Skeleton } from 'antd';
 import CustomGradientButton from 'components/CustomGradientButton';
 import { BsCart3 } from 'react-icons/bs';
 import { TbFilter } from 'react-icons/tb';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SiderFilterProduct from './SiderFilterProduct';
 import { useGetAllProductsQuery } from 'services/product.services';
+import { useDispatch } from 'react-redux';
+import { setAllProduct } from 'slice/productSlice';
 
 // const mockData = Array.from({ length: 16 }, (_, i) => ({
 //   id: i + 1,
@@ -16,6 +18,7 @@ import { useGetAllProductsQuery } from 'services/product.services';
 // }));
 
 export default function ManageProduct() {
+  const dispatch = useDispatch();
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const defaultImage =
@@ -23,7 +26,7 @@ export default function ManageProduct() {
 
   const pageSize = 12;
   //call api get all product(not filter)
-  const { data, isLoading, error } = useGetAllProductsQuery();
+  const { data, isLoading, error, isSuccess } = useGetAllProductsQuery();
 
   const products = data?.items || [];
   const totalCount = data?.totalCount || 0;
@@ -53,6 +56,12 @@ export default function ManageProduct() {
       </Card>
     ));
   };
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      dispatch(setAllProduct(data));
+    }
+  }, [data, dispatch, isSuccess]);
 
   return (
     <div className='min-h-screen max-w-[90%] mx-auto p-4'>

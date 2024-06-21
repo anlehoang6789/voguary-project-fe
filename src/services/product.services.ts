@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { GetHotProductResponse, GetProductResponse } from 'types/Product.type';
+import { GetHotProductResponse, GetProductDetailResponse, GetProductResponse } from 'types/Product.type';
 import baseUrl from 'utils/http';
 import { UserLoginResponse } from 'types/Account.type';
 
@@ -30,8 +30,15 @@ export const productApi = createApi({
         url: `Product/RecommendHot?topN=${topN}`,
         method: 'GET'
       })
+    }),
+    getProductDetailsByProductId: build.query<GetProductDetailResponse, number>({
+      query: (productId) => ({
+        url: `Product/GetProductById?productId=${productId}`,
+        method: 'GET'
+      })
     })
   })
 });
 
-export const { useGetAllProductsQuery, useGetHotProductRecommendationsQuery } = productApi;
+export const { useGetAllProductsQuery, useGetHotProductRecommendationsQuery, useGetProductDetailsByProductIdQuery } =
+  productApi;

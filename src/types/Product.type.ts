@@ -1,4 +1,5 @@
 import { Category } from './Category.type';
+import { ProductDetailsRatingChildren } from './Rating.type';
 
 export interface Product {
   productId: number;
@@ -53,4 +54,19 @@ export interface GetHotProductResponse {
   averageRating: number;
   numberOfPurchases: number;
   createdAt: any;
+}
+
+export interface GetProductDetailResponse {
+  productId: number;
+  productName: string;
+  productTitle: string;
+  productDescription: string;
+  productImage: string[];
+  productPrice: number;
+  productSize: string[];
+  productColor: string[];
+  productStatus: string;
+  categoryName: string;
+  averageRating: number;
+  ratingsFeedback: ProductDetailsRatingChildren[];
 }

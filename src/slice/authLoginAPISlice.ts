@@ -11,7 +11,7 @@ export enum RoleType {
 
 // Define type for the decoded token
 export interface DecodedToken {
-  sub: string;
+  userId: string;
   role: RoleType;
 }
 interface AuthLoginAPIState {
@@ -42,7 +42,7 @@ const authLoginAPISlice = createSlice({
       // console.log('UserLoginResponse', action.payload); // Kiểm tra response
       state.user = action.payload;
       state.isAuthenticated = true;
-      state.userId = decodedToken.sub;
+      state.userId = decodedToken.userId;
       state.role = decodedToken.role;
       state.refreshToken = action.payload.refreshToken;
       state.tokenExpired = action.payload.expired;

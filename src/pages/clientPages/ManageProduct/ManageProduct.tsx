@@ -40,6 +40,12 @@ export default function ManageProduct() {
     return price.toLocaleString('en-US') + ' đ';
   };
 
+  useEffect(() => {
+    if (isSuccess && data) {
+      dispatch(setAllProduct(data));
+    }
+  }, [data, dispatch, isSuccess]);
+
   const renderSkeletons = () => {
     return Array.from({ length: pageSize }, (_, index) => (
       <Card key={index} className='relative transition-all duration-500 hover:-translate-y-2'>

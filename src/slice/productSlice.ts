@@ -3,12 +3,14 @@ import { GetProductResponse } from 'types/Product.type';
 
 interface AllProductState {
   allProduct: GetProductResponse | null;
+  productIds: number[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: AllProductState = {
   allProduct: null,
+  productIds: [],
   loading: false,
   error: null
 };
@@ -19,6 +21,7 @@ const productAllSlice = createSlice({
   reducers: {
     setAllProduct: (state, action: PayloadAction<GetProductResponse>) => {
       state.allProduct = action.payload;
+      state.productIds = action.payload.items.map((item) => item.productId);
       state.loading = false;
       state.error = null;
     },
@@ -31,6 +34,7 @@ const productAllSlice = createSlice({
     },
     resetAllProduct: (state) => {
       state.allProduct = null;
+      state.productIds = [];
       state.loading = false;
       state.error = null;
     }

@@ -1,63 +1,20 @@
-import React, { useState } from 'react';
-import Search from 'antd/es/input/Search';
-import { Button, Tooltip } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
+import { Button, Tooltip } from 'antd';
+import Search from 'antd/es/input/Search';
 import CustomGradientButton from 'components/CustomGradientButton';
-
-const fakeDataUsers = [
-  {
-    userId: 1,
-    userName: 'admin123',
-    fullName: 'Nguyễn Văn A',
-    password: '$2a$11$1br8uB9uT79Vf9rwyc5uGeQtXIKbZylxpqk3OvJRNrXiBlkFBvhKu',
-    phone: '0909123456',
-    gender: 1,
-    dateOfBirth: '1985-01-01',
-    email: 'admin@example.com',
-    profileImage:
-      'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Products%2F%C3%A1o%20d%C3%A0i.jpg?alt=media&token=4de95e39-5ddf-4b30-982b-cafdbea76e40',
-    accountStatus: 'Active',
-    membershipTypeName: null
-  },
-  {
-    userId: 2,
-    userName: 'admin123',
-    fullName: 'Nguyễn Văn B',
-    password: '$2a$11$1br8uB9uT79Vf9rwyc5uGeQtXIKbZylxpqk3OvJRNrXiBlkFBvhKu',
-    phone: '0909123456',
-    gender: 2,
-    dateOfBirth: '1985-01-01',
-    email: 'admin@example.com',
-    profileImage:
-      'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Products%2F%C3%A1o%20d%C3%A0i.jpg?alt=media&token=4de95e39-5ddf-4b30-982b-cafdbea76e40',
-    accountStatus: 'Active',
-    membershipTypeName: null
-  }
-
-  // Add more users here
-];
-
-interface User {
-  userId: number;
-  userName: string;
-  fullName: string;
-  password: string;
-  phone: string;
-  gender: number;
-  dateOfBirth: string;
-  email: string;
-  profileImage: string;
-  accountStatus: string;
-  membershipTypeName: string | null;
-}
+import React, { useState } from 'react';
+import { useAdminGetListUserQuery } from 'services/user.services';
+import { AdminGetListUserChildrenResponse } from 'types/Account.type';
 
 export default function UserPage() {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<AdminGetListUserChildrenResponse | null>(null);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const { data: userList } = useAdminGetListUserQuery();
 
-  const toggleModal = (user: User | null) => {
+  const toggleModal = (user: AdminGetListUserChildrenResponse | null) => {
     setCurrentUser(user);
     setModalOpen(!isModalOpen);
   };
@@ -68,15 +25,17 @@ export default function UserPage() {
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    setCurrentPage(1);
   };
 
-  const filteredUsers = fakeDataUsers.filter(
-    (user) =>
-      user.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.phone.includes(searchTerm)
-  );
+  const filteredUsers =
+    userList?.items.filter(
+      (user) =>
+        (user.fullName && user.fullName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.userName && user.userName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.email && user.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.phone && user.phone.includes(searchTerm))
+    ) || [];
 
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
@@ -138,7 +97,7 @@ export default function UserPage() {
           {currentUsers.map((user) => (
             <tr key={user.userId} className='bg-white border-b hover:bg-gray-50'>
               <th scope='row' className='flex items-center px-6 py-4 text-gray-900 whitespace-nowrap'>
-                <img className='w-10 h-10 rounded-full' src={user.profileImage} alt={`${user.fullName} image`} />
+                <img className='w-10 h-10 rounded-full' src={user.profileImage} alt={`${user.fullName}`} />
                 <div className='ps-3'>
                   <div className='text-base font-semibold'>{user.fullName}</div>
                 </div>

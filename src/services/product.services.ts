@@ -1,7 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { GetHotProductResponse, GetProductDetailResponse, GetProductResponse } from 'types/Product.type';
-import baseUrl from 'utils/http';
+import {
+  GetHotProductResponse,
+  GetProductDetailsByProductIdResponse,
+  GetProductDetailsInforResponse,
+  GetProductRatingsAndFeedbackResponse,
+  GetProductResponse,
+  ProductRecommendation
+} from 'types/Product.type';
 import { UserLoginResponse } from 'types/Account.type';
+import baseUrl from 'utils/http';
 
 export const productApi = createApi({
   reducerPath: 'productApi',
@@ -31,14 +38,38 @@ export const productApi = createApi({
         method: 'GET'
       })
     }),
-    getProductDetailsByProductId: build.query<GetProductDetailResponse, number>({
+    getProductDetailsByProductId: build.query<GetProductDetailsByProductIdResponse, number>({
       query: (productId) => ({
         url: `Product/GetProductById?productId=${productId}`,
+        method: 'GET'
+      })
+    }),
+    getFeedback: build.query<GetProductRatingsAndFeedbackResponse, number>({
+      query: (productId) => ({
+        url: `Rating/GetProductRatingsAndFeedback?productId=${productId}`,
+        method: 'GET'
+      })
+    }),
+    getProductRecommendations: build.query<ProductRecommendation[], void>({
+      query: () => ({
+        url: `Product/RecommendNew?topN=10`,
+        method: 'GET'
+      })
+    }),
+    getProductDetailsInfor: build.query<GetProductDetailsInforResponse, number>({
+      query: (productId) => ({
+        url: `ProductDetail/ViewProductDetailByProductId?productId=${productId}`,
         method: 'GET'
       })
     })
   })
 });
 
-export const { useGetAllProductsQuery, useGetHotProductRecommendationsQuery, useGetProductDetailsByProductIdQuery } =
-  productApi;
+export const {
+  useGetAllProductsQuery,
+  useGetHotProductRecommendationsQuery,
+  useGetProductDetailsByProductIdQuery,
+  useGetFeedbackQuery,
+  useGetProductRecommendationsQuery,
+  useGetProductDetailsInforQuery
+} = productApi;

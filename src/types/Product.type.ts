@@ -1,5 +1,5 @@
 import { Category } from './Category.type';
-import { ProductDetailsRatingChildren } from './Rating.type';
+import { ProductDetailsRatingChildren, RatingAndFeedbackChildren } from './Rating.type';
 
 export interface Product {
   productId: number;
@@ -55,8 +55,30 @@ export interface GetHotProductResponse {
   numberOfPurchases: number;
   createdAt: any;
 }
+export interface GetProductRatingsAndFeedbackResponse {
+  productId: number;
+  productName: string;
+  averageRating: number;
+  totalRatings: number;
+  ratings: RatingAndFeedbackChildren[];
+}
 
-export interface GetProductDetailResponse {
+export interface ProductRecommendation {
+  productId: number;
+  productName: string;
+  productDescription: string;
+  productImage: string;
+  productPrice: number;
+  productSize: string | null;
+  productColor: string | null;
+  productStatus: string;
+  categoryName: string;
+  averageRating: number;
+  numberOfPurchases: number;
+  createdAt: string;
+}
+
+export interface GetProductDetailsByProductIdResponse {
   productId: number;
   productName: string;
   productTitle: string;
@@ -65,8 +87,21 @@ export interface GetProductDetailResponse {
   productPrice: number;
   productSize: string[];
   productColor: string[];
+  productColorImage: string[];
   productStatus: string;
   categoryName: string;
   averageRating: number;
   ratingsFeedback: ProductDetailsRatingChildren[];
+}
+
+export interface GetProductDetailsInforResponse {
+  description: string[];
+  additionalInformation: string[];
+  shippingAndReturns: string[];
+  sizeChart: string[];
+  reviews: string[];
+  questions: string[];
+  vendorInfo: string[];
+  moreProducts: string[];
+  productPolicies: string[];
 }

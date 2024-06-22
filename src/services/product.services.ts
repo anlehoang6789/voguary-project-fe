@@ -28,13 +28,13 @@ export const productApi = createApi({
   endpoints: (build) => ({
     getAllProducts: build.query<GetProductResponse, void>({
       query: () => ({
-        url: 'api/Product/PagingAndFilteredProducts',
+        url: 'Product/PagingAndFilteredProducts',
         method: 'GET'
       })
     }),
     getHotProductRecommendations: build.query<GetHotProductResponse[], number>({
       query: (topN) => ({
-        url: `api/Product/RecommendHot?topN=${topN}`,
+        url: `Product/RecommendHot?topN=${topN}`,
         method: 'GET'
       })
     }),

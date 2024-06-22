@@ -1,4 +1,4 @@
-import { Button, Col, Rate, Row, Typography } from 'antd';
+import { Alert, Button, Col, Rate, Row, Skeleton, Typography } from 'antd';
 import { useState } from 'react';
 import { RxCaretDown } from 'react-icons/rx';
 import { StarFilled } from '@ant-design/icons';
@@ -7,14 +7,31 @@ import { useGetFeedbackQuery } from 'services/product.services';
 
 export default function ProductDetailsReview() {
   const { id } = useParams<{ id: string }>();
-  const { data, error, isLoading } = useGetFeedbackQuery(Number(id));
+  const { data, error, isLoading, isError } = useGetFeedbackQuery(Number(id));
+  // console.log('data của feedback:', data);
 
   const [visibleReviews, setVisibleReviews] = useState(5);
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.toString()}</div>;
-  if (!data || !Array.isArray(data)) return <div>No feedback found.</div>;
 
-  const averageRating = data.reduce((acc, feedback) => acc + feedback.ratingValue, 0) / data.length;
+  if (isLoading) {
+    // Render skeleton when loading
+    return (
+      <div className='flex flex-col gap-1'>
+        <Skeleton active />
+        <Skeleton active />
+        <Skeleton active />
+      </div>
+    );
+  }
+
+  if (isError) {
+    // Render error message if there's an error
+    return <Alert message='Error' description={`There was an error fetching data: ${error}`} type='error' showIcon />;
+  }
+
+  // If data is null or undefined, handle accordingly
+  if (!data) {
+    return <Alert message='No Data' description='No feedback data found.' type='info' showIcon />;
+  }
 
   const loadMoreReviews = () => {
     setVisibleReviews((prev) => prev + 5);
@@ -23,9 +40,8 @@ export default function ProductDetailsReview() {
   return (
     <div className='flex flex-col gap-1'>
       <Typography.Title level={3} className='mr-2'>
-        {averageRating.toFixed(1)} <Rate value={averageRating} disabled />
+        {data?.averageRating.toFixed(1)} <Rate value={data?.averageRating} disabled />
       </Typography.Title>
-
       <Typography.Text className='text-lg font-bold border-t-2 pt-4 '>Lọc theo xếp loại sao</Typography.Text>
       <div className='flex mt-2 mb-4'>
         {[1, 2, 3, 4, 5].map((star) => (
@@ -37,7 +53,7 @@ export default function ProductDetailsReview() {
       </div>
 
       <div className='flex flex-col gap-2'>
-        {data.slice(0, visibleReviews).map((review) => (
+        {data?.ratings.slice(0, visibleReviews).map((review) => (
           <Row key={review.ratingId} className=' flex flex-col mb-6'>
             <Row className='flex flex-row border-t-2 pt-2'>
               <Col span={10}>
@@ -60,7 +76,7 @@ export default function ProductDetailsReview() {
           </Row>
         ))}
       </div>
-      {visibleReviews < data.length && (
+      {visibleReviews < data?.ratings.length && (
         <div className='flex justify-center'>
           <button
             className='load-more-button border-2 border-black p-3 transition-all duration-500 hover:-translate-y-2'

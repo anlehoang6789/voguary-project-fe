@@ -6,29 +6,38 @@ import ProductDetailsDescription from 'components/ManageProductDetails/ManagePro
 import ProductDetailsInfor from 'components/ManageProductDetails/ManageProductInfor/ProductInforChildren/ProductDetailsInfor';
 import ProductDetailsReview from 'components/ManageProductDetails/ManageProductInfor/ProductInforChildren/ProductDetailsReview/ProductDetailsReview';
 import MayAlsoLike from 'components/ManageProductDetails/MayAlsoLike';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useGetFeedbackQuery, useGetProductDetailsByProductIdQuery } from 'services/product.services';
+import { setProductDetails } from 'slice/productDetailsSlice';
 import { useParams } from 'react-router-dom';
-import { useGetFeedbackQuery } from 'services/product.services';
 
 export default function ManageProductDetailsPage() {
   const { id } = useParams<{ id: string }>();
-  const { data: feedbackData, isLoading, error } = useGetFeedbackQuery(Number(id));
+  // console.log('id được lấy ra:', id);
+  const { data: feedbackData } = useGetFeedbackQuery(Number(id));
+  const { data, isSuccess } = useGetProductDetailsByProductIdQuery(Number(id));
   const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
+  const dispatch = useDispatch();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.toString()}</div>;
-  if (!feedbackData || !Array.isArray(feedbackData)) return <div>No feedback found.</div>;
-
-  const reviewCount = feedbackData.length;
-  const averageRating = feedbackData.reduce((acc, feedback) => acc + feedback.ratingValue, 0) / reviewCount;
+  useEffect(() => {
+    try {
+      if (isSuccess && data) {
+        dispatch(setProductDetails(data));
+        // console.log('data của product details:', data);
+      }
+    } catch (error) {
+      console.log('error:', error);
+    }
+  }, [data, dispatch, isSuccess]);
 
   const productInfoList = [
     {
       type: ManageProductInforCollapseChildren.PRODUCT_REVIEWS,
       title: 'Đánh giá',
       component: <ProductDetailsReview />,
-      reviewCount: reviewCount,
-      averageRating: averageRating
+      reviewCount: feedbackData?.totalRatings || 0,
+      averageRating: data?.averageRating || 0
     },
     {
       type: ManageProductInforCollapseChildren.PRODUCT_DESCRIPTION,

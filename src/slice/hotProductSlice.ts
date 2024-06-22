@@ -1,19 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Product } from 'types/Product.type';
+import { GetHotProductResponse } from 'types/Product.type';
 
 interface ProductState {
-  hotProducts: Product[] | null;
+  hotProducts: GetHotProductResponse[] | null;
 }
 
 const initialState: ProductState = {
   hotProducts: null
 };
 
-const productSlice = createSlice({
-  name: 'product',
+const hotProductSlice = createSlice({
+  name: 'hotProduct',
   initialState,
   reducers: {
-    setHotProducts: (state, action: PayloadAction<Product[]>) => {
+    setHotProducts: (state, action: PayloadAction<GetHotProductResponse[]>) => {
       state.hotProducts = action.payload;
     },
 
@@ -23,6 +23,6 @@ const productSlice = createSlice({
   }
 });
 
-export const { setHotProducts, resetHotProducts } = productSlice.actions;
+export const { setHotProducts, resetHotProducts } = hotProductSlice.actions;
 
-export default productSlice.reducer;
+export default hotProductSlice.reducer;

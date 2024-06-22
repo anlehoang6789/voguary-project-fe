@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
-import { useGetProductDescriptionByProductIdQuery } from 'services/product.services';
+import { useGetProductDetailsByProductIdQuery } from 'services/product.services';
 
 export default function ProductDetailsDescription() {
   const { id } = useParams<{ id: string }>();
-  const { data, error, isLoading } = useGetProductDescriptionByProductIdQuery(Number(id));
+  const { data, error, isLoading } = useGetProductDetailsByProductIdQuery(Number(id));
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.toString()}</div>;

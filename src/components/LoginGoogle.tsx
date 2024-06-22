@@ -15,10 +15,15 @@ export default function LoginGoogle() {
       const auth = getAuth(app);
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      // console.log(result);
+      console.log(result);
       const { uid, displayName, email, photoURL } = result.user;
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const accessToken = credential?.accessToken || ''; // Use empty string if accessToken is undefined
+      console.log('result.user', result.user);
+      // const credential = GoogleAuthProvider.credentialFromResult(result);
+      // const accessToken = credential?.accessToken || ''; // Use empty string if accessToken is undefined
+      // const accessToken = result.user.stsTokenManager.accessToken || '';
+
+      // Retrieve the ID token
+      const accessToken = await result.user.getIdToken();
 
       const user = {
         uid: uid || '',

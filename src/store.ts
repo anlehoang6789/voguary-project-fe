@@ -6,20 +6,26 @@ import authLoginAPISlice from 'slice/authLoginAPISlice';
 import userProfileSlice from 'slice/userProfileSlice';
 import { productApi } from 'services/product.services';
 import { authApi } from 'services/auth.services';
+import hotProductSlice from 'slice/hotProductSlice';
+import productAllSlice from 'slice/productSlice';
 import { userApi } from 'services/user.services';
 import { notiApi } from 'services/notification.services';
+import productDetailsSlice from 'slice/productDetailsSlice';
 import { orderApi } from 'services/order.services';
 
 export const persistConfig = {
   key: 'root',
   storage: storage,
-  whitelist: ['authLoginGoogle', 'authLoginAPI', 'userProfile', 'productApi']
+  whitelist: ['authLoginGoogle', 'authLoginAPI', 'userProfile', 'hotProduct', 'productAll', 'productDetails']
 };
 
 const rootReducer = combineReducers({
   authLoginGoogle: authLoginGoogleSlice,
   authLoginAPI: authLoginAPISlice,
   userProfile: userProfileSlice,
+  hotProduct: hotProductSlice,
+  productAll: productAllSlice,
+  productDetails: productDetailsSlice,
   [authApi.reducerPath]: authApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
   [productApi.reducerPath]: productApi.reducer,
@@ -42,7 +48,6 @@ export const store = configureStore({
       .concat(productApi.middleware)
       .concat(notiApi.middleware)
       .concat(orderApi.middleware)
-
 });
 
 export type RootState = ReturnType<typeof store.getState>;

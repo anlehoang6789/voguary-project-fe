@@ -1,8 +1,8 @@
-import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useGetProductRecommendationsQuery } from 'services/product.services'; // Adjust the import path as needed
+import { Link } from 'react-router-dom';
 
 export default function MayAlsoLike() {
   const { data: products, error, isLoading } = useGetProductRecommendationsQuery();
@@ -51,15 +51,17 @@ export default function MayAlsoLike() {
       <h1 className='font-bold text-xl mb-4'>Bạn có thể thích</h1>
       <Slider {...settings}>
         {products.map((product) => (
-          <div key={product.productId} className='p-4'>
-            <div className='border rounded-lg overflow-hidden'>
-              <img src={product.productImage} alt={product.productName} className='w-full h-48 object-cover' />
-              <div className='p-4'>
-                <h2 className='font-semibold text-lg'>{product.productName}</h2>
-                <p className='text-gray-700'>{formatPrice(product.productPrice)}</p>
+          <Link to={`/product/${product.productId}`} key={product.productId}>
+            <div key={product.productId} className='p-4 transition-all duration-500 hover:-translate-y-2'>
+              <div className='border rounded-lg overflow-hidden'>
+                <img src={product.productImage} alt={product.productName} className='w-full h-48 object-cover' />
+                <div className='p-4'>
+                  <h2 className='font-semibold text-lg'>{product.productName}</h2>
+                  <p className='text-gray-700'>{formatPrice(product.productPrice)}</p>
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </Slider>
     </div>

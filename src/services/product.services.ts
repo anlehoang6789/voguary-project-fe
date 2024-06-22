@@ -1,15 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
-  GetFeedbackResponse,
   GetHotProductResponse,
-  GetProductDescriptionByProductIdResponse,
-  GetProductDetailByProductIdResponse,
+  GetProductDetailsByProductIdResponse,
+  GetProductDetailsInforResponse,
+  GetProductRatingsAndFeedbackResponse,
   GetProductResponse,
   ProductRecommendation
 } from 'types/Product.type';
 import { UserLoginResponse } from 'types/Account.type';
-
-const baseUrl = 'http://localhost';
+import baseUrl from 'utils/http';
 
 export const productApi = createApi({
   reducerPath: 'productApi',
@@ -29,37 +28,37 @@ export const productApi = createApi({
   endpoints: (build) => ({
     getAllProducts: build.query<GetProductResponse, void>({
       query: () => ({
-        url: 'api/Product/PagingAndFilteredProducts',
+        url: 'Product/PagingAndFilteredProducts',
         method: 'GET'
       })
     }),
     getHotProductRecommendations: build.query<GetHotProductResponse[], number>({
       query: (topN) => ({
-        url: `api/Product/RecommendHot?topN=${topN}`,
+        url: `Product/RecommendHot?topN=${topN}`,
         method: 'GET'
       })
     }),
-    getProductDetailByProductId: build.query<GetProductDetailByProductIdResponse, number>({
+    getProductDetailsByProductId: build.query<GetProductDetailsByProductIdResponse, number>({
       query: (productId) => ({
-        url: `ViewProductDetailByProductId?productId=${productId}`,
-        method: 'POST'
-      })
-    }),
-    getProductDescriptionByProductId: build.query<GetProductDescriptionByProductIdResponse, number>({
-      query: (productId) => ({
-        url: `api/Product/GetProductById?productId=${productId}`,
+        url: `Product/GetProductById?productId=${productId}`,
         method: 'GET'
       })
     }),
-    getFeedback: build.query<GetFeedbackResponse[], number>({
+    getFeedback: build.query<GetProductRatingsAndFeedbackResponse, number>({
       query: (productId) => ({
-        url: `api/Rating/ProductRatingsAndFeedback/${productId}`,
+        url: `Rating/GetProductRatingsAndFeedback?productId=${productId}`,
         method: 'GET'
       })
     }),
     getProductRecommendations: build.query<ProductRecommendation[], void>({
       query: () => ({
-        url: `api/Product/RecommendNew?topN=10`,
+        url: `Product/RecommendNew?topN=10`,
+        method: 'GET'
+      })
+    }),
+    getProductDetailsInfor: build.query<GetProductDetailsInforResponse, number>({
+      query: (productId) => ({
+        url: `ProductDetail/ViewProductDetailByProductId?productId=${productId}`,
         method: 'GET'
       })
     })
@@ -69,8 +68,8 @@ export const productApi = createApi({
 export const {
   useGetAllProductsQuery,
   useGetHotProductRecommendationsQuery,
-  useGetProductDetailByProductIdQuery,
-  useGetProductDescriptionByProductIdQuery,
+  useGetProductDetailsByProductIdQuery,
   useGetFeedbackQuery,
-  useGetProductRecommendationsQuery
+  useGetProductRecommendationsQuery,
+  useGetProductDetailsInforQuery
 } = productApi;

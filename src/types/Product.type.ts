@@ -1,4 +1,5 @@
 import { Category } from './Category.type';
+import { ProductDetailsRatingChildren, RatingAndFeedbackChildren } from './Rating.type';
 
 export interface Product {
   productId: number;
@@ -54,43 +55,12 @@ export interface GetHotProductResponse {
   numberOfPurchases: number;
   createdAt: any;
 }
-
-export interface GetProductDetailByProductIdResponse {
-  productDetailId: number;
-  productId: number;
-  description: string;
-  additionalInformation: string;
-  shippingAndReturns: string;
-  sizeChart: string;
-  reviews: string;
-  questions: string;
-  vendorInfo: string;
-  moreProducts: string;
-  productPolicies: string;
-}
-
-export interface GetProductDescriptionByProductIdResponse {
+export interface GetProductRatingsAndFeedbackResponse {
   productId: number;
   productName: string;
-  productTitle: string;
-  productDescription: string;
-  productImage: string[];
-  productPrice: number;
-  productSize: string[];
-  productColor: string[];
-  productStatus: string;
-  categoryName: string;
   averageRating: number;
-}
-
-export interface GetFeedbackResponse {
-  ratingId: number;
-  userId: number;
-  userName: string;
-  ratingValue: number;
-  dateGiven: string;
-  feedbackComment: string;
-  feedbackImage: string;
+  totalRatings: number;
+  ratings: RatingAndFeedbackChildren[];
 }
 
 export interface ProductRecommendation {
@@ -106,4 +76,31 @@ export interface ProductRecommendation {
   averageRating: number;
   numberOfPurchases: number;
   createdAt: string;
+}
+export interface GetProductDetailsByProductIdResponse {
+  productId: number;
+  productName: string;
+  productTitle: string;
+  productDescription: string;
+  productImage: string[];
+  productPrice: number;
+  productSize: string[];
+  productColor: string[];
+  productColorImage: string[];
+  productStatus: string;
+  categoryName: string;
+  averageRating: number;
+  ratingsFeedback: ProductDetailsRatingChildren[];
+}
+
+export interface GetProductDetailsInforResponse {
+  description: string[];
+  additionalInformation: string[];
+  shippingAndReturns: string[];
+  sizeChart: string[];
+  reviews: string[];
+  questions: string[];
+  vendorInfo: string[];
+  moreProducts: string[];
+  productPolicies: string[];
 }

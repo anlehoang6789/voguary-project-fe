@@ -97,7 +97,7 @@ export default function UserPage() {
           {currentUsers.map((user) => (
             <tr key={user.userId} className='bg-white border-b hover:bg-gray-50'>
               <th scope='row' className='flex items-center px-6 py-4 text-gray-900 whitespace-nowrap'>
-                <img className='w-10 h-10 rounded-full' src={user.profileImage} alt={`${user.fullName} image`} />
+                <img className='w-10 h-10 rounded-full' src={user.profileImage} alt={`${user.fullName}`} />
                 <div className='ps-3'>
                   <div className='text-base font-semibold'>{user.fullName}</div>
                 </div>

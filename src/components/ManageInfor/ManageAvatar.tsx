@@ -1,8 +1,11 @@
 import { InboxOutlined } from '@ant-design/icons';
-import { Button, Divider, Typography, Upload } from 'antd';
-import { useState } from 'react';
+import { Button, Divider, Typography, Upload, message, notification } from 'antd';
+import { useEffect, useState } from 'react';
 import { RcFile } from 'antd/es/upload';
 import CustomGradientButton from 'components/CustomGradientButton';
+import { useUpdateAvatarMutation } from 'services/user.services';
+import { RootState } from 'store';
+import { useSelector } from 'react-redux';
 
 export default function ManageAvatar() {
   const { Dragger } = Upload;
@@ -11,16 +14,47 @@ export default function ManageAvatar() {
     'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Avatar%2Favatar_preview_default.png?alt=media&token=0bbfe019-baaa-4bce-ba00-c9f08f868a1c';
 
   const allowImageTypes = ['jpg', 'jpeg', 'png'];
+  const userIdString = useSelector((state: RootState) => state.authLoginAPI.userId);
+  const userId = parseInt(userIdString || '0');
   const [previewImage, setPreviewImage] = useState(defaultAvatar);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isImageFile, setIsImageFile] = useState(false);
 
-  //hàm check xem cái file upload có phải là ảnh không
   const checkBeforeUpload = (file: RcFile) => {
-    const allowedFile = file.name.slice(((file.name.lastIndexOf('.') - 1) >>> 0) + 2);
-    const isAllowed = allowImageTypes.includes(allowedFile.toLocaleLowerCase());
+    const fileExtension = file.name.slice(((file.name.lastIndexOf('.') - 1) >>> 0) + 2);
+    const isAllowed = allowImageTypes.includes(fileExtension.toLocaleLowerCase());
     setIsImageFile(isAllowed);
+    if (isAllowed) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onload = () => setPreviewImage(reader.result as string);
+      reader.readAsDataURL(file);
+    } else {
+      setSelectedImage(null);
+      setPreviewImage(defaultAvatar);
+    }
     return false;
+  };
+  const [updateAvatar, { isLoading, isSuccess, isError, error, data }] = useUpdateAvatarMutation();
+  useEffect(() => {
+    if (isSuccess && data) {
+      notification.success({
+        message: 'Cập nhật ảnh đại diện thành công'
+      });
+    }
+    if (isError && error) {
+      notification.error({
+        message: 'Lỗi khi thay đổi ảnh'
+      });
+    }
+  }, [isSuccess, isError, error, data]);
+  const handleSubmit = async (values: any) => {
+    const { profileImage } = values;
+    try {
+      await updateAvatar({ userId, profileImage });
+    } catch (error) {
+      console.error('Change avatar failed:', error);
+    }
   };
 
   return (
@@ -40,7 +74,7 @@ export default function ManageAvatar() {
           </div>
         </div>
         <div>
-          <Dragger beforeUpload={checkBeforeUpload}>
+          <Dragger beforeUpload={checkBeforeUpload} showUploadList={false} accept='.jpg,.jpeg,.png' multiple={false}>
             <p className='ant-upload-drag-icon'>
               <InboxOutlined />
             </p>
@@ -49,7 +83,7 @@ export default function ManageAvatar() {
           </Dragger>
         </div>
         <CustomGradientButton>
-          <Button type='primary' size='large'>
+          <Button type='primary' size='large' loading={isLoading} onClick={handleSubmit}>
             Lưu thay đổi
           </Button>
         </CustomGradientButton>

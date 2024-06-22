@@ -11,3 +11,13 @@ export interface Order {
   orderTotal: number;
   orderImg: string;
 }
+
+export interface GetOrderByUserIdResponse {
+  orderId: number;
+  orderStatus: string;
+  datePlaced: string;
+  dueDate: string;
+  returnDate: string;
+  orderTotal: number;
+  pointsEarned: number;
+}

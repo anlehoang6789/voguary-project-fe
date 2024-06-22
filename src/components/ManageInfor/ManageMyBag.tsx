@@ -5,6 +5,10 @@ import { Button, DatePicker, DatePickerProps, Form, Tag, message } from 'antd';
 import CustomGradientButton from 'components/CustomGradientButton';
 
 import dayjs, { Dayjs } from 'dayjs';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { useGetOrdersByUserIdQuery } from 'services/order.services';
+import { GetOrderByUserIdResponse } from 'types/Order.type';
 
 const aodai =
   'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Products%2F%C3%A1o%20d%C3%A0i.jpg?alt=media&token=4de95e39-5ddf-4b30-982b-cafdbea76e40';
@@ -114,7 +118,14 @@ interface Product {
 
 export default function ManageMyBag() {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
+  const [currentProduct, setCurrentProduct] = useState<any>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 5;
+
+  const userIdString = useSelector((state: RootState) => state.authLoginAPI.userId);
+  const userId = parseInt(userIdString || '0', 10);
+
+  const { data: orders, isLoading, error } = useGetOrdersByUserIdQuery(userId);
 
   const toggleModal = (product: Product | null) => {
     setCurrentProduct(product);
@@ -125,10 +136,6 @@ export default function ManageMyBag() {
     toggleModal(null);
     form.resetFields();
   };
-
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const productsPerPage = 5;
 
   const indexOfLastProduct = currentPage * productsPerPage;
 
@@ -166,6 +173,17 @@ export default function ManageMyBag() {
     const sevenDaysAfterEndDate = endDateDate.add(6, 'day');
     return date && (date.isBefore(endDateDate) || date.isAfter(sevenDaysAfterEndDate));
   };
+
+  if (isLoading) {
+    console.log('Loading orders...');
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    console.error('Error loading orders:', error);
+    return <div>Error loading orders</div>;
+  }
+
+  console.log('Orders data:', orders);
 
   return (
     <div className='relative overflow-x-auto  sm:rounded-lg'>
@@ -215,35 +233,36 @@ export default function ManageMyBag() {
         </thead>
 
         <tbody>
-          {currentProducts.map((product, index) => (
-            <tr key={product.id} className='bg-white border-b hover:bg-gray-50'>
-              <th scope='row' className='flex items-center px-6 py-4 text-gray-900 whitespace-nowrap'>
-                <img className='w-10 h-10 rounded-full' src={product.imgSrc} alt={`${product.name} image`} />
-                <div className='ps-3'>
-                  <div className='text-base font-semibold'>{product.name}</div>
-                </div>
-              </th>
+          {orders &&
+            orders.map((order: GetOrderByUserIdResponse) => (
+              <tr key={order.orderId} className='bg-white border-b hover:bg-gray-50'>
+                <th scope='row' className='flex items-center px-6 py-4 text-gray-900 whitespace-nowrap'>
+                  <img className='w-10 h-10 rounded-full' src={aodai} alt={`${order.orderId} image`} />
+                  <div className='ps-3'>
+                    <div className='text-base font-semibold'>Áo dài</div>
+                  </div>
+                </th>
 
-              <td className='px-6 py-4'>{product.startDate}</td>
+                <td className='px-6 py-4'>{order.datePlaced}</td>
 
-              <td className='px-6 py-4'>{product.endDate}</td>
+                <td className='px-6 py-4'>{order.dueDate}</td>
 
-              <td className='px-6 py-4'>
-                <div className='flex items-center'>
-                  <Tag color={product.status === 'Còn hạn' ? 'green' : 'red'}>{product.status}</Tag>
-                </div>
-              </td>
+                <td className='px-6 py-4'>
+                  {/* <div className='flex items-center'>
+                  <Tag color={order.status === 'Còn hạn' ? 'green' : 'red'}>{order.status}</Tag>
+                </div> */}
+                </td>
 
-              <td className='px-6 py-4'>
-                <button
-                  onClick={() => toggleModal(product)}
-                  className='text-blue-600 hover:underline focus:outline-none'
-                >
-                  Gia hạn
-                </button>
-              </td>
-            </tr>
-          ))}
+                <td className='px-6 py-4'>
+                  <button
+                    onClick={() => toggleModal(null)}
+                    className='text-blue-600 hover:underline focus:outline-none'
+                  >
+                    Gia hạn
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
 

@@ -1,8 +1,10 @@
 import MobileMaintenance from 'components/MobileMaintenance';
+import ProtectedRoutes from 'components/ProtectedRoutes';
 import { useEffect, useState } from 'react';
 import { isMobile, isTablet } from 'react-device-detect';
 import { Route, Routes } from 'react-router-dom';
 import { adminRoutes, privateRoutes, publicRoutes, staffRoutes } from 'routes/routes';
+import { RoleType } from 'slice/authLoginAPISlice';
 
 function App() {
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(isMobile || isTablet); // Sử dụng hàm isMobile và isTablet từ thư viện react-device-detect
@@ -28,25 +30,65 @@ function App() {
         {publicRoutes.map(({ layout, component, path }, index) => {
           const Layout = layout;
           const Component = component;
-          return <Route key={index} path={path} element={<Layout children={<Component />} />} />;
+          return (
+            <Route
+              key={index}
+              path={path}
+              element={
+                <ProtectedRoutes allowedRoles={[RoleType.GUEST, RoleType.CUSTOMER]} redirectPath='/login'>
+                  <Layout children={<Component />} />
+                </ProtectedRoutes>
+              }
+            />
+          );
         })}
 
         {adminRoutes.map(({ layout, component, path }, index) => {
           const Layout = layout;
           const Component = component;
-          return <Route key={index} path={path} element={<Layout children={<Component />} />} />;
+          return (
+            <Route
+              key={index}
+              path={path}
+              element={
+                <ProtectedRoutes allowedRoles={[RoleType.ADMIN]} redirectPath='/*'>
+                  <Layout children={<Component />} />
+                </ProtectedRoutes>
+              }
+            />
+          );
         })}
 
         {privateRoutes.map(({ layout, component, path }, index) => {
           const Layout = layout;
           const Component = component;
-          return <Route key={index} path={path} element={<Layout children={<Component />} />} />;
+          return (
+            <Route
+              key={index}
+              path={path}
+              element={
+                <ProtectedRoutes allowedRoles={[RoleType.CUSTOMER]} redirectPath='/login'>
+                  <Layout children={<Component />} />
+                </ProtectedRoutes>
+              }
+            />
+          );
         })}
 
         {staffRoutes.map(({ layout, component, path }, index) => {
           const Layout = layout;
           const Component = component;
-          return <Route key={index} path={path} element={<Layout children={<Component />} />} />;
+          return (
+            <Route
+              key={index}
+              path={path}
+              element={
+                <ProtectedRoutes allowedRoles={[RoleType.STAFF]} redirectPath='/*'>
+                  <Layout children={<Component />} />
+                </ProtectedRoutes>
+              }
+            />
+          );
         })}
       </Routes>
     </>

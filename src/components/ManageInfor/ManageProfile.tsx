@@ -36,12 +36,14 @@ export default function ManageProfile() {
       });
     }
   }, [userProfile, form, userDataWithLoginGoogle, dispatch]);
+  const splitName = (fullName: string | null | undefined) => {
+    if (!fullName) {
+      return { lastName: '', firstName: '' }; // or handle the case where fullName is empty
+    }
 
-  // Hàm phân tách tên thành họ và tên
-  const splitName = (fullName: string) => {
     const names = fullName.split(' ');
-    const lastName = names.slice(0, -1).join(' '); // Lấy phần họ
-    const firstName = names.slice(-1).join(' '); // Lấy phần tên
+    const lastName = names.slice(0, -1).join(' '); // Get the last name part
+    const firstName = names.slice(-1).join(' '); // Get the first name part
     return { lastName, firstName };
   };
 

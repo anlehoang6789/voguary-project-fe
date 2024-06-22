@@ -1,11 +1,14 @@
 import { Button, Divider, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import { LiaRulerHorizontalSolid } from 'react-icons/lia';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 export default function SizeOption() {
-  const sizes = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
+  // const sizes = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
+  const productDetailsSize = useSelector((state: RootState) => state.productDetails.productDetails?.productSize || []);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedSize, setSelectedSize] = useState<string | null>(sizes[0]);
+  const [selectedSize, setSelectedSize] = useState<string | null>(productDetailsSize[0]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -24,13 +27,13 @@ export default function SizeOption() {
   };
 
   useEffect(() => {
-    setSelectedSize(sizes[0]);
+    setSelectedSize(productDetailsSize[0]);
   }, []);
 
   return (
     <div className='mb-8'>
       <h1 className='mb-2 font-bold text-base'>Sizes</h1>
-      {sizes.map((size, index) => (
+      {productDetailsSize.map((size, index) => (
         <Button
           size='large'
           key={index}

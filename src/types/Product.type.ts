@@ -77,7 +77,6 @@ export interface ProductRecommendation {
   numberOfPurchases: number;
   createdAt: string;
 }
-
 export interface GetProductDetailsByProductIdResponse {
   productId: number;
   productName: string;

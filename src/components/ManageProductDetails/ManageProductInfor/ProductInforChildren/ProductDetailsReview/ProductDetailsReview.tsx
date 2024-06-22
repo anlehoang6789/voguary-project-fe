@@ -8,7 +8,7 @@ import { useGetFeedbackQuery } from 'services/product.services';
 export default function ProductDetailsReview() {
   const { id } = useParams<{ id: string }>();
   const { data, error, isLoading, isError } = useGetFeedbackQuery(Number(id));
-  console.log('data của feedback:', data);
+  // console.log('data của feedback:', data);
 
   const [visibleReviews, setVisibleReviews] = useState(5);
 
@@ -42,7 +42,6 @@ export default function ProductDetailsReview() {
       <Typography.Title level={3} className='mr-2'>
         {data?.averageRating.toFixed(1)} <Rate value={data?.averageRating} disabled />
       </Typography.Title>
-
       <Typography.Text className='text-lg font-bold border-t-2 pt-4 '>Lọc theo xếp loại sao</Typography.Text>
       <div className='flex mt-2 mb-4'>
         {[1, 2, 3, 4, 5].map((star) => (

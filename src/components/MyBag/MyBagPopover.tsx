@@ -29,9 +29,6 @@ export default function MyBagPopover() {
           dataSource={orders}
           renderItem={(item) => (
             <List.Item>
-              {/* <div style={{ flex: '1' }}>
-                <img className='w-20 ' src={item.img} alt={`${item.name} ảnh`} />
-              </div> */}
               <div style={{ flex: '5' }}>
                 <p style={{ fontSize: '13px', marginLeft: '12px' }}>
                   <span style={{ fontWeight: 'bold' }}>

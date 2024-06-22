@@ -1,55 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Row, Col, Card, Button } from 'antd';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { TiDelete } from 'react-icons/ti';
 import CustomGradientButton from 'components/CustomGradientButton';
 import { Link } from 'react-router-dom';
+import { useGetCartByUserIdQuery } from 'services/cart.services';
+import { RootState } from 'store';
+import { useSelector } from 'react-redux';
+
+interface CartItem {
+  productName: string;
+  quantity: number;
+  productPrice: number;
+  productImage: string;
+}
 
 export default function CheckCart() {
-  // Dữ liệu giả
-  const initialCartItems = [
-    {
-      name: 'Item 1',
-      quantity: 2,
-      price: 500000,
-      image:
-        'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
-    },
-    {
-      name: 'Item 2',
-      quantity: 1,
-      price: 300000,
-      image:
-        'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
-    },
-    {
-      name: 'Item 3',
-      quantity: 3,
-      price: 200000,
-      image:
-        'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
-    },
-    {
-      name: 'Item 4',
-      quantity: 1,
-      price: 100000,
-      image:
-        'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
+  const userIdString = useSelector((state: RootState) => state.authLoginAPI.userId);
+  const userId = parseInt(userIdString || '0');
+  const { data: cartData, error, isLoading } = useGetCartByUserIdQuery(userId);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    if (cartData && cartData.carts) {
+      setCartItems(
+        cartData.carts.map((item) => ({
+          productName: item.productName,
+          quantity: item.quantity,
+          productPrice: item.productPrice,
+          productImage: item.productImage
+        }))
+      );
     }
-  ];
+  }, [cartData]);
 
-  // Sử dụng state để quản lý giỏ hàng
-  const [cartItems, setCartItems] = useState(initialCartItems);
-
-  // Hàm để tăng số lượng
-  const increaseQuantity = (index: any) => {
+  const increaseQuantity = (index: number) => {
     const newCartItems = [...cartItems];
     newCartItems[index].quantity += 1;
     setCartItems(newCartItems);
   };
 
-  // Hàm để giảm số lượng
-  const decreaseQuantity = (index: any) => {
+  const decreaseQuantity = (index: number) => {
     const newCartItems = [...cartItems];
     if (newCartItems[index].quantity > 1) {
       newCartItems[index].quantity -= 1;
@@ -57,21 +48,27 @@ export default function CheckCart() {
     }
   };
 
-  // Hàm để xóa sản phẩm
-  const removeItem = (index: any) => {
+  const removeItem = (index: number) => {
     const newCartItems = [...cartItems];
     newCartItems.splice(index, 1);
     setCartItems(newCartItems);
   };
-  // Hàm để xóa tất cả sản phẩm
+
   const removeAllItems = () => {
     setCartItems([]);
   };
-  // Tính tổng cộng
-  const total = cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0);
 
-  // Tính tổng số lượng sản phẩm
+  const total = cartItems.reduce((acc, item) => acc + item.quantity * item.productPrice, 0);
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  if (isLoading) {
+    console.log('Loading orders...');
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    console.error('Error loading carts:', error);
+    return <div>Error loading carts</div>;
+  }
 
   return (
     <div className='p-12'>
@@ -95,22 +92,24 @@ export default function CheckCart() {
             className='rounded-3xl bg-white p-5'
             style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)' }}
           >
-            {/* Header của bảng */}
             <div className='grid grid-cols-4 font-bold mb-4'>
               <div className='text-center'>Sản phẩm</div>
               <div className='text-center'>Số lượng</div>
               <div className='text-center'>Giá tiền</div>
               <div className='text-center'>Xóa</div>
             </div>
-            {/* Nội dung của giỏ hàng */}
             {cartItems.map((item, index) => (
               <div
                 key={index}
                 className='grid grid-cols-4 items-center mb-4 space-x-4 border border-gray-200 rounded-2xl p-1 '
               >
                 <div className='flex items-center'>
-                  <img src={item.image} alt={item.name} className='w-20 h-20 object-cover mr-4 rounded-2xl' />
-                  <span>{item.name}</span>
+                  <img
+                    src={item.productImage}
+                    alt={item.productName}
+                    className='w-20 h-20 object-cover mr-4 rounded-2xl'
+                  />
+                  <span>{item.productName}</span>
                 </div>
                 <div className='flex items-center justify-center'>
                   <Button icon={<MinusOutlined />} onClick={() => decreaseQuantity(index)} />
@@ -118,7 +117,7 @@ export default function CheckCart() {
                   <Button icon={<PlusOutlined />} onClick={() => increaseQuantity(index)} />
                 </div>
                 <div className='text-center'>
-                  <p>{item.price.toLocaleString('vi-VN')}VND</p>
+                  <p>{item.productPrice.toLocaleString('vi-VN')}VND</p>
                 </div>
                 <div className='text-center'>
                   <Button
@@ -138,12 +137,6 @@ export default function CheckCart() {
             className='rounded-3xl bg-gray-200 p-5'
             style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)' }}
           >
-            {/* <Space.Compact className='w-full h-12'>
-              <Input variant='filled' defaultValue='Nhập mã giảm giá' />
-              <Button type='primary' className='bg-black h-12'>
-                Áp dụng
-              </Button>
-            </Space.Compact> */}
             <div className='flex justify-between mt-3'>
               <div>
                 <p className='text-gray-600 font-bold mb-2'>Tạm tính: </p>

@@ -1,7 +1,9 @@
 import { Button, Form } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import CustomGradientButton from 'components/CustomGradientButton';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 export default function MangeAddressCheckout({
   setCurrentStep
@@ -9,6 +11,23 @@ export default function MangeAddressCheckout({
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const userDataWithLoginGoogle = useSelector((state: RootState) => state.authLoginGoogle.user);
+  const userProfile = useSelector((state: RootState) => state.userProfile.userProfile);
+
+  useEffect(() => {
+    if (userProfile) {
+      form.setFieldsValue({
+        name: userProfile.fullName,
+        phone: userProfile.phone,
+        Address: userProfile.address
+      });
+    } else if (userDataWithLoginGoogle) {
+      form.setFieldsValue({
+        name: userDataWithLoginGoogle.name
+      });
+    }
+  }, [userProfile, form, userDataWithLoginGoogle]);
 
   const handleNextStep = () => {
     form

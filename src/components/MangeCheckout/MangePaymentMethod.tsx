@@ -45,7 +45,7 @@ export default function ManagePaymentMethod({
 
               <button className='border border-quickSilver rounded-md w-1/4 flex items-center py-4 px-8 gap-2  cursor-not-allowed opacity-50 disabled:opacity-100 disabled:bg-gray-300 font-medium  '>
                 <img
-                  className='inline-block'
+                  className ='inline-block'
                   width='28px'
                   src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Momo%2Fkisspng-paypal-logo-e-commerce-payment-system-paypal-5ad78137f1e9c2.9153968515240727599909.jpg?alt=media&token=6d96d5eb-0b34-471d-afed-05e4ccb72301'
                   alt='Paypal'

@@ -132,3 +132,27 @@ export interface AdminGetListUserChildrenResponse {
   accountStatus: string;
   membershipTypeName: any;
 }
+
+export interface UpdateProfileRequest {
+  userId: number;
+  email: string;
+  fullName: string;
+  gender: number;
+  dateOfBirth: string;
+  phone: string;
+  address: string;
+}
+
+export interface UpdateProfileResponse {
+  userId: number;
+  userName: string;
+  fullName: string
+  password: string;
+  phone: string;
+  gender: number;
+  dateOfBirth: string;
+  email: string;
+  profileImage: string;
+  userStatus: string;
+  address: string;
+}

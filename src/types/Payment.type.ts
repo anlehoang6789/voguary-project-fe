@@ -1,29 +1,14 @@
-export interface Payment {
-  paymentId: number;
-  orderId: number;
-  userId: number;
-  paymentAmount: number;
-  paymentMethodId: any; // Adjust this type if possible
-  paymentStatus: string;
-  order: any;
-  paymentMethod: PaymentMethod;
-  user: any;
-}
-
-export interface PaymentMethod {
-  paymentMethodId: number;
-  paymentMethodName: string;
-  payments: any[]; // Adjust this type if possible
-}
-
 export interface GetPaymentByUserIdResponse {
+  pageNumber: number;
+  pageSize: number;
+  totalCount: number;
+  items: GetPaymentByUserIdChildrenResponse[];
+}
+
+export interface GetPaymentByUserIdChildrenResponse {
   paymentId: number;
-  orderId: number;
-  userId: number;
+  paymentTime: string;
   paymentAmount: number;
-  paymentStatus: string;
-  paymentMethod: PaymentMethod;
-  paymentMethodId: number;
+  paymentContent: string;
   paymentMethodName: string;
-  payments: any[];
 }

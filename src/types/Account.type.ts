@@ -146,7 +146,7 @@ export interface UpdateProfileRequest {
 export interface UpdateProfileResponse {
   userId: number;
   userName: string;
-  fullName: string
+  fullName: string;
   password: string;
   phone: string;
   gender: number;

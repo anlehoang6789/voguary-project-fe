@@ -104,3 +104,11 @@ export interface GetProductDetailsInforResponse {
   moreProducts: string[];
   productPolicies: string[];
 }
+
+export interface FilterProductRequest {
+  Colors?: string[];
+  Category?: string[];
+  MinPrice?: number;
+  MaxPrice?: number;
+  Sizes?: string[];
+}

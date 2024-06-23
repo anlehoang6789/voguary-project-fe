@@ -32,7 +32,7 @@ export default function MyBagPopover() {
               <div style={{ flex: '5' }}>
                 <p style={{ fontSize: '13px', marginLeft: '12px' }}>
                   <span style={{ fontWeight: 'bold' }}>
-                    <Typography.Text>Áo dài</Typography.Text>{' '}
+                    <Typography.Text>Order Id: {item.orderId}</Typography.Text>{' '}
                   </span>
                 </p>
                 <div className='ml-3'>

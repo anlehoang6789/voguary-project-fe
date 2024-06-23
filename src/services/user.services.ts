@@ -6,7 +6,9 @@ import {
   UserProfileResponse,
   UpdateAvatarRequest,
   UpdateAvatarResponse,
-  AdminGetListUser
+  AdminGetListUser,
+  UpdateProfileResponse,
+  UpdateProfileRequest
 } from 'types/Account.type';
 import baseUrl from 'utils/http';
 
@@ -51,9 +53,16 @@ export const userApi = createApi({
         url: `User/GetFilteredUser?year=0&month=0&day=0&dayOfWeek=0`,
         method: 'GET'
       })
-    })
+    }),
+    updateProfile: build.mutation<UpdateProfileResponse, UpdateProfileRequest>({
+      query: (updateProfileRequest) => ({
+        url: `User/UpdateProfile?userId=${updateProfileRequest.userId}`,
+        method: 'PUT',
+        body: updateProfileRequest
+      })
+    }),
   })
 });
 
-export const { useGetUserProfileQuery, useChangePasswordMutation, useUpdateAvatarMutation, useAdminGetListUserQuery } =
+export const { useGetUserProfileQuery, useChangePasswordMutation, useUpdateAvatarMutation, useAdminGetListUserQuery, useUpdateProfileMutation } =
   userApi;

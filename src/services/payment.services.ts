@@ -21,7 +21,7 @@ export const paymentApi = createApi({
   endpoints: (build) => ({
     getPaymentByUserId: build.query<GetPaymentByUserIdResponse, number>({
       query: (userId) => ({
-        url: `Payment/ViewHistoryPaymentByUserId?userId${userId}`,
+        url: `Payment/ViewHistoryPaymentByUserId?userId=${userId}`,
         method: 'GET'
       })
     })

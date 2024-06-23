@@ -112,3 +112,65 @@ export interface FilterProductRequest {
   MaxPrice?: number;
   Sizes?: string[];
 }
+
+export interface AddProductRequest {
+  productId: number;
+  name: string;
+  title: string;
+  description: string;
+  productImage: string[];
+  price: number;
+  categoryId: number;
+  productColor: string[];
+  productSize: string[];
+}
+
+export interface AddProductRequest {
+  productId: number;
+  name: string;
+  title: string;
+  description: string;
+  productImage: string[];
+  price: number;
+  categoryId: number;
+  productColor: string[];
+  productSize: string[];
+}
+
+export interface AddProductResponse {
+  productId: number;
+  name: string;
+  title: string;
+  description: string;
+  productImage: string[];
+  price: number;
+  categoryId: number;
+  productColor: string[];
+  productSize: string[];
+}
+
+export interface AddProductDetailRequest {
+  productId: number;
+  description: string;
+  additionalInformation: string;
+  shippingAndReturns: string;
+  sizeChart: string;
+  reviews: string;
+  questions: string;
+  vendorInfo: string;
+  moreProducts: string;
+  productPolicies: string;
+}
+
+export interface AddProductDetailResponse {
+  productId: number;
+  description: string;
+  additionalInformation: string;
+  shippingAndReturns: string;
+  sizeChart: string;
+  reviews: string;
+  questions: string;
+  vendorInfo: string;
+  moreProducts: string;
+  productPolicies: string;
+}

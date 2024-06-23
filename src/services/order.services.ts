@@ -19,9 +19,9 @@ export const orderApi = createApi({
   }),
   refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
-    getOrdersByUserId: build.query<GetOrderByUserIdResponse[], number>({
+    getOrdersByUserId: build.query<GetOrderByUserIdResponse, number>({
       query: (userId) => ({
-        url: `RentalOrder/GetRentalOrdersByUserId?userId=${userId}`,
+        url: `RentalOrder/GetRentalOrdersByUserId?userId=${userId}&pageNumber=1&pageSize=5`,
         method: 'GET'
       })
     })

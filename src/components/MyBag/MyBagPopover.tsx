@@ -26,9 +26,9 @@ export default function MyBagPopover() {
     <div className='w-[400px]'>
       <div className='max-h-[300px] cursor-pointer overflow-auto rounded-lg'>
         <List
-          dataSource={orders}
+          dataSource={orders?.items || []}
           renderItem={(item) => (
-            <List.Item>
+            <List.Item key={item.orderId}>
               <div style={{ flex: '5' }}>
                 <p style={{ fontSize: '13px', marginLeft: '12px' }}>
                   <span style={{ fontWeight: 'bold' }}>

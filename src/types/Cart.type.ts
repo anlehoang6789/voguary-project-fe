@@ -1,33 +1,23 @@
 export interface Cart {
   cartId: number;
   userId: number;
-  quantity: number;
   productId: number;
   productTitle: string;
-  productName: string;
-  productDescription: string;
-  productImage: string;
-  productStatus: string;
+  quantity: number;
   productPrice: number;
-  categoryId: number;
-  createdAt: string;
-  carts: any[];
-  category: any;
-  feedbacks: any[];
-  inventories: any[];
-  productDetails: any[];
-  ratings: any[];
-  rentalOrderDetails: any[];
+  productImageUrl: string[];
+  rentalStart: string;
+  rentalEnd: string;
 }
+
 export interface GetCartByUserIdResponse {
   cartId: number;
   userId: number;
-  quantity: number;
   productId: number;
-  productName: string;
-  productDescription: string;
-  productImage: string;
-  productStatus: string;
+  productTitle: string;
+  quantity: number;
   productPrice: number;
-  carts: any[];
+  productImageUrl: string[];
+  rentalStart: string;
+  rentalEnd: string;
 }

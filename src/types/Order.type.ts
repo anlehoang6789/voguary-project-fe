@@ -13,11 +13,18 @@ export interface Order {
 }
 
 export interface GetOrderByUserIdResponse {
+  pageNumber: number;
+  pageSize: number;
+  totalCount: number;
+  items: Item[];
+}
+
+export interface Item {
   orderId: number;
   orderStatus: string;
   datePlaced: string;
   dueDate: string;
-  returnDate: string;
+  returnDate: any;
   orderTotal: number;
   pointsEarned: number;
 }

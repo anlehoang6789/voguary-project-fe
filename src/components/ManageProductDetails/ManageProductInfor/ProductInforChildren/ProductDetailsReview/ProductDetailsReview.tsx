@@ -70,7 +70,11 @@ export default function ProductDetailsReview() {
                 <br></br>
                 <Typography.Text className='text-sm'>{review.feedbackComment}</Typography.Text>
                 <br></br>
-                <img src={review.feedbackImage} alt={`Feedback ${review.ratingId}`} className='w-2/4 h-auto mt-2' />
+                <img
+                  src={review.feedbackImage}
+                  alt={`Feedback ${review.ratingId}`}
+                  className='w-[150px] h-auto object-cover pt-2'
+                />
               </Col>
             </Row>
           </Row>

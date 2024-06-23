@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
+  FilterProductRequest,
   GetHotProductResponse,
   GetProductDetailsByProductIdResponse,
   GetProductDetailsInforResponse,
@@ -9,6 +10,18 @@ import {
 } from 'types/Product.type';
 import { UserLoginResponse } from 'types/Account.type';
 import baseUrl from 'utils/http';
+
+const buildQueryParams = (params: FilterProductRequest) => {
+  const queryParams = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach((val) => queryParams.append(key, val));
+    } else if (value !== undefined && value !== null) {
+      queryParams.append(key, value);
+    }
+  });
+  return queryParams.toString();
+};
 
 export const productApi = createApi({
   reducerPath: 'productApi',
@@ -61,6 +74,12 @@ export const productApi = createApi({
         url: `ProductDetail/ViewProductDetailByProductId?productId=${productId}`,
         method: 'GET'
       })
+    }),
+    getFilterProducts: build.query<GetProductResponse, FilterProductRequest>({
+      query: (filterProductRequest) => ({
+        url: `Product/PagingAndFilteredProducts?${buildQueryParams(filterProductRequest)}`,
+        method: 'GET'
+      })
     })
   })
 });
@@ -71,5 +90,6 @@ export const {
   useGetProductDetailsByProductIdQuery,
   useGetFeedbackQuery,
   useGetProductRecommendationsQuery,
-  useGetProductDetailsInforQuery
+  useGetProductDetailsInforQuery,
+  useGetFilterProductsQuery
 } = productApi;

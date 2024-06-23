@@ -12,6 +12,9 @@ import { userApi } from 'services/user.services';
 import { notiApi } from 'services/notification.services';
 import productDetailsSlice from 'slice/productDetailsSlice';
 import { orderApi } from 'services/order.services';
+import { categoryApi } from 'services/category.services';
+import { colorApi } from 'services/color.services';
+import { sizeApi } from 'services/size.services';
 import { cartApi } from 'services/cart.services';
 
 export const persistConfig = {
@@ -32,6 +35,9 @@ const rootReducer = combineReducers({
   [productApi.reducerPath]: productApi.reducer,
   [notiApi.reducerPath]: notiApi.reducer,
   [orderApi.reducerPath]: orderApi.reducer,
+  [categoryApi.reducerPath]: categoryApi.reducer,
+  [colorApi.reducerPath]: colorApi.reducer,
+  [sizeApi.reducerPath]: sizeApi.reducer,
   [cartApi.reducerPath]: cartApi.reducer
 });
 
@@ -50,6 +56,9 @@ export const store = configureStore({
       .concat(productApi.middleware)
       .concat(notiApi.middleware)
       .concat(orderApi.middleware)
+      .concat(categoryApi.middleware)
+      .concat(colorApi.middleware)
+      .concat(sizeApi.middleware)
       .concat(cartApi.middleware)
 });
 

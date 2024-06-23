@@ -21,7 +21,7 @@ export default function ProductDetailsDescription() {
 
       {/* Phần bên phải chiếm 40% */}
       <div className='w-2/5 p-4'>
-        <img src={productImage} alt='Mô tả sản phẩm' className='w-full h-auto' />
+        <img src={productImage} alt='Mô tả sản phẩm' className='w-[300px] h-auto object-cover' />
       </div>
     </div>
   );

@@ -1,16 +1,11 @@
-import { Button } from 'antd';
+import { Slider } from 'antd';
 import { useState } from 'react';
 
 export default function FilterPrice() {
-  const prices = [500000, 1000000, 1500000, 2000000, 2500000, 3000000];
-  const [selectedPrices, setSelectedPrices] = useState<number[]>([prices[0]]);
+  const [selectedPrices, setSelectedPrices] = useState<number[]>([100000, 15000000]);
 
-  const handleSizeClick = (price: number) => {
-    setSelectedPrices((prevSelectedPrices) =>
-      prevSelectedPrices.includes(price)
-        ? prevSelectedPrices.filter((selectedPrice) => selectedPrice !== price)
-        : [...prevSelectedPrices, price]
-    );
+  const handleSliderChange = (value: number[]) => {
+    setSelectedPrices(value);
   };
 
   const formatPrice = (price: number) => {
@@ -19,20 +14,19 @@ export default function FilterPrice() {
 
   return (
     <div>
-      {prices.map((price, index) => (
-        <Button
-          size='large'
-          key={index}
-          className={`inline-block text-sm px-3 py-1 !rounded-none mr-2 mb-2 ${
-            selectedPrices.includes(price)
-              ? 'bg-gradient-to-r from-[#fdc830] to-[#f37335] text-white'
-              : ' text-gray-700'
-          }`}
-          onClick={() => handleSizeClick(price)}
-        >
-          {formatPrice(price)}
-        </Button>
-      ))}
+      <Slider
+        range
+        min={100000}
+        max={15000000}
+        step={100000}
+        defaultValue={selectedPrices}
+        onChange={handleSliderChange}
+        tooltip={{ formatter: (value) => (value !== undefined ? `${formatPrice(value)} đồng` : '') }}
+      />
+      <div className='mt-4'>
+        <span>Giá từ: {formatPrice(selectedPrices[0])} đồng</span>
+        <span className='ml-2'>đến: {formatPrice(selectedPrices[1])} đồng</span>
+      </div>
     </div>
   );
 }

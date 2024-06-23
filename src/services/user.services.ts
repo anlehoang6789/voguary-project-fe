@@ -60,9 +60,14 @@ export const userApi = createApi({
         method: 'PUT',
         body: updateProfileRequest
       })
-    }),
+    })
   })
 });
 
-export const { useGetUserProfileQuery, useChangePasswordMutation, useUpdateAvatarMutation, useAdminGetListUserQuery, useUpdateProfileMutation } =
-  userApi;
+export const {
+  useGetUserProfileQuery,
+  useChangePasswordMutation,
+  useUpdateAvatarMutation,
+  useAdminGetListUserQuery,
+  useUpdateProfileMutation
+} = userApi;

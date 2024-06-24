@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import { Button, DatePicker, DatePickerProps, Form, Tag, message } from 'antd';
+import { Button, DatePicker, DatePickerProps, Form, message } from 'antd';
 
 import CustomGradientButton from 'components/CustomGradientButton';
 
@@ -8,7 +8,6 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useGetOrdersByUserIdQuery } from 'services/order.services';
-import { GetOrderByUserIdResponse } from 'types/Order.type';
 
 const aodai =
   'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Products%2F%C3%A1o%20d%C3%A0i.jpg?alt=media&token=4de95e39-5ddf-4b30-982b-cafdbea76e40';
@@ -141,7 +140,7 @@ export default function ManageMyBag() {
 
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 
-  const currentProducts = fakeDataProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  // const currentProducts = fakeDataProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
   const paginate = (pageNumber: any) => setCurrentPage(pageNumber);
 

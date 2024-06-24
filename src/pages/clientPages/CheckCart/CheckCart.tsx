@@ -42,11 +42,9 @@ export default function CheckCart() {
   const handleRentalStartChange = (date: Dayjs | null) => {
     if (date) {
       setRentalStart(date);
-      // Perform any additional logic with the updated date if needed
     }
   };
 
-  // Handle DatePicker change for rental end date
   const handleRentalEndChange = (date: Dayjs | null) => {
     if (date) {
       setRentalEnd(date);

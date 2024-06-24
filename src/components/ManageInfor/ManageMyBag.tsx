@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import { Button, DatePicker, DatePickerProps, Form, Tag, message } from 'antd';
+import { Button, DatePicker, DatePickerProps, Form, message } from 'antd';
 
 import CustomGradientButton from 'components/CustomGradientButton';
 
@@ -8,7 +8,6 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useGetOrdersByUserIdQuery } from 'services/order.services';
-import { GetOrderByUserIdResponse } from 'types/Order.type';
 
 const aodai =
   'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Products%2F%C3%A1o%20d%C3%A0i.jpg?alt=media&token=4de95e39-5ddf-4b30-982b-cafdbea76e40';
@@ -141,7 +140,7 @@ export default function ManageMyBag() {
 
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 
-  const currentProducts = fakeDataProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  // const currentProducts = fakeDataProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
   const paginate = (pageNumber: any) => setCurrentPage(pageNumber);
 
@@ -217,7 +216,7 @@ export default function ManageMyBag() {
         <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
           <tr>
             <th scope='col' className='px-6 py-3'>
-              Tên sản phẩm
+              Mã đơn hàng
             </th>
             <th scope='col' className='px-6 py-3'>
               Ngày bắt đầu
@@ -226,43 +225,40 @@ export default function ManageMyBag() {
               Ngày kết thúc
             </th>
             <th scope='col' className='px-6 py-3'>
-              Trạng thái
+              Giá tiền
             </th>
             <th scope='col' className='px-6 py-3'></th>
           </tr>
         </thead>
 
         <tbody>
-          {orders &&
-            orders.map((order: GetOrderByUserIdResponse) => (
-              <tr key={order.orderId} className='bg-white border-b hover:bg-gray-50'>
-                <th scope='row' className='flex items-center px-6 py-4 text-gray-900 whitespace-nowrap'>
-                  <img className='w-10 h-10 rounded-full' src={aodai} alt={`${order.orderId} image`} />
-                  <div className='ps-3'>
-                    <div className='text-base font-semibold'>Áo dài</div>
-                  </div>
-                </th>
+          {orders?.items.slice(indexOfFirstProduct, indexOfLastProduct).map((order: any) => (
+            <tr key={order.orderId} className='bg-white border-b hover:bg-gray-50'>
+              <th scope='row' className='flex items-center px-6 py-4 text-gray-900 whitespace-nowrap'>
+                <div className='ps-3'>
+                  <div className='text-base font-semibold'>{order.orderId}</div>
+                </div>
+              </th>
 
-                <td className='px-6 py-4'>{order.datePlaced}</td>
+              <td className='px-6 py-4'>{order.datePlaced}</td>
 
-                <td className='px-6 py-4'>{order.dueDate}</td>
+              <td className='px-6 py-4'>{order.dueDate}</td>
 
-                <td className='px-6 py-4'>
-                  {/* <div className='flex items-center'>
+              <td className='px-6 py-4'>{order.orderTotal}</td>
+
+              <td className='px-6 py-4'>
+                {/* <div className='flex items-center'>
                   <Tag color={order.status === 'Còn hạn' ? 'green' : 'red'}>{order.status}</Tag>
                 </div> */}
-                </td>
+              </td>
 
-                <td className='px-6 py-4'>
-                  <button
-                    onClick={() => toggleModal(null)}
-                    className='text-blue-600 hover:underline focus:outline-none'
-                  >
-                    Gia hạn
-                  </button>
-                </td>
-              </tr>
-            ))}
+              <td className='px-6 py-4'>
+                <button onClick={() => toggleModal(null)} className='text-blue-600 hover:underline focus:outline-none'>
+                  Gia hạn
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
 

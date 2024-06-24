@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { UserLoginResponse } from 'types/Account.type';
-import { GetOrderByUserIdResponse } from 'types/Order.type';
+import { GetOrderByUserIdResponse, GetPagedRentalOrderDetailsByUserIdResponse } from 'types/Order.type';
 import baseUrl from 'utils/http';
 
 export const orderApi = createApi({
@@ -19,13 +19,19 @@ export const orderApi = createApi({
   }),
   refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
-    getOrdersByUserId: build.query<GetOrderByUserIdResponse[], number>({
+    getOrdersByUserId: build.query<GetOrderByUserIdResponse, number>({
       query: (userId) => ({
-        url: `RentalOrder/GetRentalOrdersByUserId?userId=${userId}`,
+        url: `RentalOrder/GetRentalOrdersByUserId?userId=${userId}&pageNumber=1&pageSize=5`,
+        method: 'GET'
+      })
+    }),
+    getPagedRentalOrderDetailsByUserId: build.query<GetPagedRentalOrderDetailsByUserIdResponse, number>({
+      query: (userId) => ({
+        url: `RentalOrder/GetPagedRentalOrderDetailsByUserId?userId=${userId}&pageNumber=1&pageSize=5`,
         method: 'GET'
       })
     })
   })
 });
 
-export const { useGetOrdersByUserIdQuery } = orderApi;
+export const { useGetOrdersByUserIdQuery, useGetPagedRentalOrderDetailsByUserIdQuery } = orderApi;

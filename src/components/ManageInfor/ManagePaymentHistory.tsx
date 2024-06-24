@@ -14,7 +14,7 @@ const HistoryPayment: React.FC = () => {
   const paymentDataChildren = paymentData?.items || [];
   const totalCount = paymentData?.totalCount || 0;
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 1;
+  const pageSize = 5;
   const currentData = paymentDataChildren.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   const handleCardClick = (transaction: GetPaymentByUserIdChildrenResponse): void => {

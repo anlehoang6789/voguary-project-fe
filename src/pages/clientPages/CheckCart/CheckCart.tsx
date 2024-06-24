@@ -78,36 +78,39 @@ export default function CheckCart() {
               <div className='text-center'>Giá tiền</div>
               <div className='text-center'>Xóa</div>
             </div>
-            <div
-              key={cartData.cartId}
-              className='grid grid-cols-4 items-center mb-4 space-x-4 border border-gray-200 rounded-2xl p-1 '
-            >
-              <div className='flex items-center'>
-                <img
-                  src={cartData.productImageUrl[0]}
-                  alt={cartData.productTitle}
-                  className='w-20 h-20 object-cover mr-4 rounded-2xl'
-                />
-                <div>
-                  <span>{cartData.productTitle}</span>
-                  <div className='text-sm text-gray-600'>
-                    <DatePicker value={rentalStart} onChange={handleRentalStartChange} format='DD/MM/YYYY' />
-                    <DatePicker value={rentalEnd} onChange={handleRentalEndChange} format='DD/MM/YYYY' disabled />
+            {isSuccess &&
+              cartData.map((item) => (
+                <div
+                  key={item.cartId}
+                  className='grid grid-cols-4 items-center mb-4 space-x-4 border border-gray-200 rounded-2xl p-1 '
+                >
+                  <div className='flex items-center'>
+                    <img
+                      src={item.productImageUrl[0]}
+                      alt={item.productTitle}
+                      className='w-20 h-20 object-cover mr-4 rounded-2xl'
+                    />
+                    <div>
+                      <span>{item.productTitle}</span>
+                      <div className='text-sm text-gray-600'>
+                        <DatePicker value={rentalStart} onChange={handleRentalStartChange} format='DD/MM/YYYY' />
+                        <DatePicker value={rentalEnd} onChange={handleRentalEndChange} format='DD/MM/YYYY' disabled />
+                      </div>
+                    </div>
+                  </div>
+                  <div className='flex items-center justify-center'>
+                    <Button icon={<MinusOutlined />} />
+                    <span className='mx-2'>{item.quantity}</span>
+                    <Button icon={<PlusOutlined />} />
+                  </div>
+                  <div className='text-center'>
+                    <p>{item.productPrice.toLocaleString('vi-VN')} VND</p>
+                  </div>
+                  <div className='text-center'>
+                    <Button icon={<TiDelete style={{ color: 'red', fontSize: '30px' }} />} style={{ border: 'none' }} />
                   </div>
                 </div>
-              </div>
-              <div className='flex items-center justify-center'>
-                <Button icon={<MinusOutlined />} />
-                <span className='mx-2'>{cartData.quantity}</span>
-                <Button icon={<PlusOutlined />} />
-              </div>
-              <div className='text-center'>
-                <p>{cartData.productPrice.toLocaleString('vi-VN')} VND</p>
-              </div>
-              <div className='text-center'>
-                <Button icon={<TiDelete style={{ color: 'red', fontSize: '30px' }} />} style={{ border: 'none' }} />
-              </div>
-            </div>
+              ))}
           </Card>
         </Col>
         <Col span={8}>

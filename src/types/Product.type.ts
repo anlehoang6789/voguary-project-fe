@@ -114,19 +114,6 @@ export interface FilterProductRequest {
 }
 
 export interface AddProductRequest {
-  productId: number;
-  name: string;
-  title: string;
-  description: string;
-  productImage: string[];
-  price: number;
-  categoryId: number;
-  productColor: string[];
-  productSize: string[];
-}
-
-export interface AddProductRequest {
-  productId: number;
   name: string;
   title: string;
   description: string;

@@ -1,80 +1,92 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Table, Tooltip, Button, Pagination, Tag, Modal } from 'antd';
 import { FaEye } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { useGetPagedRentalOrderDetailsByUserIdQuery } from 'services/order.services';
+import { ColumnsType } from 'antd/es/table';
+import { GetPagedRentalOrderChildrenResponse } from 'types/Order.type';
 
-const mockData = [
-  {
-    key: '1',
-    orderId: 'ORD001',
-    price: '100.00',
-    transactionDate: '2023-05-01',
-    status: 'Đang vận chuyển'
-  },
-  {
-    key: '2',
-    orderId: 'ORD002',
-    price: '200.00',
-    transactionDate: '2023-05-02',
-    status: 'Đang vận chuyển'
-  },
-  {
-    key: '3',
-    orderId: 'ORD003',
-    price: '150.00',
-    transactionDate: '2023-05-03',
-    status: 'Đang vận chuyển'
-  },
-  {
-    key: '4',
-    orderId: 'ORD004',
-    price: '150.00',
-    transactionDate: '2023-05-04',
-    status: 'Đang vận chuyển'
-  },
-  {
-    key: '5',
-    orderId: 'ORD005',
-    price: '300.00',
-    transactionDate: '2023-05-05',
-    status: 'Đang vận chuyển'
-  },
-  {
-    key: '6',
-    orderId: 'ORD006',
-    price: '250.00',
-    transactionDate: '2023-05-06',
-    status: 'Đang vận chuyển'
-  },
-  {
-    key: '7',
-    orderId: 'ORD007',
-    price: '400.00',
-    transactionDate: '2023-05-07',
-    status: 'Đang vận chuyển'
-  },
-  {
-    key: '8',
-    orderId: 'ORD008',
-    price: '350.00',
-    transactionDate: '2023-05-08',
-    status: 'Đang vận chuyển'
-  },
-  {
-    key: '9',
-    orderId: 'ORD009',
-    price: '450.00',
-    transactionDate: '2023-05-09',
-    status: 'Đang vận chuyển'
-  },
-  {
-    key: '10',
-    orderId: 'ORD010',
-    price: '450.00',
-    transactionDate: '2023-05-09',
-    status: 'Đang vận chuyển'
-  }
-];
+// const mockData = [
+//   {
+//     key: '1',
+//     orderId: 'ORD001',
+//     price: '100.00',
+//     transactionDate: '2023-05-01',
+//     status: 'Đang vận chuyển'
+//   },
+//   {
+//     key: '2',
+//     orderId: 'ORD002',
+//     price: '200.00',
+//     transactionDate: '2023-05-02',
+//     status: 'Đang vận chuyển'
+//   },
+//   {
+//     key: '3',
+//     orderId: 'ORD003',
+//     price: '150.00',
+//     transactionDate: '2023-05-03',
+//     status: 'Đang vận chuyển'
+//   },
+//   {
+//     key: '4',
+//     orderId: 'ORD004',
+//     price: '150.00',
+//     transactionDate: '2023-05-04',
+//     status: 'Đang vận chuyển'
+//   },
+//   {
+//     key: '5',
+//     orderId: 'ORD005',
+//     price: '300.00',
+//     transactionDate: '2023-05-05',
+//     status: 'Đang vận chuyển'
+//   },
+//   {
+//     key: '6',
+//     orderId: 'ORD006',
+//     price: '250.00',
+//     transactionDate: '2023-05-06',
+//     status: 'Đang vận chuyển'
+//   },
+//   {
+//     key: '7',
+//     orderId: 'ORD007',
+//     price: '400.00',
+//     transactionDate: '2023-05-07',
+//     status: 'Đang vận chuyển'
+//   },
+//   {
+//     key: '8',
+//     orderId: 'ORD008',
+//     price: '350.00',
+//     transactionDate: '2023-05-08',
+//     status: 'Đang vận chuyển'
+//   },
+//   {
+//     key: '9',
+//     orderId: 'ORD009',
+//     price: '450.00',
+//     transactionDate: '2023-05-09',
+//     status: 'Đang vận chuyển'
+//   },
+//   {
+//     key: '10',
+//     orderId: 'ORD010',
+//     price: '450.00',
+//     transactionDate: '2023-05-09',
+//     status: 'Đang vận chuyển'
+//   }
+// ];
 
+const formatDateTime = (dateTimeString: string) => {
+  const date = new Date(dateTimeString);
+  const formattedDate = date.toLocaleDateString('vi-VN');
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  return `${formattedDate} lúc ${hours}h${minutes}phút`;
+};
 interface Order {
   key: string;
   orderId: string;
@@ -84,38 +96,47 @@ interface Order {
 }
 
 export default function ManageBeingTransported() {
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 5, total: mockData.length });
-  const [currentData, setCurrentData] = useState(mockData.slice(0, pagination.pageSize));
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  // const [pagination, setPagination] = useState({ current: 1, pageSize: 5, total: mockData.length });
+  // const [currentData, setCurrentData] = useState(mockData.slice(0, pagination.pageSize));
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
-  useEffect(() => {
-    const startIdx = (pagination.current - 1) * pagination.pageSize;
-    const endIdx = startIdx + pagination.pageSize;
-    setCurrentData(mockData.slice(startIdx, endIdx));
-  }, [pagination]);
+  //Lấy data từ redux store sau khi đăng nhập từ api thành công
+  const userIdString = useSelector((state: RootState) => state.authLoginAPI.userId);
+  const userId = parseInt(userIdString || '0');
+  const { data: orderTrackingData, error, isFetching } = useGetPagedRentalOrderDetailsByUserIdQuery(userId);
+  const orderTrackingChildren = orderTrackingData?.items || [];
+  //Filter status để hiển thị đơn hàng đang vận chuyển
+  const filteredOrdersStatus = orderTrackingChildren.filter((order) => order.status === 'Đang vận chuyển');
+  const totalCount = filteredOrdersStatus.length;
+  const currentData = filteredOrdersStatus.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
-  const handlePageChange = (page: number) => {
-    setPagination({ ...pagination, current: page });
+  const handlePageChange = (page: number, pageSize?: number) => {
+    setCurrentPage(page);
+    if (pageSize) {
+      setPageSize(pageSize);
+    }
   };
 
-  const handleViewDetails = (order: Order) => {
-    setSelectedOrder(order);
-    setIsModalVisible(true);
-  };
+  // const handleViewDetails = (order: Order) => {
+  //   setSelectedOrder(order);
+  //   setIsModalVisible(true);
+  // };
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
     setSelectedOrder(null);
   };
 
-  const columns = [
+  const columns: ColumnsType<GetPagedRentalOrderChildrenResponse> = [
     {
       title: 'STT',
       dataIndex: 'index',
       key: 'index',
       render: (_: any, __: any, index: number) => {
-        const calculatedIndex = (pagination.current - 1) * pagination.pageSize + index + 1;
+        const calculatedIndex = (currentPage - 1) * pageSize + index + 1;
         return (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <span>{calculatedIndex}</span>
@@ -126,21 +147,21 @@ export default function ManageBeingTransported() {
     },
     {
       title: 'Mã đơn hàng',
-      dataIndex: 'orderId',
-      key: 'orderId',
-      width: '20%'
+      dataIndex: 'orderCode',
+      key: 'orderCode',
+      width: '10%'
     },
     {
-      title: 'Giá tiền',
-      dataIndex: 'price',
-      key: 'price',
-      width: '15%',
-      render: (price: string) => `${price} VND`
+      title: 'Tên món hàng',
+      dataIndex: 'productName',
+      key: 'productName',
+      width: '15%'
     },
     {
       title: 'Ngày giao dịch',
-      dataIndex: 'transactionDate',
-      key: 'transactionDate',
+      dataIndex: 'paymentTime',
+      key: 'paymentTime',
+      render: (text: string) => formatDateTime(text),
       width: '20%'
     },
     {
@@ -150,7 +171,7 @@ export default function ManageBeingTransported() {
       render: (status: string) => {
         let color;
         switch (status) {
-          case 'Chờ thanh toán':
+          case 'Chờ xác nhận':
             color = 'yellow';
             break;
           case 'Đang vận chuyển':
@@ -162,7 +183,7 @@ export default function ManageBeingTransported() {
           case 'Hoàn thành':
             color = 'green';
             break;
-          case 'Đã hủy':
+          case 'Expired':
             color = 'red';
             break;
           default:
@@ -175,28 +196,40 @@ export default function ManageBeingTransported() {
     {
       title: 'Action',
       key: 'action',
-      render: (_: any, record: Order) => (
+      render: (_: any, record: GetPagedRentalOrderChildrenResponse) => (
         <Tooltip title='Xem chi tiết đơn hàng'>
-          <Button icon={<FaEye style={{ fontSize: '25px' }} />} onClick={() => handleViewDetails(record)} />
+          <Button icon={<FaEye style={{ fontSize: '25px' }} />} />
         </Tooltip>
       ),
       width: '10%'
     }
   ];
+
+  if (error) {
+    return <div>Something went wrong</div>;
+  }
+
   return (
     <div className='mx-auto w-full min-h-screen space-y-4'>
-      <Table columns={columns} dataSource={currentData} pagination={false} rowKey='key' scroll={{ x: '100%' }} />
+      <Table
+        columns={columns}
+        dataSource={currentData}
+        pagination={false}
+        loading={isFetching}
+        rowKey='key'
+        scroll={{ x: '100%' }}
+      />
       <Pagination
         className='flex justify-end'
-        current={pagination.current}
-        pageSize={pagination.pageSize}
-        total={pagination.total}
+        current={currentPage}
+        pageSize={pageSize}
+        total={totalCount}
         onChange={handlePageChange}
       />
 
       <Modal
         title={<span className='flex justify-center text-xl pb-3'>Chi tiết đơn hàng</span>}
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCloseModal}
         footer={[
           <Button key='close' onClick={handleCloseModal}>

@@ -19,6 +19,7 @@ const { Title } = Typography;
 
 export default function ManageOrderTracking() {
   const userDataWithLoginGoogle = useSelector((state: RootState) => state.authLoginGoogle.user);
+  const userProfileFullName = useSelector((state: RootState) => state.userProfile.userProfile);
   const [selectedComponent, setSelectedComponent] = useState<JSX.Element | null>(<ManageAllOrder />);
   const [defaultSelectedKey, setDefaultSelectedKey] = useState<string>('0');
 
@@ -63,7 +64,7 @@ export default function ManageOrderTracking() {
   return (
     <div className='w-full md:w-4/5 mx-auto min-h-screen'>
       <div className='mb-4'>
-        <Title level={3}>Đơn hàng của {userDataWithLoginGoogle?.name}</Title>
+        <Title level={3}>Đơn hàng của {userDataWithLoginGoogle?.name || userProfileFullName?.fullName}</Title>
       </div>
       <div className='w-full'>
         <Menu

@@ -28,3 +28,20 @@ export interface Item {
   orderTotal: number;
   pointsEarned: number;
 }
+
+export interface GetPagedRentalOrderDetailsByUserIdResponse {
+  pageNumber: number;
+  pageSize: number;
+  totalCount: number;
+  items: GetPagedRentalOrderChildrenResponse[];
+}
+
+export interface GetPagedRentalOrderChildrenResponse {
+  productName: string;
+  productImage: string;
+  rentalStart: string;
+  rentalEnd: string;
+  status: string;
+  paymentTime: string;
+  orderCode: string;
+}

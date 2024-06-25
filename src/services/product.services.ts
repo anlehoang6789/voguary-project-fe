@@ -109,5 +109,7 @@ export const {
   useGetFeedbackQuery,
   useGetProductRecommendationsQuery,
   useGetProductDetailsInforQuery,
-  useGetFilterProductsQuery
+  useGetFilterProductsQuery,
+  useAddProductMutation,
+  useAddProductDetailMutation
 } = productApi;

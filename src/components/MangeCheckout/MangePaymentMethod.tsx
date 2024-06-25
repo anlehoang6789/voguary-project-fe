@@ -3,26 +3,72 @@ import { Button, Form } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import CustomGradientButton from 'components/CustomGradientButton';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useGetCartByUserIdQuery } from 'services/cart.services';
+import { useAddPaymentMethodMutation } from 'services/payment.services';
+import { RootState } from 'store';
 
 export default function ManagePaymentMethod({
   setCurrentStep
 }: {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 }) {
+  const userIdString = useSelector((state: RootState) => state.authLoginAPI.userId);
+  const userId = parseInt(userIdString || '0');
   const [selectedMethod, setSelectedMethod] = useState('');
   const [formDisabled, setFormDisabled] = useState(true);
   const navigate = useNavigate();
+  const [addPaymentMethod, { data, error, isLoading }] = useAddPaymentMethodMutation();
+  const { data: cartData, isSuccess } = useGetCartByUserIdQuery(userId);
 
-  function handleNextStep() {
-    // Navigate to /orderTracking
-    navigate('/orderTracking');
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
-  function handleMethodSelect(method: string) {
+  if (error) {
+    console.error('Error loading carts:', error);
+    return <div>Error loading carts</div>;
+  }
+
+  if (!isSuccess || !cartData || cartData.length === 0) {
+    return <div>No cart items found</div>;
+  }
+
+  const total = cartData.reduce((acc, item) => acc + item.quantity * item.productPrice, 0);
+
+  const handleMethodSelect = (method: string) => {
     setSelectedMethod(method);
     setFormDisabled(method !== 'bank');
-  }
+  };
+
+  const handleNextStep = async () => {
+    if (selectedMethod === 'bank') {
+      try {
+        const response = await addPaymentMethod({
+          userId,
+          PaymentMethodId: 1 // Thanh toán qua thẻ
+        }).unwrap();
+
+        if (response.paymentLink) {
+          window.location.href = response.paymentLink;
+        }
+      } catch (err) {
+        console.error('Failed to add payment method:', err);
+      }
+    } else if (selectedMethod === 'cod') {
+      try {
+        await addPaymentMethod({
+          userId,
+          PaymentMethodId: 2
+        }).unwrap();
+
+        navigate('/orderTracking');
+      } catch (err) {
+        console.error('Failed to add payment method:', err);
+      }
+    }
+  };
 
   return (
     <div className='container mx-auto min-h-screen flex flex-col lg:flex-col xl:flex-row'>
@@ -52,21 +98,17 @@ export default function ManagePaymentMethod({
                 />
                 <span className='inline-block'>PayPal</span>
               </button>
-              <CustomGradientButton>
-                <Button
-                  onClick={() => handleMethodSelect('momo')}
-                  type={selectedMethod === 'momo' ? 'primary' : 'default'}
-                  className='border border-quickSilver rounded-md w-1/4 flex items-center py-7 px-8 gap-4  cursor-pointer font-medium'
-                >
-                  <img
-                    className='inline-block'
-                    width='30px'
-                    src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Momo%2FPrimary%20logo%402x.png?alt=media&token=df32290b-904a-430e-aa4d-3cf08359560b'
-                    alt='Momo'
-                  />
-                  <span className='inline-block'>Momo</span>
-                </Button>
-              </CustomGradientButton>
+
+              <button className='border border-quickSilver rounded-md w-1/4 flex items-center py-4 px-8 gap-2  cursor-not-allowed opacity-50 disabled:opacity-100 disabled:bg-gray-300 font-medium  '>
+                <img
+                  className='inline-block'
+                  width='30px'
+                  src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Momo%2FPrimary%20logo%402x.png?alt=media&token=df32290b-904a-430e-aa4d-3cf08359560b'
+                  alt='Momo'
+                />
+                <span className='inline-block'>Momo</span>
+              </button>
+
               <CustomGradientButton>
                 <Button
                   onClick={() => handleMethodSelect('cod')}
@@ -78,163 +120,16 @@ export default function ManagePaymentMethod({
                 </Button>
               </CustomGradientButton>
             </div>
-
-            {selectedMethod === 'bank' && (
-              <div className='flex justify-center'>
-                <img
-                  src='https://bizweb.dktcdn.net/100/150/781/files/vnpayqr-code.jpg?v=1563855957237'
-                  alt='vnpay'
-                  className='w-2/3'
-                />
-              </div>
-            )}
-
-            {selectedMethod === 'momo' && (
-              <div className='flex justify-center mt-[-40px]'>
-                <img
-                  src='https://homepage.momocdn.net/img/momo-upload-api-220418155002-637858938029609599.png'
-                  alt='momo'
-                />
-              </div>
-            )}
-
-            {/* <Form action='#'>
-              <div className='mb-5'>
-                <label htmlFor='cardholder-name' className='pl-2 mb-1 text-sm text-spanishGray block'>
-                  Tên chủ thẻ
-                </label>
-                <FormItem
-                  name='cardholder-name'
-                  rules={[
-                    { required: true, message: 'Vui lòng nhập tên thẻ' },
-                    {
-                      pattern: /^[A-Z ]{2,}$/,
-                      message: 'Tên thẻ phải có trên 2 kí tự, viết hoa và không dấu'
-                    }
-                  ]}
-                >
-                  <input
-                    type='text'
-                    name='cardholder-name'
-                    id='cardholder-name'
-                    placeholder='NGUYEN VAN A'
-                    className={`bg-platinum rounded-md text-davysGray py-3 px-4 text-lg font-medium  w-full focus:outline-blue-500 ${formDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    disabled={formDisabled}
-                  />
-                </FormItem>
-              </div>
-
-              <div className='mb-5'>
-                <label htmlFor='card-number' className='pl-2 mb-1 text-sm text-spanishGray block'>
-                  Số thẻ
-                </label>
-                <FormItem
-                  name='card-number'
-                  rules={[
-                    { required: true, message: 'Vui lòng nhập số thẻ' },
-                    {
-                      pattern: /^\d{10}$/,
-                      message: 'Số thẻ phải có 10 số'
-                    }
-                  ]}
-                >
-                  <input
-                    type='text'
-                    name='card-number'
-                    id='card-number'
-                    className={`bg-platinum rounded-md text-davysGray py-3 px-4 text-lg font-medium w-full tracking-widest focus:outline-blue-500 ${formDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    disabled={formDisabled}
-                  />
-                </FormItem>
-              </div>
-
-              <div className='flex items-center gap-7'>
-                <div className='w-1/2'>
-                  <label htmlFor='expire-date' className='pl-2 mb-1 text-sm text-spanishGray block'>
-                    Ngày hết hạn
-                  </label>
-
-                  <div className='flex items-center gap-3 text-spanishGray'>
-                    <FormItem
-                      name='day'
-                      rules={[
-                        { required: true, message: 'Vui lòng nhập ngày hết hạn' },
-                        {
-                          pattern: /^([1-9]|[12][0-9]|3[01])$/,
-                          message: 'Không được quá 31 ngày'
-                        }
-                      ]}
-                    >
-                      <input
-                        type='text'
-                        name='day'
-                        id='expire-date'
-                        placeholder='31'
-                        min='1'
-                        max='31'
-                        className={`bg-platinum rounded-md text-davysGray py-3 px-4  text-lg font-medium w-full focus:outline-blue-500 text-center ${formDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        disabled={formDisabled}
-                      />
-                    </FormItem>
-                    <div className='pb-8'>/</div>
-                    <FormItem
-                      name='month'
-                      rules={[
-                        { required: true, message: 'Vui lòng nhập tháng hết hạn' },
-                        {
-                          pattern: /^(0?[1-9]|1[0-2])$/,
-                          message: 'Không được quá 12 tháng'
-                        }
-                      ]}
-                    >
-                      <input
-                        type='text'
-                        name='month'
-                        id='expire-date'
-                        placeholder='12'
-                        min='1'
-                        max='12'
-                        className={`bg-platinum rounded-md text-davysGray py-3 px-4  text-lg font-medium w-full focus:outline-blue-500 text-center ${formDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        disabled={formDisabled}
-                      />
-                    </FormItem>
-                  </div>
-                </div>
-
-                <div className='w-1/2'>
-                  <label htmlFor='cvv' className='pl-2 mb-1 text-sm text-spanishGray block'>
-                    CVV
-                  </label>
-                  <FormItem
-                    name='cvv'
-                    rules={[
-                      { required: true, message: 'Vui lòng nhập CVV' },
-                      {
-                        pattern: /^\d{3}$/,
-                        message: 'CVV phải có 3 số'
-                      }
-                    ]}
-                  >
-                    <input
-                      type='text'
-                      name='cvv'
-                      id='cvv'
-                      className={`bg-platinum rounded-md text-davysGray py-3 px-4 text-lg font-medium w-full tracking-widest focus:outline-blue-500 appearance-none ${formDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                      disabled={formDisabled}
-                    />
-                  </FormItem>
-                </div>
-              </div>
-            </Form> */}
           </div>
           <CustomGradientButton>
             <Button
               className='btn btn-primary cursor-pointer font-medium pb-10 pt-3 px-6 text-lg'
               type='primary'
               onClick={handleNextStep}
+              disabled={isLoading}
             >
               <b className='mr-2'>Thanh toán: </b>
-              <span id='payAmount'>285.000</span>
+              <span id='payAmount'>{total.toLocaleString()}</span>
               <span>&nbsp;VND</span>
             </Button>
           </CustomGradientButton>
@@ -247,60 +142,64 @@ export default function ManagePaymentMethod({
             style={{ maxHeight: 'calc(50vh - 20px)' }}
           >
             <h2 className='section-heading text-оnух text-2xl mb-7 font-medium'>Đơn hàng</h2>
-            <div className=' mb-5 last:mb-0'>
-              <div className='relative flex items-center gap-5'>
-                <div className='img-box'>
-                  <img
-                    src='https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Products%2F%C3%A1o%20d%C3%A0i.jpg?alt=media&token=4de95e39-5ddf-4b30-982b-cafdbea76e40'
-                    alt='Ao dai'
-                    className='product-img block rounded-md'
-                    width='80px'
-                  />
-                </div>
-
-                <div className='detail '>
-                  <h4 className='font-semibold text-base text-dimGray mb-3'>Áo dài Tết</h4>
-                  <div className='flex gap-5 pb-3'>
-                    <div className='flex items-center gap-3'>
-                      <button
-                        id='decrement'
-                        className='border-none bg-none cursor-pointer bg-platinum w-5 h-5 flex justify-center items-center active:bg-blue-300'
-                      >
-                        <MinusOutlined />
-                      </button>
-
-                      <span className='inline-block' id='quantity'>
-                        1
-                      </span>
-
-                      <button
-                        id='increment'
-                        className='border-none bg-none cursor-pointer bg-platinum w-5 h-5 flex justify-center items-center active:bg-blue-300'
-                      >
-                        <PlusOutlined />
-                      </button>
-                    </div>
-
-                    <div className='price'>
-                      <span className='inline-block' id='price'>
-                        125.000{' '}
-                      </span>{' '}
-                      VND
-                    </div>
+            {cartData.map((item) => (
+              <div key={item.cartId} className=' mb-5 last:mb-0'>
+                <div className='relative flex items-center gap-5'>
+                  <div className='img-box'>
+                    <img
+                      src={item.productImageUrl[0]}
+                      alt={item.productTitle}
+                      className='product-img block rounded-md'
+                      width='80px'
+                    />
                   </div>
-                  <span className='font-thin text-sm text-dimGray'>Ngày thuê: 21/03/2024 - 24/03/2024</span>
+
+                  <div className='detail '>
+                    <h4 className='font-semibold text-base text-dimGray mb-3'>{item.productTitle}</h4>
+                    <div className='flex gap-5 pb-3'>
+                      <div className='flex items-center gap-3'>
+                        <button
+                          id='decrement'
+                          className='border-none bg-none cursor-pointer bg-platinum w-5 h-5 flex justify-center items-center active:bg-blue-300'
+                        >
+                          <MinusOutlined />
+                        </button>
+
+                        <span className='inline-block' id='quantity'>
+                          {item.quantity}
+                        </span>
+
+                        <button
+                          id='increment'
+                          className='border-none bg-none cursor-pointer bg-platinum w-5 h-5 flex justify-center items-center active:bg-blue-300'
+                        >
+                          <PlusOutlined />
+                        </button>
+                      </div>
+
+                      <div className='price'>
+                        <span className='inline-block' id='price'>
+                          {item.productPrice.toLocaleString()}
+                        </span>{' '}
+                        VND
+                      </div>
+                    </div>
+                    <span className='font-thin text-sm text-dimGray'>
+                      {item.rentalStart} - {item.rentalEnd}
+                    </span>
+                  </div>
+
+                  <button
+                    id='product-close-btn'
+                    className='border-none bg-none cursor-pointer active:scale-95 absolute top-0 right-3'
+                  >
+                    <CloseOutlined className='text-quickSilver hover:text-redSalsa' />
+                  </button>
                 </div>
-
-                <button
-                  id='product-close-btn'
-                  className='border-none bg-none cursor-pointer active:scale-95 absolute top-0 right-3'
-                >
-                  <CloseOutlined className='text-quickSilver hover:text-redSalsa' />
-                </button>
               </div>
-            </div>
+            ))}
 
-            <div className=' mb-5 last:mb-0'>
+            {/* <div className=' mb-5 last:mb-0'>
               <div className='relative flex items-center gap-5'>
                 <div className='img-box'>
                   <img
@@ -404,7 +303,7 @@ export default function ManagePaymentMethod({
                   <CloseOutlined className='text-quickSilver hover:text-redSalsa' />
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className='wrapper'>
@@ -413,7 +312,7 @@ export default function ManagePaymentMethod({
                 <span className='inline-block'>Tổng</span>{' '}
                 <span className='inline-block'>
                   <span className='inline-block' id='subtotal'>
-                    285.000
+                    {total.toLocaleString()}
                   </span>{' '}
                   VND
                 </span>
@@ -443,7 +342,7 @@ export default function ManagePaymentMethod({
                 <span className='inline-block'>Tổng cộng</span>{' '}
                 <span className='inline-block'>
                   <span className='inline-block' id='total'>
-                    285.000
+                    {total.toLocaleString()}
                   </span>{' '}
                   VND
                 </span>

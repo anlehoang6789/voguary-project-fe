@@ -1,24 +1,33 @@
-import { Button, Col, Form, Input, Row, Select, Tag } from 'antd';
+import { Alert, Button, Col, Form, Input, Row, Select, Skeleton, Tag } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
-import { Option } from 'antd/es/mentions';
 import CustomGradientButton from 'components/CustomGradientButton';
 import { useState } from 'react';
 import { RcFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
 import { InboxOutlined } from '@ant-design/icons';
+import { useGetAllSizeQuery } from 'services/size.services';
+import { useGetAllColorQuery } from 'services/color.services';
+import { useGetAllCategoriesQuery } from 'services/category.services';
 
 export default function AddProductForStaff() {
-  const defaultAvatar =
-    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Avatar%2Favatar_preview_default.png?alt=media&token=0bbfe019-baaa-4bce-ba00-c9f08f868a1c';
-
   const allowImageTypes = ['jpg', 'jpeg', 'png'];
-  const [previewImage, setPreviewImage] = useState(defaultAvatar);
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isImageFile, setIsImageFile] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [inputFilled, setInputFilled] = useState(false);
+
+  //Lấy ra tất cả size từ API
+  const { data: sizes, isLoading, error, isSuccess } = useGetAllSizeQuery();
+  //Lấy ra tất cả color từ API
+  const { data: colors, isLoading: colorLoading, error: colorError, isSuccess: colorIsSuccess } = useGetAllColorQuery();
+  //Lấy tất cả category từ API
+  const {
+    data: categories,
+    isLoading: categoryLoading,
+    error: categoryError,
+    isSuccess: categoryIsSuccess
+  } = useGetAllCategoriesQuery();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -41,16 +50,14 @@ export default function AddProductForStaff() {
     }
   };
 
-  const colors = ['#FF0000', '#00FF00', '#310dd351', '#FFFF00', '#FF00FF', '#00FFFF', '#000000', '#FFFFFF'];
-  const [selectedColors, setSelectedColors] = useState<string[]>([colors[0]]);
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
 
-  const sizes = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([sizes[0]]);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
 
   const handleSizeClick = (size: string) => {
     setSelectedSizes((prevSelectedSizes) =>
       prevSelectedSizes.includes(size)
-        ? prevSelectedSizes.filter((selectedSize) => selectedSize !== size)
+        ? prevSelectedSizes.filter((selectedSizes) => selectedSizes !== size)
         : [...prevSelectedSizes, size]
     );
   };
@@ -58,7 +65,7 @@ export default function AddProductForStaff() {
   const handleColorClick = (color: string) => {
     setSelectedColors((prevSelectedColors) =>
       prevSelectedColors.includes(color)
-        ? prevSelectedColors.filter((selectedColor) => selectedColor !== color)
+        ? prevSelectedColors.filter((selectedColors) => selectedColors !== color)
         : [...prevSelectedColors, color]
     );
   };
@@ -118,17 +125,16 @@ export default function AddProductForStaff() {
               name='productType'
               rules={[{ required: true, message: 'Vui lòng chọn loại hàng' }]}
             >
-              <Select placeholder='Quần dài' className='w-full max-w-[300px]'>
-                <Option value='pants'>Quần dài</Option>
-                <Option value='shorts'>Quần ngắn</Option>
-                <Option value='trouser'>Quần tây</Option>
-                <Option value='t-shirt'>Áo thun</Option>
-                <Option value='shirt'>Áo sơ mi</Option>
-                <Option value='vest'>Áo vest</Option>
-                <Option value='dress'>Đầm</Option>
-                <Option value='vay'>Váy</Option>
-                <Option value='aodai'>Áo dài</Option>
-                <Option value='jewelry'>Trang sức</Option>
+              <Select className='w-full max-w-[300px]'>
+                {categoryLoading && <Skeleton active />}
+                {categoryError && <Alert message='Error loading category' type='error' />}
+                {categoryIsSuccess &&
+                  categories &&
+                  categories.map((category) => (
+                    <Select.Option value={category.categoryName} key={category.categoryId}>
+                      {category.categoryName}
+                    </Select.Option>
+                  ))}
               </Select>
             </FormItem>
           </Col>
@@ -185,45 +191,49 @@ export default function AddProductForStaff() {
               validateStatus={selectedColors.length > 0 ? 'success' : 'error'}
               help={selectedColors.length > 0 ? '' : 'Vui lòng chọn màu sản phẩm'}
             >
-              {colors.map((color, index) => (
-                <Button
-                  size='large'
-                  key={index}
-                  style={{
-                    backgroundColor: color,
-                    width: '40px',
-                    height: '40px',
-                    marginRight: '11px',
-                    marginBottom: '5px',
-                    position: 'relative'
-                  }}
-                  onClick={() => handleColorClick(color)}
-                >
-                  <div
+              {colorLoading && <Skeleton active />}
+              {colorError && <Alert message='Error loading colors' type='error' />}
+              {colorIsSuccess &&
+                colors &&
+                colors.map((color) => (
+                  <Button
+                    size='large'
+                    key={color.colorId}
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: '100%'
+                      backgroundColor: color.hexCode,
+                      width: '40px',
+                      height: '40px',
+                      marginRight: '11px',
+                      marginBottom: '5px',
+                      position: 'relative'
                     }}
+                    onClick={() => handleColorClick(color.hexCode)}
                   >
-                    {selectedColors.includes(color) && (
-                      <div
-                        style={{
-                          position: 'absolute',
-                          top: '50%',
-                          left: '50%',
-                          transform: 'translate(-50%, -50%)',
-                          fontSize: '24px',
-                          color: color === '#000000' ? '#FFFFFF' : '#000000'
-                        }}
-                      >
-                        ✓
-                      </div>
-                    )}
-                  </div>
-                </Button>
-              ))}
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100%'
+                      }}
+                    >
+                      {selectedColors.includes(color.hexCode) && (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            fontSize: '24px',
+                            color: color.hexCode === '#000000' ? '#FFFFFF' : '#000000'
+                          }}
+                        >
+                          ✓
+                        </div>
+                      )}
+                    </div>
+                  </Button>
+                ))}
             </Form.Item>
           </Col>
 
@@ -236,20 +246,24 @@ export default function AddProductForStaff() {
               validateStatus={selectedSizes.length > 0 ? 'success' : 'error'}
               help={selectedSizes.length > 0 ? '' : 'Vui lòng chọn kích thước'}
             >
-              {sizes.map((size, index) => (
-                <Button
-                  size='large'
-                  key={index}
-                  className={`inline-block text-sm px-3 py-1 !rounded-none mr-2 mb-2 ${
-                    selectedSizes.includes(size)
-                      ? 'bg-gradient-to-r from-[#00c6ff] to-blue-700 text-white'
-                      : ' text-gray-700'
-                  }`}
-                  onClick={() => handleSizeClick(size)}
-                >
-                  {size}
-                </Button>
-              ))}
+              {isLoading && <Skeleton active />}
+              {error && <Alert message='Error loading sizes' type='error' />}
+              {isSuccess &&
+                sizes &&
+                sizes.map((size) => (
+                  <Button
+                    size='large'
+                    key={size.sizeId}
+                    className={`inline-block text-sm px-3 py-1 !rounded-none mr-2 mb-2 ${
+                      selectedSizes.includes(size.sizeName)
+                        ? 'bg-gradient-to-r from-[#fdc830] to-[#f37335] text-white'
+                        : ' text-gray-700'
+                    }`}
+                    onClick={() => handleSizeClick(size.sizeName)}
+                  >
+                    {size.sizeName}
+                  </Button>
+                ))}
             </FormItem>
           </Col>
 

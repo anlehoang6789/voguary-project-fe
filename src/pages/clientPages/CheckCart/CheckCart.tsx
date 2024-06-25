@@ -4,7 +4,7 @@ import { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 import { TiDelete } from 'react-icons/ti';
 import { useSelector } from 'react-redux';
-import { useGetCartByUserIdQuery } from 'services/cart.services';
+import { useGetCartByUserIdQuery, useDeleteCartMutation } from 'services/cart.services';
 import { RootState } from 'store';
 import { stringToDate } from 'utils/convertTypeDayjs';
 import PaymentInfo from './PaymentCart/PaymentInfo';
@@ -12,7 +12,8 @@ import PaymentInfo from './PaymentCart/PaymentInfo';
 export default function CheckCart() {
   const userIdString = useSelector((state: RootState) => state.authLoginAPI.userId);
   const userId = parseInt(userIdString || '0');
-  const { data: cartData, error, isLoading, isSuccess } = useGetCartByUserIdQuery(userId);
+  const { data: cartData, error, isLoading, isSuccess, refetch } = useGetCartByUserIdQuery(userId); // Get refetch
+  const [deleteCart] = useDeleteCartMutation();
   const [rentalStart, setRentalStart] = useState<Dayjs | null>(null);
   const [rentalEnd, setRentalEnd] = useState<Dayjs | null>(null);
 
@@ -38,6 +39,7 @@ export default function CheckCart() {
 
   const total = cartData.reduce((acc, item) => acc + item.quantity * item.productPrice, 0);
   const totalItems = cartData.reduce((acc, item) => acc + item.quantity, 0);
+
   const handleRentalStartChange = (date: Dayjs | null) => {
     if (date) {
       setRentalStart(date);
@@ -49,6 +51,17 @@ export default function CheckCart() {
       setRentalEnd(date);
     }
   };
+
+  const handleDelete = async (cartId: number) => {
+    try {
+      await deleteCart(cartId).unwrap();
+      console.log('Cart item deleted successfully');
+      refetch();
+    } catch (error) {
+      console.error('Failed to delete cart item:', error);
+    }
+  };
+
   return (
     <div className='p-12'>
       <Row gutter={16}>
@@ -106,7 +119,11 @@ export default function CheckCart() {
                     <p>{item.productPrice.toLocaleString('vi-VN')} VND</p>
                   </div>
                   <div className='text-center'>
-                    <Button icon={<TiDelete style={{ color: 'red', fontSize: '30px' }} />} style={{ border: 'none' }} />
+                    <Button
+                      icon={<TiDelete style={{ color: 'red', fontSize: '30px' }} />}
+                      style={{ border: 'none' }}
+                      onClick={() => handleDelete(item.cartId)}
+                    />
                   </div>
                 </div>
               ))}

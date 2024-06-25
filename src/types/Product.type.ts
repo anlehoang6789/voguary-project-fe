@@ -82,9 +82,12 @@ export interface GetProductDetailsByProductIdResponse {
   productName: string;
   productTitle: string;
   productDescription: string;
+  productImageId: number[];
   productImage: string[];
   productPrice: number;
+  productSizeId: number[];
   productSize: string[];
+  productColorId: number[];
   productColor: string[];
   productColorImage: string[];
   productStatus: string;

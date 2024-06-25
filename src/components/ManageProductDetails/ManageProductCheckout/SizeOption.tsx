@@ -1,14 +1,20 @@
 import { Button, Divider, Modal } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { LiaRulerHorizontalSolid } from 'react-icons/lia';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store';
+// import { useSelector } from 'react-redux';
+// import { RootState } from 'store';
 
-export default function SizeOption() {
+interface SizeOptionProps {
+  sizes: string[];
+  sizeIds: number[];
+  onSelectSize: (sizeId: number) => void;
+}
+export default function SizeOption({ sizes, sizeIds, onSelectSize }: SizeOptionProps) {
   // const sizes = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
-  const productDetailsSize = useSelector((state: RootState) => state.productDetails.productDetails?.productSize || []);
+  // const productDetailsSize = useSelector((state: RootState) => state.productDetails.productDetails?.productSize || []);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedSize, setSelectedSize] = useState<string | null>(productDetailsSize[0]);
+  // const [selectedSize, setSelectedSize] = useState<string | null>(productDetailsSize[0]);
+  const [selectedSizeIndex, setSelectedSizeIndex] = useState<number | null>(null);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -22,25 +28,26 @@ export default function SizeOption() {
     setIsModalVisible(false);
   };
 
-  const handleSizeClick = (size: string) => {
-    setSelectedSize(size); // Cập nhật state khi người dùng nhấn vào nút size
+  const handleSizeClick = (index: number) => {
+    setSelectedSizeIndex(index);
+    onSelectSize(sizeIds[index]);
   };
 
-  useEffect(() => {
-    setSelectedSize(productDetailsSize[0]);
-  }, []);
+  // useEffect(() => {
+  //   setSelectedSize(productDetailsSize[0]);
+  // }, []);
 
   return (
     <div className='mb-8'>
       <h1 className='mb-2 font-bold text-base'>Sizes</h1>
-      {productDetailsSize.map((size, index) => (
+      {sizes.map((size, index) => (
         <Button
           size='large'
           key={index}
           className={`inline-block text-sm px-3 py-1 !rounded-none mr-2 mb-2 ${
-            selectedSize === size ? 'bg-gradient-to-r from-[#fdc830] to-[#f37335] text-white' : ' text-gray-700'
+            selectedSizeIndex === index ? 'bg-gradient-to-r from-[#fdc830] to-[#f37335] text-white' : ' text-gray-700'
           }`}
-          onClick={() => handleSizeClick(size)}
+          onClick={() => handleSizeClick(index)}
         >
           {size}
         </Button>

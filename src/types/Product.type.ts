@@ -123,8 +123,14 @@ export interface AddProductRequest {
   productImage: string[];
   price: number;
   categoryId: number;
-  productColor: string[];
+  productColors: ProductColor[];
   productSize: string[];
+}
+
+export interface ProductColor {
+  colorName: string;
+  hexCode: string;
+  colorImage: string;
 }
 
 export interface AddProductResponse {

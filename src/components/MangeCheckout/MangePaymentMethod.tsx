@@ -1,6 +1,5 @@
 import { CloseOutlined, CreditCardOutlined, MinusOutlined, PlusOutlined, TruckOutlined } from '@ant-design/icons';
-import { Button, Form } from 'antd';
-import FormItem from 'antd/es/form/FormItem';
+import { Button } from 'antd';
 import CustomGradientButton from 'components/CustomGradientButton';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';

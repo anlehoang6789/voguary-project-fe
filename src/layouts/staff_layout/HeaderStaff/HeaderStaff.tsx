@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { logoutUser } from 'slice/authLoginAPISlice';
 import { logout } from 'slice/authLoginGoogleSlice';
 import { resetUserProfile } from 'slice/userProfileSlice';
+// import { RootState } from 'store';
 
 export default function HeaderStaff() {
   const navigate = useNavigate();
@@ -28,6 +29,8 @@ export default function HeaderStaff() {
       label: <span onClick={handleLogout}>Đăng xuất</span>
     }
   ];
+
+  // const userName = useSelector((state: RootState) => state.userProfile.userProfile?.fullName);
 
   return (
     <Header className='fixed z-50 flex w-full justify-between border-b border-gray-200 bg-white px-5'>

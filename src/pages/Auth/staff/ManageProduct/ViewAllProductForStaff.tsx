@@ -71,6 +71,8 @@ export default function ViewAllProductForStaff() {
   const [searchText, setSearchText] = useState('');
   const { data, isFetching } = useGetAllProductsQuery();
 
+  const totalCount = data?.totalCount || 0;
+
   const onChange = (page: number, pageSize?: number) => {
     setCurrent(page);
     if (pageSize) {

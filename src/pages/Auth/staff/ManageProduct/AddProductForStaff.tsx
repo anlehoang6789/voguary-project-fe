@@ -1,14 +1,15 @@
-import { Alert, Button, Col, Form, Input, Row, Select, Skeleton, Tag } from 'antd';
+import { Alert, Button, Col, Form, Input, message, notification, Row, Select, Skeleton, Tag } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import CustomGradientButton from 'components/CustomGradientButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RcFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
 import { InboxOutlined } from '@ant-design/icons';
 import { useGetAllSizeQuery } from 'services/size.services';
 import { useGetAllColorQuery } from 'services/color.services';
 import { useGetAllCategoriesQuery } from 'services/category.services';
+import { useAddProductMutation } from 'services/product.services';
 
 export default function AddProductForStaff() {
   const allowImageTypes = ['jpg', 'jpeg', 'png'];
@@ -28,6 +29,9 @@ export default function AddProductForStaff() {
     error: categoryError,
     isSuccess: categoryIsSuccess
   } = useGetAllCategoriesQuery();
+
+  const [addProduct, { isLoading: isAddingProduct, isSuccess: isAddProductSuccess, error: addProductError }] =
+    useAddProductMutation();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -77,15 +81,53 @@ export default function AddProductForStaff() {
     return false;
   };
 
+  const onFinish = async (values: any) => {
+    const categoryId = categories?.find((cat) => cat.categoryName === values.categoryId)?.categoryId;
+
+    const productData = {
+      name: values.name,
+      title: values.title, // Assuming title is the same as name
+      description: values.description,
+      productImage: [], // Add logic to handle image upload
+      price: parseFloat(values.price.replace(/\./g, '')),
+      categoryId: categoryId ?? 0,
+      productColors: selectedColors.map((color) => ({
+        colorName: color,
+        hexCode: color,
+        colorImage: ''
+      })), // Adjust as needed
+      productSize: selectedSizes
+    };
+
+    try {
+      await addProduct(productData).unwrap();
+      // Handle success (e.g., show a success message, reset form, etc.)
+    } catch (err) {
+      console.error('Failed to add product:', err);
+      // Handle error (e.g., show an error message)
+    }
+  };
+
+  useEffect(() => {
+    if (isAddProductSuccess) {
+      message.success('Thêm sản phẩm thành công');
+    }
+    if (addProductError) {
+      notification.error({
+        message: 'Thêm sản phẩm thất bại'
+      });
+    }
+  }, [isAddProductSuccess, addProductError]);
+
   return (
     <div className='flex-grow'>
       <h1 className='text-2xl text-center  font-bold mb-4'>Thêm sản phẩm</h1>
 
-      <Form>
+      <Form onFinish={onFinish}>
         <Row>
           <Col span={24} className='flex justify-center'>
             <FormItem
-              name='productImg'
+              name='productImage'
               rules={[{ required: true, message: 'Vui lòng chọn ảnh sản phẩm' }]}
               className='py-6'
             >
@@ -105,7 +147,7 @@ export default function AddProductForStaff() {
             <FormItem
               className='pl-10 '
               label={<span className='font-semibold'>Tên sản phẩm</span>}
-              name='productName'
+              name='name'
               rules={[
                 { required: true, message: 'Vui lòng nhập tên sản phẩm' },
                 {
@@ -122,7 +164,7 @@ export default function AddProductForStaff() {
             <FormItem
               className='pl-10 '
               label={<span className='font-semibold'>Loại hàng</span>}
-              name='productType'
+              name='categoryId'
               rules={[{ required: true, message: 'Vui lòng chọn loại hàng' }]}
             >
               <Select className='w-full max-w-[300px]'>
@@ -143,14 +185,8 @@ export default function AddProductForStaff() {
             <FormItem
               className='pl-10 pt-6'
               label={<span className='font-semibold'>Giá sản phẩm</span>}
-              name='productPrice'
-              rules={[
-                { required: true, message: 'Vui lòng nhập giá sản phẩm' },
-                {
-                  pattern: /^\d{1,3}(?:\.\d{3}){1,2}$/,
-                  message: 'Giá sản phẩm phải có định dạng xxx.xxx'
-                }
-              ]}
+              name='price'
+              rules={[{ required: true, message: 'Vui lòng nhập giá sản phẩm' }]}
             >
               <Input placeholder='500.000' className='w-full max-w-[300px]' />
             </FormItem>
@@ -161,7 +197,7 @@ export default function AddProductForStaff() {
               className='pl-10 pt-6'
               label={<span className='font-semibold'>Chi tiết sản phẩm</span>}
               name='productDetails'
-              rules={[{ required: !inputFilled, message: 'Vui lòng nhập chi tiết sản phẩm' }]}
+              // rules={[{ required: !inputFilled, message: 'Vui lòng nhập chi tiết sản phẩm' }]}
             >
               <>
                 <Input
@@ -186,7 +222,7 @@ export default function AddProductForStaff() {
             <Form.Item
               className='pl-10 pt-6'
               label={<span className='font-semibold'>Màu sản phẩm</span>}
-              name='productColor'
+              name='colorName'
               rules={[{ required: true }]}
               validateStatus={selectedColors.length > 0 ? 'success' : 'error'}
               help={selectedColors.length > 0 ? '' : 'Vui lòng chọn màu sản phẩm'}
@@ -284,7 +320,13 @@ export default function AddProductForStaff() {
         </Row>
         <div className='flex justify-end '>
           <CustomGradientButton>
-            <Button type='primary' htmlType='submit' size='large' className='!w-[10%] !mr-10 !mt-4'>
+            <Button
+              type='primary'
+              htmlType='submit'
+              size='large'
+              className='!w-[10%] !mr-10 !mt-4'
+              loading={isAddingProduct}
+            >
               Lưu
             </Button>
           </CustomGradientButton>

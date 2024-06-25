@@ -17,12 +17,11 @@ export default function CheckCart() {
   const [rentalEnd, setRentalEnd] = useState<Dayjs | null>(null);
 
   useEffect(() => {
-    if (cartData) {
-      setRentalStart(stringToDate(cartData.rentalStart));
-      setRentalEnd(stringToDate(cartData.rentalEnd));
+    if (cartData && cartData.length > 0) {
+      setRentalStart(stringToDate(cartData[0].rentalStart));
+      setRentalEnd(stringToDate(cartData[0].rentalEnd));
     }
   }, [cartData]);
-  console.log('ngày bắt đầu', rentalStart);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -33,12 +32,12 @@ export default function CheckCart() {
     return <div>Error loading carts</div>;
   }
 
-  if (!isSuccess || !cartData) {
+  if (!isSuccess || !cartData || cartData.length === 0) {
     return <div>No cart items found</div>;
   }
 
-  const total = cartData.quantity * cartData.productPrice;
-  const totalItems = cartData.quantity;
+  const total = cartData.reduce((acc, item) => acc + item.quantity * item.productPrice, 0);
+  const totalItems = cartData.reduce((acc, item) => acc + item.quantity, 0);
   const handleRentalStartChange = (date: Dayjs | null) => {
     if (date) {
       setRentalStart(date);

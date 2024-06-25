@@ -17,11 +17,12 @@ import { colorApi } from 'services/color.services';
 import { sizeApi } from 'services/size.services';
 import { cartApi } from 'services/cart.services';
 import { paymentApi } from 'services/payment.services';
+import sizeAllSlice from 'slice/sizeAllSlice';
 
 export const persistConfig = {
   key: 'root',
   storage: storage,
-  whitelist: ['authLoginGoogle', 'authLoginAPI', 'userProfile', 'hotProduct', 'productAll', 'productDetails']
+  whitelist: ['authLoginGoogle', 'authLoginAPI', 'userProfile', 'hotProduct', 'productAll', 'productDetails', 'sizeAll']
 };
 
 const rootReducer = combineReducers({
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   hotProduct: hotProductSlice,
   productAll: productAllSlice,
   productDetails: productDetailsSlice,
+  sizeAll: sizeAllSlice,
   [authApi.reducerPath]: authApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
   [productApi.reducerPath]: productApi.reducer,

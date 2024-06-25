@@ -21,3 +21,25 @@ export interface GetCartByUserIdResponse {
   rentalStart: string;
   rentalEnd: string;
 }
+
+export interface AddToCartRequest {
+  userId: number;
+  productId: number;
+  productIdColor: number;
+  productImageId: number;
+  productSizeId: number;
+  rentalStart: string;
+  rentalEnd: string;
+  quantity: number;
+}
+
+export interface AddToCartResponse {
+  cartId: number;
+  userId: number;
+  productId: number;
+  quantity: number;
+  discountedPrice: any;
+  totalPrice: any;
+  product: any;
+  user: any;
+}

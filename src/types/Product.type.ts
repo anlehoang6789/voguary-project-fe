@@ -170,3 +170,8 @@ export interface AddProductDetailResponse {
   moreProducts: string;
   productPolicies: string;
 }
+
+export interface GetProductRequest {
+  PageNumber: number;
+  PageSize: number;
+}

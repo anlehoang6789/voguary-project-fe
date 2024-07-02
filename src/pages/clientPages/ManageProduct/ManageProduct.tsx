@@ -24,14 +24,14 @@ export default function ManageProduct() {
   const defaultImage =
     'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380';
 
-  const pageSize = 12;
+  const pageSize = 10;
   //call api get all product(not filter)
-  const { data, isLoading, error, isSuccess } = useGetAllProductsQuery();
+  const { data, isLoading, error, isSuccess } = useGetAllProductsQuery({ PageNumber: currentPage, PageSize: pageSize });
 
   const products = data?.items || [];
   const totalCount = data?.totalCount || 0;
   // const currentData = mockData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-  const currentData = products.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  // const currentData = products.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   const openDrawer = () => setDrawerVisible(true);
   const closeDrawer = () => setDrawerVisible(false);
@@ -103,7 +103,7 @@ export default function ManageProduct() {
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4'>
         {isLoading
           ? renderSkeletons()
-          : currentData.map((product) => (
+          : products.map((product) => (
               <Card
                 key={product.productId}
                 className='relative transition-all duration-500 hover:-translate-y-2'

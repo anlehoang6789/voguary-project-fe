@@ -13,12 +13,16 @@ import AvatarHeaderClients from 'components/AvatarHeaderClients';
 import Dropdown from 'components/Dropdown/Dropdown';
 import MyBagComponent from 'components/MyBag/MyBagPopover';
 import { useGetUserProfileQuery } from 'services/user.services';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { setUserProfile } from 'slice/userProfileSlice';
+import { useGetNotiByUserIdQuery } from 'services/notification.services';
+import { useGetSuggestionsForSearchQuery } from 'services/search.services';
+import { List } from 'antd';
 
 export default function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleNavigateTo = (route: string) => {
     navigate(route);
@@ -42,6 +46,13 @@ export default function Header() {
   //Check trạng thái xem người dùng đã đăng nhập hay chưa
   const isLogin = isAuthenticatedFromGoogle || isAuthenticatedFromApi;
 
+  const { data: notifications } = useGetNotiByUserIdQuery(userId);
+
+  // Fetch search suggestions
+  const { data: suggestions } = useGetSuggestionsForSearchQuery(searchTerm, {
+    skip: !searchTerm // Skip the query if searchTerm is empty
+  });
+
   return (
     <div className='container-fluid'>
       <div className='header bg-white shadow-md'>
@@ -61,7 +72,35 @@ export default function Header() {
           </MenuItem>
 
           <MenuItem style={{ width: isLogin ? 'calc(75% - 330px)' : '650px' }}>
-            <Search size='large' placeholder='Tìm kiếm nội dung bất kỳ' style={{ width: '100%', paddingTop: '5px' }} />
+            <Popover
+              content={
+                <List
+                  style={{ width: '100%', padding: '15px' }}
+                  dataSource={suggestions}
+                  renderItem={(item) => (
+                    <List.Item key={item.productId}>
+                      <List.Item.Meta
+                        avatar={<img src={item.productImage} alt={item.productName} style={{ width: 50 }} />}
+                        title={item.productName}
+                        description={`${item.productPrice.toLocaleString('vi-VN')} VND`}
+                      />
+                    </List.Item>
+                  )}
+                />
+              }
+              trigger='focus'
+              placement='bottom'
+              overlayStyle={{ width: '80%' }}
+              open={!!suggestions && suggestions.length > 0}
+            >
+              <Search
+                size='large'
+                placeholder='Tìm kiếm nội dung bất kỳ'
+                style={{ width: '100%', paddingTop: '5px' }}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </Popover>
           </MenuItem>
 
           <MenuItem className='text-xl'>
@@ -80,7 +119,7 @@ export default function Header() {
 
           <MenuItem>
             <Popover content={<NotificationPopover />} trigger={'hover'} placement='bottom'>
-              <Badge count={5} size='small' className='mt-5'>
+              <Badge count={notifications?.length} size='small' className='mt-5'>
                 <IoIosNotificationsOutline style={{ fontSize: '25px', cursor: 'pointer' }} />
               </Badge>
             </Popover>

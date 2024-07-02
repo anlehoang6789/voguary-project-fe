@@ -14,7 +14,7 @@ export default function ReviewPanelHeader({ title, reviewCount, averageRating }:
       </div>
       <div className='flex items-center hidden md:block'>
         <span className='mr-2'>{averageRating.toFixed(1)}</span>
-        <Rate disabled defaultValue={averageRating} className='text-lg' />
+        <Rate disabled value={averageRating} className='text-lg' />
       </div>
     </div>
   );

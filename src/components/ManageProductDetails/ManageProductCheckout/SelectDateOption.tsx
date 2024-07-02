@@ -1,12 +1,16 @@
 import { Button, DatePicker, Divider, Modal } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoCalendarNumberOutline } from 'react-icons/io5';
 import dayjs, { Dayjs } from 'dayjs';
 import { stringToDate } from 'utils/convertTypeDayjs';
 
 const { RangePicker } = DatePicker;
 
-export default function SelectDateOption() {
+interface SelectDateOptionProps {
+  onSelectDates: (dates: [dayjs.Dayjs | null, dayjs.Dayjs | null]) => void;
+}
+
+export default function SelectDateOption({ onSelectDates }: SelectDateOptionProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dates, setDates] = useState<[Dayjs | null, Dayjs | null] | null>(null);
 
@@ -34,9 +38,15 @@ export default function SelectDateOption() {
       const calculatedEndDate = stringToDate(startDate.format('YYYY-MM-DD')).add(3, 'day');
       setDates([startDate, calculatedEndDate]);
     } else {
-      setDates(null);
+      setDates([null, null]);
     }
   };
+
+  useEffect(() => {
+    if (dates) {
+      onSelectDates(dates);
+    }
+  }, [dates, onSelectDates]);
 
   return (
     <div className='select-date-option space-y-2 mb-8'>
@@ -45,7 +55,9 @@ export default function SelectDateOption() {
         placeholder={['Ngày bắt đầu', 'Ngày kết thúc']}
         className='w-full'
         disabledDate={disabledDate}
-        onCalendarChange={onCalendarChange}
+        // onCalendarChange={onCalendarChange}
+        // onCalendarChange={(dates) => onCalendarChange([dates[0], null])}
+        onCalendarChange={(dates) => onCalendarChange([dates ? dates[0] : null, null])}
         value={dates}
         disabled={[false, true]}
       />

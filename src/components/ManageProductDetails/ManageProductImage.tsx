@@ -1,6 +1,8 @@
 import { Button, Image } from 'antd';
 import { useState } from 'react';
 import { RxCaretUp, RxCaretDown } from 'react-icons/rx';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 interface ManageProductImageProps {
   selectedColorIndex: number | null; // Kiểu dữ liệu của selectedColorIndex là number hoặc null
@@ -8,17 +10,18 @@ interface ManageProductImageProps {
 
 export default function ManageProductImage({ selectedColorIndex }: ManageProductImageProps) {
   const [showMoreImages, setShowMoreImages] = useState<boolean>(false);
-  const images = [
-    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
-    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
-    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
-    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
-    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
-    'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380'
-  ];
+  const productImages = useSelector((state: RootState) => state.productDetails.productDetails?.productImage || []);
+  // const images = [
+  //   'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+  //   'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+  //   'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+  //   'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+  //   'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380',
+  //   'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F600x600.png?alt=media&token=730a35b0-d7f4-4d4d-87b3-d672202f8380'
+  // ];
 
   // Bắt nó ban đầu chỉ hiển thị 4 ảnh, khi click vào nút "Xem thêm" thì hiển thị tất cả ảnh
-  const visibleImages = showMoreImages ? images : images.slice(0, 4);
+  const visibleImages = showMoreImages ? productImages : productImages.slice(0, 4);
 
   return (
     <div className='relative'>
@@ -30,7 +33,7 @@ export default function ManageProductImage({ selectedColorIndex }: ManageProduct
         ))}
       </div>
 
-      {!showMoreImages && images.length > 4 && (
+      {!showMoreImages && productImages.length > 4 && (
         <div className='text-center mt-4 absolute bottom-[-20px] left-1/2 -translate-x-1/2 z-10 flex items-center '>
           <Button
             className='flex items-center !rounded-none p-6 font-bold transition-all duration-500 hover:-translate-y-2'

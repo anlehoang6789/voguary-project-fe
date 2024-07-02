@@ -1,15 +1,36 @@
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, MenuProps, Modal, Spin } from 'antd';
 import { Header } from 'antd/es/layout/layout';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logoutUser } from 'slice/authLoginAPISlice';
+import { logout } from 'slice/authLoginGoogleSlice';
+import { resetUserProfile } from 'slice/userProfileSlice';
+// import { RootState } from 'store';
 
 export default function HeaderStaff() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    // Xóa dữ liệu từ localStorage
+    localStorage.removeItem('userLoginGoogle');
+    localStorage.removeItem('userLogin');
+
+    // Đưa trạng thái user về null trong Redux
+    dispatch(logout());
+    dispatch(logoutUser());
+    dispatch(resetUserProfile());
+    navigate('/');
+  };
   const items: MenuProps['items'] = [
     {
       key: '1',
       icon: <LogoutOutlined></LogoutOutlined>,
-      label: 'Logout'
+      label: <span onClick={handleLogout}>Đăng xuất</span>
     }
   ];
+
+  // const userName = useSelector((state: RootState) => state.userProfile.userProfile?.fullName);
 
   return (
     <Header className='fixed z-50 flex w-full justify-between border-b border-gray-200 bg-white px-5'>

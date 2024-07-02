@@ -1,77 +1,66 @@
-import { useState } from 'react';
-import { Row, Col, Card, Button } from 'antd';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Card, Col, DatePicker, Row } from 'antd';
+import { Dayjs } from 'dayjs';
+import { useEffect, useState } from 'react';
 import { TiDelete } from 'react-icons/ti';
-import CustomGradientButton from 'components/CustomGradientButton';
-import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useGetCartByUserIdQuery, useDeleteCartMutation } from 'services/cart.services';
+import { RootState } from 'store';
+import { stringToDate } from 'utils/convertTypeDayjs';
+import PaymentInfo from './PaymentCart/PaymentInfo';
 
 export default function CheckCart() {
-  // Dữ liệu giả
-  const initialCartItems = [
-    {
-      name: 'Item 1',
-      quantity: 2,
-      price: 500000,
-      image:
-        'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
-    },
-    {
-      name: 'Item 2',
-      quantity: 1,
-      price: 300000,
-      image:
-        'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
-    },
-    {
-      name: 'Item 3',
-      quantity: 3,
-      price: 200000,
-      image:
-        'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
-    },
-    {
-      name: 'Item 4',
-      quantity: 1,
-      price: 100000,
-      image:
-        'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Placeholder%2F150.png?alt=media&token=fbacaf49-1665-44af-95f2-74be4fb9f2e2'
+  const userIdString = useSelector((state: RootState) => state.authLoginAPI.userId);
+  const userId = parseInt(userIdString || '0');
+  const { data: cartData, error, isLoading, isSuccess, refetch } = useGetCartByUserIdQuery(userId); // Get refetch
+  const [deleteCart] = useDeleteCartMutation();
+  const [rentalStart, setRentalStart] = useState<Dayjs | null>(null);
+  const [rentalEnd, setRentalEnd] = useState<Dayjs | null>(null);
+
+  useEffect(() => {
+    if (cartData && cartData.length > 0) {
+      setRentalStart(stringToDate(cartData[0].rentalStart));
+      setRentalEnd(stringToDate(cartData[0].rentalEnd));
     }
-  ];
+  }, [cartData]);
 
-  // Sử dụng state để quản lý giỏ hàng
-  const [cartItems, setCartItems] = useState(initialCartItems);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  // Hàm để tăng số lượng
-  const increaseQuantity = (index: any) => {
-    const newCartItems = [...cartItems];
-    newCartItems[index].quantity += 1;
-    setCartItems(newCartItems);
-  };
+  if (error) {
+    console.error('Error loading carts:', error);
+    return <div>Error loading carts</div>;
+  }
 
-  // Hàm để giảm số lượng
-  const decreaseQuantity = (index: any) => {
-    const newCartItems = [...cartItems];
-    if (newCartItems[index].quantity > 1) {
-      newCartItems[index].quantity -= 1;
-      setCartItems(newCartItems);
+  if (!isSuccess || !cartData || cartData.length === 0) {
+    return <div>No cart items found</div>;
+  }
+
+  const total = cartData.reduce((acc, item) => acc + item.quantity * item.productPrice, 0);
+  const totalItems = cartData.reduce((acc, item) => acc + item.quantity, 0);
+
+  const handleRentalStartChange = (date: Dayjs | null) => {
+    if (date) {
+      setRentalStart(date);
     }
   };
 
-  // Hàm để xóa sản phẩm
-  const removeItem = (index: any) => {
-    const newCartItems = [...cartItems];
-    newCartItems.splice(index, 1);
-    setCartItems(newCartItems);
+  const handleRentalEndChange = (date: Dayjs | null) => {
+    if (date) {
+      setRentalEnd(date);
+    }
   };
-  // Hàm để xóa tất cả sản phẩm
-  const removeAllItems = () => {
-    setCartItems([]);
-  };
-  // Tính tổng cộng
-  const total = cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0);
 
-  // Tính tổng số lượng sản phẩm
-  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const handleDelete = async (cartId: number) => {
+    try {
+      await deleteCart(cartId).unwrap();
+      console.log('Cart item deleted successfully');
+      refetch();
+    } catch (error) {
+      console.error('Failed to delete cart item:', error);
+    }
+  };
 
   return (
     <div className='p-12'>
@@ -87,7 +76,7 @@ export default function CheckCart() {
               </span>
             }
             extra={
-              <Button onClick={removeAllItems} type='text' danger>
+              <Button type='text' danger>
                 Xóa tất cả
               </Button>
             }
@@ -95,75 +84,53 @@ export default function CheckCart() {
             className='rounded-3xl bg-white p-5'
             style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)' }}
           >
-            {/* Header của bảng */}
             <div className='grid grid-cols-4 font-bold mb-4'>
               <div className='text-center'>Sản phẩm</div>
               <div className='text-center'>Số lượng</div>
               <div className='text-center'>Giá tiền</div>
               <div className='text-center'>Xóa</div>
             </div>
-            {/* Nội dung của giỏ hàng */}
-            {cartItems.map((item, index) => (
-              <div
-                key={index}
-                className='grid grid-cols-4 items-center mb-4 space-x-4 border border-gray-200 rounded-2xl p-1 '
-              >
-                <div className='flex items-center'>
-                  <img src={item.image} alt={item.name} className='w-20 h-20 object-cover mr-4 rounded-2xl' />
-                  <span>{item.name}</span>
+            {isSuccess &&
+              cartData.map((item) => (
+                <div
+                  key={item.cartId}
+                  className='grid grid-cols-4 items-center mb-4 space-x-4 border border-gray-200 rounded-2xl p-1 '
+                >
+                  <div className='flex items-center'>
+                    <img
+                      src={item.productImageUrl[0]}
+                      alt={item.productTitle}
+                      className='w-20 h-20 object-cover mr-4 rounded-2xl'
+                    />
+                    <div>
+                      <span>{item.productTitle}</span>
+                      <div className='text-sm text-gray-600'>
+                        <DatePicker value={rentalStart} onChange={handleRentalStartChange} format='DD/MM/YYYY' />
+                        <DatePicker value={rentalEnd} onChange={handleRentalEndChange} format='DD/MM/YYYY' disabled />
+                      </div>
+                    </div>
+                  </div>
+                  <div className='flex items-center justify-center'>
+                    <Button icon={<MinusOutlined />} />
+                    <span className='mx-2'>{item.quantity}</span>
+                    <Button icon={<PlusOutlined />} />
+                  </div>
+                  <div className='text-center'>
+                    <p>{item.productPrice.toLocaleString('vi-VN')} VND</p>
+                  </div>
+                  <div className='text-center'>
+                    <Button
+                      icon={<TiDelete style={{ color: 'red', fontSize: '30px' }} />}
+                      style={{ border: 'none' }}
+                      onClick={() => handleDelete(item.cartId)}
+                    />
+                  </div>
                 </div>
-                <div className='flex items-center justify-center'>
-                  <Button icon={<MinusOutlined />} onClick={() => decreaseQuantity(index)} />
-                  <span className='mx-2'>{item.quantity}</span>
-                  <Button icon={<PlusOutlined />} onClick={() => increaseQuantity(index)} />
-                </div>
-                <div className='text-center'>
-                  <p>{item.price.toLocaleString('vi-VN')}VND</p>
-                </div>
-                <div className='text-center'>
-                  <Button
-                    icon={<TiDelete style={{ color: 'red', fontSize: '30px' }} />}
-                    onClick={() => removeItem(index)}
-                    style={{ border: 'none' }}
-                  />
-                </div>
-              </div>
-            ))}
+              ))}
           </Card>
         </Col>
         <Col span={8}>
-          <Card
-            title={<span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>Thông tin thanh toán</span>}
-            bordered={false}
-            className='rounded-3xl bg-gray-200 p-5'
-            style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)' }}
-          >
-            {/* <Space.Compact className='w-full h-12'>
-              <Input variant='filled' defaultValue='Nhập mã giảm giá' />
-              <Button type='primary' className='bg-black h-12'>
-                Áp dụng
-              </Button>
-            </Space.Compact> */}
-            <div className='flex justify-between mt-3'>
-              <div>
-                <p className='text-gray-600 font-bold mb-2'>Tạm tính: </p>
-                <p className='text-gray-600 font-bold mb-2'>Giảm giá:</p>
-                <p className='text-gray-600 font-bold mb-2'>Tổng cộng: </p>
-              </div>
-              <div>
-                <p className='text-gray-600 mb-2 justify-end'> {total}VND </p>
-                <p className='text-gray-600 mb-2 justify-end'>{total}VND</p>
-                <p className='text-gray-600 mb-2 justify-end'>{total.toLocaleString('vi-VN')}VND </p>
-              </div>
-            </div>
-            <Link to={'/checkout'}>
-              <CustomGradientButton>
-                <Button type='primary' className='mt-4 h-10 rounded-3xl w-full'>
-                  Thanh toán
-                </Button>
-              </CustomGradientButton>
-            </Link>
-          </Card>
+          <PaymentInfo total={total} totalItems={totalItems} />
         </Col>
       </Row>
     </div>

@@ -1,15 +1,14 @@
-// src/components/ViewAllProductForStaff.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Button, Tag, Input } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { Product } from 'types/Product.type';
-import mockProducts from './mockDataOfProductForStaff';
+import { GetProductItemsResponse } from 'types/Product.type';
 import CustomGradientButton from 'components/CustomGradientButton';
 import { FaEye } from 'react-icons/fa6';
 import { MdDelete } from 'react-icons/md';
 import { CiSearch } from 'react-icons/ci';
+import { useGetAllProductsQuery } from 'services/product.services';
 
-const columns: ColumnsType<Product> = [
+const columns: ColumnsType<GetProductItemsResponse> = [
   {
     title: 'STT',
     dataIndex: 'productId',
@@ -19,8 +18,8 @@ const columns: ColumnsType<Product> = [
   },
   {
     title: 'Tên sản phẩm',
-    dataIndex: 'productName',
-    key: 'productName',
+    dataIndex: 'productTitle',
+    key: 'productTitle',
     render: (text) => <span>{text}</span>,
     align: 'center'
   },
@@ -28,21 +27,21 @@ const columns: ColumnsType<Product> = [
     title: 'Kích cỡ',
     dataIndex: 'productSize',
     key: 'productSize',
-    render: (text) => <span>{text}</span>,
+    render: (sizes: string[]) => <span>{sizes.join(', ')}</span>,
     align: 'center'
   },
   {
     title: 'Màu sắc',
     dataIndex: 'productColor',
     key: 'productColor',
-    render: (text) => <span>{text}</span>,
+    render: (colors: string[]) => <span>{colors.join(', ')}</span>,
     align: 'center'
   },
   {
     title: 'Trạng thái sản phẩm',
     dataIndex: 'productStatus',
     key: 'productStatus',
-    render: (text) => <Tag color={text === 'Còn hàng' ? 'green' : 'red'}>{text}</Tag>,
+    render: (text) => <Tag color={text === 'Available' ? 'green' : 'red'}>{text}</Tag>,
     align: 'center'
   },
   {
@@ -66,19 +65,32 @@ const columns: ColumnsType<Product> = [
 
 export default function ViewAllProductForStaff() {
   const [current, setCurrent] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState<GetProductItemsResponse[]>([]);
+  const { data, isFetching } = useGetAllProductsQuery({ PageNumber: current, PageSize: pageSize });
 
-  const onChange = (page: number) => {
+  const totalCount = data?.totalCount || 0;
+
+  const onChange = (page: number, pageSize?: number) => {
     setCurrent(page);
+    if (pageSize) {
+      setPageSize(pageSize);
+    }
   };
 
   const onSearch = (value: string) => {
     setSearchText(value);
   };
 
-  const filteredProducts = mockProducts.filter((product) =>
-    product.productName.toLowerCase().includes(searchText.toLowerCase())
-  );
+  useEffect(() => {
+    if (data) {
+      const filtered = data.items.filter((product) =>
+        product.productTitle.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+    }
+  }, [data, searchText]);
 
   return (
     <div className='container mx-auto p-4'>
@@ -101,10 +113,11 @@ export default function ViewAllProductForStaff() {
       <Table
         columns={columns}
         dataSource={filteredProducts}
+        loading={isFetching}
         pagination={{
           current,
-          pageSize: 10,
-          total: filteredProducts.length,
+          pageSize,
+          total: totalCount,
           onChange: onChange
         }}
         rowKey='productId'

@@ -14,7 +14,7 @@ export interface User {
   gender: number;
   dateOfBirth: string;
   email: string;
-  profileImage: any;
+  profileImage: string;
   accountStatus: string;
   addresses: any[];
   carts: any[];
@@ -68,4 +68,91 @@ export interface UserProfileResponse {
   accountStatus: string;
   roles: string;
   membershipTypeName: any;
+}
+
+export interface ChangePasswordRequest {
+  userId: number;
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface ChangePasswordResponse {
+  userId: number;
+  userName: string;
+  fullName: string;
+  password: string;
+  phone: string;
+  gender: number;
+  dateOfBirth: string;
+  email: string;
+  profileImage: any;
+  userStatus: string;
+  address: string;
+  carts: any[];
+  conversationUser1s: any[];
+  conversationUser2s: any[];
+  deposits: any[];
+  feedbacks: any[];
+  memberships: any[];
+  messages: any[];
+  notifications: any[];
+  payments: any[];
+  ratings: any[];
+  rentalOrders: any[];
+  tokens: any[];
+  verifyCodes: any[];
+  roles: any[];
+}
+export interface UpdateAvatarRequest {
+  userId: number;
+  profileImage: string;
+}
+
+export interface UpdateAvatarResponse {
+  userId: number;
+  profileImage: string;
+}
+
+export interface AdminGetListUser {
+  pageNumber: number;
+  pageSize: number;
+  totalCount: number;
+  items: AdminGetListUserChildrenResponse[];
+}
+export interface AdminGetListUserChildrenResponse {
+  userId: number;
+  userName: string;
+  fullName: string;
+  password: string;
+  phone: string;
+  gender: number;
+  dateOfBirth: string;
+  email: string;
+  profileImage: string;
+  accountStatus: string;
+  membershipTypeName: any;
+}
+
+export interface UpdateProfileRequest {
+  userId: number;
+  email: string;
+  fullName: string;
+  gender: number;
+  dateOfBirth: string;
+  phone: string;
+  address: string;
+}
+
+export interface UpdateProfileResponse {
+  userId: number;
+  userName: string;
+  fullName: string;
+  password: string;
+  phone: string;
+  gender: number;
+  dateOfBirth: string;
+  email: string;
+  profileImage: string;
+  userStatus: string;
+  address: string;
 }

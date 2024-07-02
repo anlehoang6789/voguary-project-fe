@@ -1,5 +1,15 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { UserLoginResponse, UserProfileResponse } from 'types/Account.type';
+import {
+  ChangePasswordRequest,
+  ChangePasswordResponse,
+  UserLoginResponse,
+  UserProfileResponse,
+  UpdateAvatarRequest,
+  UpdateAvatarResponse,
+  AdminGetListUser,
+  UpdateProfileResponse,
+  UpdateProfileRequest
+} from 'types/Account.type';
 import baseUrl from 'utils/http';
 
 export const userApi = createApi({
@@ -23,8 +33,41 @@ export const userApi = createApi({
         url: `User/ViewProfile/${userId}`,
         method: 'GET'
       })
+    }),
+    changePassword: build.mutation<ChangePasswordResponse, ChangePasswordRequest>({
+      query: (changePasswordRequest) => ({
+        url: `User/ChangePassword?userId=${changePasswordRequest.userId}`,
+        method: 'PUT',
+        body: changePasswordRequest
+      })
+    }),
+    updateAvatar: build.mutation<UpdateAvatarResponse, UpdateAvatarRequest>({
+      query: (UpdateAvatarRequest) => ({
+        url: `User/UpdateAvatar?userId=${UpdateAvatarRequest.userId}`,
+        method: 'PUT',
+        body: UpdateAvatarRequest
+      })
+    }),
+    adminGetListUser: build.query<AdminGetListUser, void>({
+      query: () => ({
+        url: `User/GetFilteredUser?year=0&month=0&day=0&dayOfWeek=0`,
+        method: 'GET'
+      })
+    }),
+    updateProfile: build.mutation<UpdateProfileResponse, UpdateProfileRequest>({
+      query: (updateProfileRequest) => ({
+        url: `User/UpdateProfile?userId=${updateProfileRequest.userId}`,
+        method: 'PUT',
+        body: updateProfileRequest
+      })
     })
   })
 });
 
-export const { useGetUserProfileQuery } = userApi;
+export const {
+  useGetUserProfileQuery,
+  useChangePasswordMutation,
+  useUpdateAvatarMutation,
+  useAdminGetListUserQuery,
+  useUpdateProfileMutation
+} = userApi;

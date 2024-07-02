@@ -1,9 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const firebaseImageUrl =
-  'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Logo_Website%2Flogo_blue_bg.jpg?alt=media&token=40f8db55-65d2-4595-834a-3a94baf2e93a';
-
 export default function HotTrend() {
   return (
     <div className='flex flex-col bg-gray-300 items-center'>
@@ -11,7 +8,11 @@ export default function HotTrend() {
       <div className='flex flex-wrap justify-center gap-4'>
         <div className='relative'>
           <div className='relative rounded-2xl overflow-hidden'>
-            <img className='w-full h-auto' src={firebaseImageUrl} alt='Xu hướng thịnh hành' />
+            <img
+              className='max-w-2xl'
+              src='https://laodongthudo.vn/stores/news_dataimages/quocdai/092018/12/11/bo-suu-tap-xuan-he-2019-danh-cho-nhung-co-nang-yeu-dieu-thuc-nu-53-.9368.jpg'
+              alt='Xu hướng thịnh hành'
+            />
             <div className='absolute inset-0 bg-black opacity-30'></div>
             <Link to={'/product'}>
               <button
@@ -29,14 +30,21 @@ export default function HotTrend() {
               </button>
             </Link>
           </div>
-          <p className='absolute left-0 text-white font-bold px-4 py-2' style={{ top: '20%', left: '5%' }}>
+          <p
+            className='absolute left-0 text-white font-bold px-4 py-2 text-3xl bg-opacity-50 rounded-md shadow-lg'
+            style={{ top: '20%', left: '5%', fontFamily: 'monospace' }}
+          >
             Bộ sưu tập Xuân-Hạ
           </p>
         </div>
 
         <div className='relative'>
           <div className='relative rounded-2xl overflow-hidden'>
-            <img className='w-full h-auto' src={firebaseImageUrl} alt='Xu hướng thịnh hành' />
+            <img
+              className='max-w-2xl max-h-xl'
+              src='https://laodongthudo.vn/stores/news_dataimages/quocdai/092018/12/11/bo-suu-tap-xuan-he-2019-danh-cho-nhung-co-nang-yeu-dieu-thuc-nu-07-.3319.jpg'
+              alt='Xu hướng thịnh hành'
+            />
             <div className='absolute inset-0 bg-black opacity-30'></div>
             <Link to={'/product'}>
               <button
@@ -54,8 +62,11 @@ export default function HotTrend() {
               </button>
             </Link>
           </div>
-          <p className='absolute left-0 text-white font-bold px-4 py-2' style={{ top: '20%', left: '5%' }}>
-            Bộ sưu tập Thu-Dông
+          <p
+            className='absolute left-0 text-white font-bold px-4 py-2 text-3xl bg-opacity-50 rounded-md shadow-lg'
+            style={{ top: '20%', left: '5%', fontFamily: 'monospace' }}
+          >
+            Bộ sưu tập Thu-Đông
           </p>
         </div>
       </div>

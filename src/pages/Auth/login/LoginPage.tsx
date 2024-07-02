@@ -20,6 +20,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (isSuccess && data) {
       dispatch(setUser(data));
+      console.log('data', data);
       localStorage.setItem('userLogin', JSON.stringify(data));
       notification.success({
         message: 'Đăng nhập thành công',

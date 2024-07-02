@@ -11,3 +11,37 @@ export interface Order {
   orderTotal: number;
   orderImg: string;
 }
+
+export interface GetOrderByUserIdResponse {
+  pageNumber: number;
+  pageSize: number;
+  totalCount: number;
+  items: Item[];
+}
+
+export interface Item {
+  orderId: number;
+  orderStatus: string;
+  datePlaced: string;
+  dueDate: string;
+  returnDate: any;
+  orderTotal: number;
+  pointsEarned: number;
+}
+
+export interface GetPagedRentalOrderDetailsByUserIdResponse {
+  pageNumber: number;
+  pageSize: number;
+  totalCount: number;
+  items: GetPagedRentalOrderChildrenResponse[];
+}
+
+export interface GetPagedRentalOrderChildrenResponse {
+  productName: string;
+  productImage: string;
+  rentalStart: string;
+  rentalEnd: string;
+  status: string;
+  paymentTime: string;
+  orderCode: string;
+}

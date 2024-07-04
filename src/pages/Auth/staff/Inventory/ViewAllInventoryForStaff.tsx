@@ -88,6 +88,7 @@ export default function ViewAllInventoryForStaff() {
       const matchesSearch = order.productName.toLowerCase().includes(searchText.toLowerCase());
       return matchesSearch;
     }) || [];
+
   return (
     <div className='container mx-auto p-4'>
       <h1 className='text-2xl font-bold mb-4'>Tất cả hàng tồn kho</h1>

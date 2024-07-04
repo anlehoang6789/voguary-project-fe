@@ -9,11 +9,11 @@ import { useGetOrderForStaffQuery } from 'services/order.services';
 const { Search } = Input;
 
 const orderStatus = [
-  { id: 1, status: 'Chờ Xác Nhận' },
-  { id: 2, status: 'Chờ Giao Hàng' },
-  { id: 3, status: 'Đang Vận Chuyển' },
-  { id: 4, status: 'Đã Hoàn Thành' },
-  { id: 5, status: 'Đã Hủy' }
+  { id: 1, status: 'Chờ xác nhận' },
+  { id: 2, status: 'Chờ giao hàng' },
+  { id: 3, status: 'Đang vận chuyển' },
+  { id: 4, status: 'Đã hoàn thành' },
+  { id: 5, status: 'Đã hủy' }
 ];
 
 export default function ManageOrderOfAllCustomer() {
@@ -106,19 +106,19 @@ export default function ManageOrderOfAllCustomer() {
       render: (status) => {
         let color = '';
         switch (status) {
-          case 'Chờ Xác Nhận':
+          case 'Chờ xác nhận':
             color = 'blue';
             break;
-          case 'Chờ Giao Hàng':
+          case 'Chờ giao hàng':
             color = 'orange';
             break;
-          case 'Đang Vận Chuyển':
+          case 'Đang vận chuyển':
             color = 'purple';
             break;
-          case 'Đã Hoàn Thành':
+          case 'Đã hoàn thành':
             color = 'green';
             break;
-          case 'Đã Hủy':
+          case 'Đã hủy':
             color = 'red';
             break;
         }
@@ -139,13 +139,13 @@ export default function ManageOrderOfAllCustomer() {
                   label: (
                     <Tag
                       color={
-                        status.status === 'Chờ Xác Nhận'
+                        status.status === 'Chờ xác xhận'
                           ? 'blue'
-                          : status.status === 'Chờ Giao Hàng'
+                          : status.status === 'Chờ giao hàng'
                             ? 'orange'
-                            : status.status === 'Đang Vận Chuyển'
+                            : status.status === 'Đang vận chuyển'
                               ? 'purple'
-                              : status.status === 'Đã Hoàn Thành'
+                              : status.status === 'Đã hoàn thành'
                                 ? 'green'
                                 : 'red'
                       }

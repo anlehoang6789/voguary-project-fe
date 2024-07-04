@@ -116,6 +116,92 @@ export interface FilterProductRequest {
   Sizes?: string[];
 }
 
+export interface AddProductResponse {
+  status: string;
+  message: string;
+  dataObject: DataObject;
+}
+
+export interface DataObject {
+  productId: number;
+  productTitle: string;
+  productName: string;
+  productDescription: string;
+  productStatus: string;
+  productPrice: number;
+  categoryId: number;
+  createdAt: any;
+  carts: any[];
+  category: any;
+  feedbacks: any[];
+  inventories: any[];
+  productColors: ProductColor[];
+  productDetails: ProductDetail1[];
+  productImages: ProductImage[];
+  productSizes: ProductSize[];
+  ratings: any[];
+  rentalOrderDetails: any[];
+}
+
+export interface ProductColor {
+  productColorId: number;
+  productId: number;
+  colorId: number;
+  productColorImage: string;
+  color: Color;
+  product: any;
+}
+
+export interface Color {
+  colorId: number;
+  colorName: string;
+  hexCode: string;
+  productColors: any[];
+}
+
+export interface ProductDetail1 {
+  productDetailId: number;
+  productId: number;
+  description: string;
+  additionalInformation: string;
+  shippingAndReturns: string;
+  sizeChart: string;
+  reviews: string;
+  questions: string;
+  vendorInfo: string;
+  moreProducts: string;
+  productPolicies: string;
+  product: any;
+}
+
+export interface ProductImage {
+  productImageId: number;
+  productId: number;
+  imageId: number;
+  image: Image;
+  product: any;
+}
+
+export interface Image {
+  imageId: number;
+  imageUrl: string;
+  productImages: any[];
+}
+
+export interface ProductSize {
+  productSizeId: number;
+  productId: number;
+  sizeId: number;
+  product: any;
+  size: Size;
+}
+
+export interface Size {
+  sizeId: number;
+  sizeName: string;
+  productSizes: any[];
+}
+
 export interface AddProductRequest {
   name: string;
   title: string;
@@ -123,30 +209,17 @@ export interface AddProductRequest {
   productImage: string[];
   price: number;
   categoryId: number;
-  productColors: ProductColor[];
-  productSize: string[];
+  existingColorIds: ExistingColorId[];
+  existingSizeIds: number[];
+  productDetail: ProductDetail;
 }
 
-export interface ProductColor {
-  colorName: string;
-  hexCode: string;
+export interface ExistingColorId {
+  colorId: number;
   colorImage: string;
 }
 
-export interface AddProductResponse {
-  productId: number;
-  name: string;
-  title: string;
-  description: string;
-  productImage: string[];
-  price: number;
-  categoryId: number;
-  productColor: string[];
-  productSize: string[];
-}
-
-export interface AddProductDetailRequest {
-  productId: number;
+export interface ProductDetail {
   description: string;
   additionalInformation: string;
   shippingAndReturns: string;
@@ -158,15 +231,7 @@ export interface AddProductDetailRequest {
   productPolicies: string;
 }
 
-export interface AddProductDetailResponse {
-  productId: number;
-  description: string;
-  additionalInformation: string;
-  shippingAndReturns: string;
-  sizeChart: string;
-  reviews: string;
-  questions: string;
-  vendorInfo: string;
-  moreProducts: string;
-  productPolicies: string;
+export interface GetProductRequest {
+  PageNumber: number;
+  PageSize: number;
 }

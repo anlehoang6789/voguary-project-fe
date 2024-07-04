@@ -9,6 +9,7 @@ import { HiOutlineViewGridAdd } from 'react-icons/hi';
 import { MdInventory, MdOutlineCategory, MdOutlineMenu } from 'react-icons/md';
 import { LiaMoneyBillWaveSolid } from 'react-icons/lia';
 import { TbCreditCardRefund } from 'react-icons/tb';
+import { CiDeliveryTruck } from 'react-icons/ci';
 
 export default function SiderStaff() {
   type MenuItem = Required<MenuProps>['items'][number];
@@ -49,7 +50,8 @@ export default function SiderStaff() {
         getItem('Thêm loại hàng', 'addCategory', <HiOutlineViewGridAdd className='text-base' />)
       ]),
       getItem('Xem tất cả đơn hàng bị hủy', 'manageOrderCancelled', <LiaMoneyBillWaveSolid className='text-base' />),
-      getItem('Tiền gửi hoàn trả', 'refund', <TbCreditCardRefund className='text-base' />)
+      getItem('Tiền gửi hoàn trả', 'refund', <TbCreditCardRefund className='text-base' />),
+      getItem('Quản lí đơn hàng', 'manageOrderOfAllCustomer', <CiDeliveryTruck className='text-base' />)
     ];
   };
 
@@ -61,7 +63,8 @@ export default function SiderStaff() {
     .set('viewAllCategory', '/staff/viewAllCategory')
     .set('addCategory', '/staff/addCategory')
     .set('manageOrderCancelled', '/staff/manageOrderCancelled')
-    .set('refund', '/staff/refund');
+    .set('refund', '/staff/refund')
+    .set('manageOrderOfAllCustomer', '/staff/manageOrderOfAllCustomer');
 
   return (
     <>

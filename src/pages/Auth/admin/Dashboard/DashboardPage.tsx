@@ -5,8 +5,6 @@ import DayChart from 'components/Card/DayChart';
 import LineChart from 'components/Card/LineChart';
 import PieChart from 'components/Card/PieChart';
 
-import React from 'react';
-
 export default function Dashboard() {
   return (
     <>

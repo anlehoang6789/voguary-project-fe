@@ -11,6 +11,7 @@ import RegisterPage from 'pages/Auth/login/RegisterPage';
 import ViewAllInventoryForStaff from 'pages/Auth/staff/Inventory/ViewAllInventoryForStaff';
 import AddCategoryForStaff from 'pages/Auth/staff/ManageCategory/AddCategoryForStaff';
 import ViewAllCategoryForStaff from 'pages/Auth/staff/ManageCategory/ViewAllCategoryForStaff';
+import ManageOrderOfAllCustomer from 'pages/Auth/staff/ManageOrder/ManageOrderOfAllCustomer';
 import ManageOrderCancelledForStaff from 'pages/Auth/staff/ManageOrderCancelled/ManageOrderCancelledForStaff';
 import AddProductForStaff from 'pages/Auth/staff/ManageProduct/AddProductForStaff';
 import ViewAllProductForStaff from 'pages/Auth/staff/ManageProduct/ViewAllProductForStaff';
@@ -66,7 +67,8 @@ const staffRoutes: RouteProps[] = [
   { path: '/staff/viewAllCategory', component: ViewAllCategoryForStaff, layout: StaffLayout },
   { path: '/staff/addCategory', component: AddCategoryForStaff, layout: StaffLayout },
   { path: '/staff/manageOrderCancelled', component: ManageOrderCancelledForStaff, layout: StaffLayout },
-  { path: '/staff/refund', component: ViewAllRefundForStaff, layout: StaffLayout }
+  { path: '/staff/refund', component: ViewAllRefundForStaff, layout: StaffLayout },
+  { path: '/staff/manageOrderOfAllCustomer', component: ManageOrderOfAllCustomer, layout: StaffLayout }
 ];
 
 export { publicRoutes, adminRoutes, privateRoutes, staffRoutes };

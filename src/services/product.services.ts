@@ -1,7 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
-  AddProductDetailRequest,
-  AddProductDetailResponse,
   AddProductRequest,
   AddProductResponse,
   FilterProductRequest,
@@ -9,6 +7,7 @@ import {
   GetProductDetailsByProductIdResponse,
   GetProductDetailsInforResponse,
   GetProductRatingsAndFeedbackResponse,
+  GetProductRequest,
   GetProductResponse,
   ProductRecommendation
 } from 'types/Product.type';
@@ -43,9 +42,9 @@ export const productApi = createApi({
   }),
   refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
-    getAllProducts: build.query<GetProductResponse, void>({
-      query: () => ({
-        url: 'Product/PagingAndFilteredProducts',
+    getAllProducts: build.query<GetProductResponse, GetProductRequest>({
+      query: (body) => ({
+        url: `Product/PagingAndFilteredProducts?PageNumber=${body.PageNumber}&PageSize=${body.PageSize}`,
         method: 'GET'
       })
     }),
@@ -86,17 +85,10 @@ export const productApi = createApi({
       })
     }),
     addProduct: build.mutation<AddProductResponse, AddProductRequest>({
-      query: (newProduct) => ({
-        url: 'Product/AddProduct',
+      query: (product) => ({
+        url: `Product/AddProduct`,
         method: 'POST',
-        body: newProduct
-      })
-    }),
-    addProductDetail: build.mutation<AddProductDetailResponse, AddProductDetailRequest>({
-      query: (newProductDetail) => ({
-        url: 'ProductDetail/AddProductDetail',
-        method: 'POST',
-        body: newProductDetail
+        body: product
       })
     })
   })
@@ -110,6 +102,5 @@ export const {
   useGetProductRecommendationsQuery,
   useGetProductDetailsInforQuery,
   useGetFilterProductsQuery,
-  useAddProductMutation,
-  useAddProductDetailMutation
+  useAddProductMutation
 } = productApi;

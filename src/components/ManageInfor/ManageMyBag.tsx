@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
-import { Button, DatePicker, DatePickerProps, Form, message } from 'antd';
+import { Button, DatePicker, DatePickerProps, Form, Tag, message } from 'antd';
 
 import CustomGradientButton from 'components/CustomGradientButton';
 
 import dayjs, { Dayjs } from 'dayjs';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
-import { useGetOrdersByUserIdQuery } from 'services/order.services';
+import { useGetPagedRentalOrderDetailsByUserIdQuery } from 'services/order.services';
 
 const aodai =
   'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Products%2F%C3%A1o%20d%C3%A0i.jpg?alt=media&token=4de95e39-5ddf-4b30-982b-cafdbea76e40';
@@ -124,7 +124,7 @@ export default function ManageMyBag() {
   const userIdString = useSelector((state: RootState) => state.authLoginAPI.userId);
   const userId = parseInt(userIdString || '0', 10);
 
-  const { data: orders, isLoading, error } = useGetOrdersByUserIdQuery(userId);
+  const { data: orders, isLoading, error } = useGetPagedRentalOrderDetailsByUserIdQuery(userId);
 
   const toggleModal = (product: Product | null) => {
     setCurrentProduct(product);
@@ -137,23 +137,17 @@ export default function ManageMyBag() {
   };
 
   const indexOfLastProduct = currentPage * productsPerPage;
-
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-
-  // const currentProducts = fakeDataProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
   const paginate = (pageNumber: any) => setCurrentPage(pageNumber);
 
   const handleSubmit = (values: any) => {
-    // Kiểm tra giá trị của trường 'extend'
     const { extend } = values;
     if (extend) {
-      // Thực hiện các thao tác cần thiết khi form hợp lệ, ví dụ: gửi dữ liệu đi
       console.log('Ngày gia hạn đã được chọn:', extend);
       message.success('Gia hạn thành công!');
       handleCancel();
     } else {
-      // Hiển thị thông báo lỗi nếu ngày gia hạn chưa được chọn
       console.error('Vui lòng chọn ngày gia hạn');
     }
   };
@@ -165,10 +159,8 @@ export default function ManageMyBag() {
     console.log(date, dateString);
   };
 
-  const endDate = '04-06-2024';
-
   const disabledDate = (date: Dayjs) => {
-    const endDateDate = dayjs(endDate, 'DD-MM-YYYY');
+    const endDateDate = dayjs(currentProduct?.rentalEnd, 'DD-MM-YYYY');
     const sevenDaysAfterEndDate = endDateDate.add(6, 'day');
     return date && (date.isBefore(endDateDate) || date.isAfter(sevenDaysAfterEndDate));
   };
@@ -190,26 +182,6 @@ export default function ManageMyBag() {
         <label htmlFor='table-search' className='sr-only'>
           Search
         </label>
-
-        {/* <div className='relative'>
-          <div className='absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none'>
-            <svg
-              className='w-4 h-4 text-gray-500'
-              aria-hidden='true'
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 20 20'
-            >
-              <path
-                stroke='currentColor'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z'
-              />
-            </svg>
-          </div>
-        </div> */}
       </div>
 
       <table className='w-full text-sm text-left rtl:text-right text-gray-500'>
@@ -219,13 +191,16 @@ export default function ManageMyBag() {
               Mã đơn hàng
             </th>
             <th scope='col' className='px-6 py-3'>
+              Ảnh sản phẩm
+            </th>
+            <th scope='col' className='px-6 py-3'>
               Ngày bắt đầu
             </th>
             <th scope='col' className='px-6 py-3'>
               Ngày kết thúc
             </th>
             <th scope='col' className='px-6 py-3'>
-              Giá tiền
+              Trạng thái
             </th>
             <th scope='col' className='px-6 py-3'></th>
           </tr>
@@ -233,27 +208,19 @@ export default function ManageMyBag() {
 
         <tbody>
           {orders?.items.slice(indexOfFirstProduct, indexOfLastProduct).map((order: any) => (
-            <tr key={order.orderId} className='bg-white border-b hover:bg-gray-50'>
-              <th scope='row' className='flex items-center px-6 py-4 text-gray-900 whitespace-nowrap'>
-                <div className='ps-3'>
-                  <div className='text-base font-semibold'>{order.orderId}</div>
-                </div>
-              </th>
-
-              <td className='px-6 py-4'>{order.datePlaced}</td>
-
-              <td className='px-6 py-4'>{order.dueDate}</td>
-
-              <td className='px-6 py-4'>{order.orderTotal}</td>
-
+            <tr key={order.orderCode} className='bg-white border-b hover:bg-gray-50'>
+              <td className='px-6 py-4'>{order.orderCode}</td>
               <td className='px-6 py-4'>
-                {/* <div className='flex items-center'>
-                  <Tag color={order.status === 'Còn hạn' ? 'green' : 'red'}>{order.status}</Tag>
-                </div> */}
+                <img className='w-30' src={order.productImage} alt={`${order.productName} ảnh`} />
               </td>
+              <td className='px-6 py-4'>{order.rentalStart}</td>
+              <td className='px-6 py-4'>{order.rentalEnd}</td>
 
               <td className='px-6 py-4'>
-                <button onClick={() => toggleModal(null)} className='text-blue-600 hover:underline focus:outline-none'>
+                <Tag color={order.status === 'Còn hạn' ? 'green' : 'red'}>{order.status}</Tag>
+              </td>
+              <td className='px-6 py-4'>
+                <button onClick={() => toggleModal(order)} className='text-blue-600 hover:underline focus:outline-none'>
                   Gia hạn
                 </button>
               </td>
@@ -262,7 +229,6 @@ export default function ManageMyBag() {
         </tbody>
       </table>
 
-      {/* Modal */}
       {isModalOpen && currentProduct && (
         <div
           id='viewProductModal'

@@ -1,19 +1,17 @@
-import { Alert, Button, Col, Form, Input, message, notification, Row, Select, Skeleton, Tag } from 'antd';
+import { Alert, Button, Col, Form, Input, Row, Select, Skeleton, Tag, notification } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import CustomGradientButton from 'components/CustomGradientButton';
-import { useEffect, useState } from 'react';
-import { RcFile } from 'antd/es/upload';
-import Dragger from 'antd/es/upload/Dragger';
-import { InboxOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+
 import { useGetAllSizeQuery } from 'services/size.services';
 import { useGetAllColorQuery } from 'services/color.services';
 import { useGetAllCategoriesQuery } from 'services/category.services';
 import { useAddProductMutation } from 'services/product.services';
+import { AddProductRequest, ProductDetail } from 'types/Product.type';
 
 export default function AddProductForStaff() {
-  const allowImageTypes = ['jpg', 'jpeg', 'png'];
-  const [isImageFile, setIsImageFile] = useState(false);
+  const [form] = Form.useForm();
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [inputFilled, setInputFilled] = useState(false);
@@ -30,8 +28,7 @@ export default function AddProductForStaff() {
     isSuccess: categoryIsSuccess
   } = useGetAllCategoriesQuery();
 
-  const [addProduct, { isLoading: isAddingProduct, isSuccess: isAddProductSuccess, error: addProductError }] =
-    useAddProductMutation();
+  const [addProductMutation] = useAddProductMutation();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -54,92 +51,104 @@ export default function AddProductForStaff() {
     }
   };
 
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [selectedColors, setSelectedColors] = useState<number[]>([]);
+  const [colorImages, setColorImages] = useState<{ [key: number]: string }>({});
 
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
 
-  const handleSizeClick = (size: string) => {
+  const handleSizeClick = (sizeId: number) => {
     setSelectedSizes((prevSelectedSizes) =>
-      prevSelectedSizes.includes(size)
-        ? prevSelectedSizes.filter((selectedSizes) => selectedSizes !== size)
-        : [...prevSelectedSizes, size]
+      prevSelectedSizes.includes(sizeId)
+        ? prevSelectedSizes.filter((selectedSizes) => selectedSizes !== sizeId)
+        : [...prevSelectedSizes, sizeId]
     );
   };
 
-  const handleColorClick = (color: string) => {
+  const handleColorClick = (colorId: number) => {
     setSelectedColors((prevSelectedColors) =>
-      prevSelectedColors.includes(color)
-        ? prevSelectedColors.filter((selectedColors) => selectedColors !== color)
-        : [...prevSelectedColors, color]
+      prevSelectedColors.includes(colorId)
+        ? prevSelectedColors.filter((selectedColors) => selectedColors !== colorId)
+        : [...prevSelectedColors, colorId]
     );
   };
 
-  const checkBeforeUpload = (file: RcFile) => {
-    const allowedFile = file.name.slice(((file.name.lastIndexOf('.') - 1) >>> 0) + 2);
-    const isAllowed = allowImageTypes.includes(allowedFile.toLocaleLowerCase());
-    setIsImageFile(isAllowed);
-    return false;
+  const handleColorImageChange = (colorId: number, imageUrl: string) => {
+    setColorImages((prevColorImages) => ({
+      ...prevColorImages,
+      [colorId]: imageUrl
+    }));
   };
 
-  const onFinish = async (values: any) => {
-    const categoryId = categories?.find((cat) => cat.categoryName === values.categoryId)?.categoryId;
-
-    const productData = {
-      name: values.name,
-      title: values.title, // Assuming title is the same as name
-      description: values.description,
-      productImage: [], // Add logic to handle image upload
-      price: parseFloat(values.price.replace(/\./g, '')),
-      categoryId: categoryId ?? 0,
-      productColors: selectedColors.map((color) => ({
-        colorName: color,
-        hexCode: color,
-        colorImage: ''
-      })), // Adjust as needed
-      productSize: selectedSizes
-    };
-
+  const handleFormSubmit = async () => {
     try {
-      await addProduct(productData).unwrap();
-      // Handle success (e.g., show a success message, reset form, etc.)
-    } catch (err) {
-      console.error('Failed to add product:', err);
-      // Handle error (e.g., show an error message)
+      const productDetail: ProductDetail = {
+        description: tags[0] || '',
+        additionalInformation: tags[1] || '',
+        shippingAndReturns: tags[2] || '',
+        sizeChart: tags[3] || '',
+        reviews: tags[4] || '',
+        questions: tags[5] || '',
+        vendorInfo: tags[6] || '',
+        moreProducts: tags[7] || '',
+        productPolicies: tags[8] || ''
+      };
+
+      const productRequest: AddProductRequest = {
+        name: form.getFieldValue('productName'),
+        title: form.getFieldValue('productTitle'),
+        description: form.getFieldValue('productDescription'),
+        productImage: [form.getFieldValue('productImg')],
+        price: form.getFieldValue('productPrice'),
+        categoryId: form.getFieldValue('productType'),
+        existingColorIds: selectedColors.map((colorId) => ({
+          colorId,
+          colorImage: colorImages[colorId] || '' // Sử dụng giá trị của colorImage từ state
+        })),
+        existingSizeIds: selectedSizes,
+        productDetail
+      };
+
+      await addProductMutation(productRequest).unwrap();
+
+      notification.success({ message: 'Thêm sản phẩm thành công' });
+      // Xử lý logic sau khi thêm sản phẩm thành công
+    } catch (error) {
+      notification.error({ message: 'Thêm sản phẩm thất bại' });
+      // Xử lý lỗi khi thêm sản phẩm
     }
   };
-
-  useEffect(() => {
-    if (isAddProductSuccess) {
-      message.success('Thêm sản phẩm thành công');
-    }
-    if (addProductError) {
-      notification.error({
-        message: 'Thêm sản phẩm thất bại'
-      });
-    }
-  }, [isAddProductSuccess, addProductError]);
 
   return (
     <div className='flex-grow'>
       <h1 className='text-2xl text-center  font-bold mb-4'>Thêm sản phẩm</h1>
 
-      <Form onFinish={onFinish}>
+      <Form form={form} onSubmitCapture={handleFormSubmit}>
         <Row>
-          <Col span={24} className='flex justify-center'>
+          <Col span={24} className=''>
             <FormItem
-              name='productImage'
+              name='productImg'
+              label={<span className='font-semibold'>Ảnh sản phẩm</span>}
               rules={[{ required: true, message: 'Vui lòng chọn ảnh sản phẩm' }]}
-              className='py-6'
+              className='py-6 pl-10'
             >
-              <div>
-                <Dragger beforeUpload={checkBeforeUpload}>
-                  <p className='ant-upload-drag-icon'>
-                    <InboxOutlined />
-                  </p>
-                  <p className='ant-upload-text'>Ấn hoặc kéo thả ảnh vào để upload</p>
-                  <p className='ant-upload-hint'>Hỗ trợ định dạng: .jpg .jpeg .png</p>
-                </Dragger>
-              </div>
+              <Input placeholder='' className='w-full max-w-[900px]' />
+            </FormItem>
+          </Col>
+
+          <Col span={24}>
+            <FormItem
+              className='pl-10 pb-6 '
+              label={<span className='font-semibold'>Tiêu đề sản phẩm</span>}
+              name='productTitle'
+              rules={[
+                { required: true, message: 'Vui lòng nhập tiêu đề sản phẩm' },
+                {
+                  pattern: /^.{2,}$/,
+                  message: 'Tên sản phẩm phải có trên 2 kí tự'
+                }
+              ]}
+            >
+              <Input placeholder='Quần dài đẹp lung linh' className='w-full max-w-[880px]' />
             </FormItem>
           </Col>
 
@@ -147,7 +156,7 @@ export default function AddProductForStaff() {
             <FormItem
               className='pl-10 '
               label={<span className='font-semibold'>Tên sản phẩm</span>}
-              name='name'
+              name='productName'
               rules={[
                 { required: true, message: 'Vui lòng nhập tên sản phẩm' },
                 {
@@ -164,7 +173,7 @@ export default function AddProductForStaff() {
             <FormItem
               className='pl-10 '
               label={<span className='font-semibold'>Loại hàng</span>}
-              name='categoryId'
+              name='productType'
               rules={[{ required: true, message: 'Vui lòng chọn loại hàng' }]}
             >
               <Select className='w-full max-w-[300px]'>
@@ -173,7 +182,7 @@ export default function AddProductForStaff() {
                 {categoryIsSuccess &&
                   categories &&
                   categories.map((category) => (
-                    <Select.Option value={category.categoryName} key={category.categoryId}>
+                    <Select.Option value={category.categoryId} key={category.categoryId}>
                       {category.categoryName}
                     </Select.Option>
                   ))}
@@ -185,7 +194,7 @@ export default function AddProductForStaff() {
             <FormItem
               className='pl-10 pt-6'
               label={<span className='font-semibold'>Giá sản phẩm</span>}
-              name='price'
+              name='productPrice'
               rules={[{ required: true, message: 'Vui lòng nhập giá sản phẩm' }]}
             >
               <Input placeholder='500.000' className='w-full max-w-[300px]' />
@@ -197,14 +206,16 @@ export default function AddProductForStaff() {
               className='pl-10 pt-6'
               label={<span className='font-semibold'>Chi tiết sản phẩm</span>}
               name='productDetails'
-              // rules={[{ required: !inputFilled, message: 'Vui lòng nhập chi tiết sản phẩm' }]}
             >
               <>
                 <Input
                   placeholder='Nhập chi tiết sản phẩm '
                   value={inputValue}
                   onChange={handleInputChange}
-                  onPressEnter={handleInputConfirm}
+                  onPressEnter={(e) => {
+                    e.preventDefault();
+                    handleInputConfirm();
+                  }}
                   className='w-full max-w-[250px]'
                 />
                 <div className='pt-2'>
@@ -222,7 +233,7 @@ export default function AddProductForStaff() {
             <Form.Item
               className='pl-10 pt-6'
               label={<span className='font-semibold'>Màu sản phẩm</span>}
-              name='colorName'
+              name='productColor'
               rules={[{ required: true }]}
               validateStatus={selectedColors.length > 0 ? 'success' : 'error'}
               help={selectedColors.length > 0 ? '' : 'Vui lòng chọn màu sản phẩm'}
@@ -232,43 +243,51 @@ export default function AddProductForStaff() {
               {colorIsSuccess &&
                 colors &&
                 colors.map((color) => (
-                  <Button
-                    size='large'
-                    key={color.colorId}
-                    style={{
-                      backgroundColor: color.hexCode,
-                      width: '40px',
-                      height: '40px',
-                      marginRight: '11px',
-                      marginBottom: '5px',
-                      position: 'relative'
-                    }}
-                    onClick={() => handleColorClick(color.hexCode)}
-                  >
-                    <div
+                  <div key={color.colorId} style={{ marginBottom: '10px' }}>
+                    <Button
+                      size='large'
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: '100%'
+                        backgroundColor: color.hexCode,
+                        width: '40px',
+                        height: '40px',
+                        marginRight: '11px',
+                        position: 'relative'
                       }}
+                      onClick={() => handleColorClick(color.colorId)}
                     >
-                      {selectedColors.includes(color.hexCode) && (
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            fontSize: '24px',
-                            color: color.hexCode === '#000000' ? '#FFFFFF' : '#000000'
-                          }}
-                        >
-                          ✓
-                        </div>
-                      )}
-                    </div>
-                  </Button>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          height: '100%'
+                        }}
+                      >
+                        {selectedColors.includes(color.colorId) && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: '50%',
+                              left: '50%',
+                              transform: 'translate(-50%, -50%)',
+                              fontSize: '24px',
+                              color: color.hexCode === '#000000' ? '#FFFFFF' : '#000000'
+                            }}
+                          >
+                            ✓
+                          </div>
+                        )}
+                      </div>
+                    </Button>
+                    {selectedColors.includes(color.colorId) && (
+                      <Input
+                        placeholder='Nhập đường link hình'
+                        value={colorImages[color.colorId] || ''}
+                        onChange={(e) => handleColorImageChange(color.colorId, e.target.value)}
+                        className='w-full max-w-[250px]'
+                      />
+                    )}
+                  </div>
                 ))}
             </Form.Item>
           </Col>
@@ -291,11 +310,11 @@ export default function AddProductForStaff() {
                     size='large'
                     key={size.sizeId}
                     className={`inline-block text-sm px-3 py-1 !rounded-none mr-2 mb-2 ${
-                      selectedSizes.includes(size.sizeName)
+                      selectedSizes.includes(size.sizeId)
                         ? 'bg-gradient-to-r from-[#fdc830] to-[#f37335] text-white'
                         : ' text-gray-700'
                     }`}
-                    onClick={() => handleSizeClick(size.sizeName)}
+                    onClick={() => handleSizeClick(size.sizeId)}
                   >
                     {size.sizeName}
                   </Button>
@@ -307,7 +326,7 @@ export default function AddProductForStaff() {
             <Form.Item
               className='pl-10 pt-10'
               label={<span className='font-semibold'>Mô tả sản phẩm</span>}
-              name='description'
+              name='productDescription'
               rules={[{ required: true, message: 'Vui lòng mô tả' }]}
             >
               <TextArea
@@ -320,13 +339,7 @@ export default function AddProductForStaff() {
         </Row>
         <div className='flex justify-end '>
           <CustomGradientButton>
-            <Button
-              type='primary'
-              htmlType='submit'
-              size='large'
-              className='!w-[10%] !mr-10 !mt-4'
-              loading={isAddingProduct}
-            >
+            <Button type='primary' htmlType='submit' size='large' className='!w-[10%] !mr-10 !mt-4'>
               Lưu
             </Button>
           </CustomGradientButton>

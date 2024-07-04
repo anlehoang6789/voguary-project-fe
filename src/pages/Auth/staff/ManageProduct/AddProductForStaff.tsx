@@ -52,6 +52,7 @@ export default function AddProductForStaff() {
   };
 
   const [selectedColors, setSelectedColors] = useState<number[]>([]);
+  const [colorImages, setColorImages] = useState<{ [key: number]: string }>({});
 
   const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
 
@@ -69,6 +70,13 @@ export default function AddProductForStaff() {
         ? prevSelectedColors.filter((selectedColors) => selectedColors !== colorId)
         : [...prevSelectedColors, colorId]
     );
+  };
+
+  const handleColorImageChange = (colorId: number, imageUrl: string) => {
+    setColorImages((prevColorImages) => ({
+      ...prevColorImages,
+      [colorId]: imageUrl
+    }));
   };
 
   const handleFormSubmit = async () => {
@@ -92,14 +100,15 @@ export default function AddProductForStaff() {
         productImage: [form.getFieldValue('productImg')],
         price: form.getFieldValue('productPrice'),
         categoryId: form.getFieldValue('productType'),
-        productColors: [], // Điền dữ liệu màu sản phẩm tương ứng
-        existingColorIds: [form.getFieldValue('productColor')], // Điền existingColorIds tương ứng
-        productSize: [], // Điền dữ liệu size sản phẩm tương ứng
-        existingSizeIds: [form.getFieldValue('productSize')], // Điền existingSizeIds tương ứng
+        existingColorIds: selectedColors.map((colorId) => ({
+          colorId,
+          colorImage: colorImages[colorId] || '' // Sử dụng giá trị của colorImage từ state
+        })),
+        existingSizeIds: selectedSizes,
         productDetail
       };
 
-      await addProductMutation(productRequest);
+      await addProductMutation(productRequest).unwrap();
 
       notification.success({ message: 'Thêm sản phẩm thành công' });
       // Xử lý logic sau khi thêm sản phẩm thành công
@@ -123,6 +132,23 @@ export default function AddProductForStaff() {
               className='py-6 pl-10'
             >
               <Input placeholder='' className='w-full max-w-[900px]' />
+            </FormItem>
+          </Col>
+
+          <Col span={24}>
+            <FormItem
+              className='pl-10 pb-6 '
+              label={<span className='font-semibold'>Tiêu đề sản phẩm</span>}
+              name='productTitle'
+              rules={[
+                { required: true, message: 'Vui lòng nhập tiêu đề sản phẩm' },
+                {
+                  pattern: /^.{2,}$/,
+                  message: 'Tên sản phẩm phải có trên 2 kí tự'
+                }
+              ]}
+            >
+              <Input placeholder='Quần dài đẹp lung linh' className='w-full max-w-[300px]' />
             </FormItem>
           </Col>
 
@@ -156,7 +182,7 @@ export default function AddProductForStaff() {
                 {categoryIsSuccess &&
                   categories &&
                   categories.map((category) => (
-                    <Select.Option value={category.categoryName} key={category.categoryId}>
+                    <Select.Option value={category.categoryId} key={category.categoryId}>
                       {category.categoryName}
                     </Select.Option>
                   ))}
@@ -169,13 +195,7 @@ export default function AddProductForStaff() {
               className='pl-10 pt-6'
               label={<span className='font-semibold'>Giá sản phẩm</span>}
               name='productPrice'
-              rules={[
-                { required: true, message: 'Vui lòng nhập giá sản phẩm' },
-                {
-                  pattern: /^\d{1,3}(?:\.\d{3}){1,2}$/,
-                  message: 'Giá sản phẩm phải có định dạng xxx.xxx'
-                }
-              ]}
+              rules={[{ required: true, message: 'Vui lòng nhập giá sản phẩm' }]}
             >
               <Input placeholder='500.000' className='w-full max-w-[300px]' />
             </FormItem>
@@ -192,7 +212,10 @@ export default function AddProductForStaff() {
                   placeholder='Nhập chi tiết sản phẩm '
                   value={inputValue}
                   onChange={handleInputChange}
-                  onPressEnter={handleInputConfirm}
+                  onPressEnter={(e) => {
+                    e.preventDefault();
+                    handleInputConfirm();
+                  }}
                   className='w-full max-w-[250px]'
                 />
                 <div className='pt-2'>
@@ -220,43 +243,51 @@ export default function AddProductForStaff() {
               {colorIsSuccess &&
                 colors &&
                 colors.map((color) => (
-                  <Button
-                    size='large'
-                    key={color.colorId}
-                    style={{
-                      backgroundColor: color.hexCode,
-                      width: '40px',
-                      height: '40px',
-                      marginRight: '11px',
-                      marginBottom: '5px',
-                      position: 'relative'
-                    }}
-                    onClick={() => handleColorClick(color.colorId)}
-                  >
-                    <div
+                  <div key={color.colorId} style={{ marginBottom: '10px' }}>
+                    <Button
+                      size='large'
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: '100%'
+                        backgroundColor: color.hexCode,
+                        width: '40px',
+                        height: '40px',
+                        marginRight: '11px',
+                        position: 'relative'
                       }}
+                      onClick={() => handleColorClick(color.colorId)}
                     >
-                      {selectedColors.includes(color.colorId) && (
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            fontSize: '24px',
-                            color: color.hexCode === '#000000' ? '#FFFFFF' : '#000000'
-                          }}
-                        >
-                          ✓
-                        </div>
-                      )}
-                    </div>
-                  </Button>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          height: '100%'
+                        }}
+                      >
+                        {selectedColors.includes(color.colorId) && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: '50%',
+                              left: '50%',
+                              transform: 'translate(-50%, -50%)',
+                              fontSize: '24px',
+                              color: color.hexCode === '#000000' ? '#FFFFFF' : '#000000'
+                            }}
+                          >
+                            ✓
+                          </div>
+                        )}
+                      </div>
+                    </Button>
+                    {selectedColors.includes(color.colorId) && (
+                      <Input
+                        placeholder='Nhập đường link hình'
+                        value={colorImages[color.colorId] || ''}
+                        onChange={(e) => handleColorImageChange(color.colorId, e.target.value)}
+                        className='w-full max-w-[250px]'
+                      />
+                    )}
+                  </div>
                 ))}
             </Form.Item>
           </Col>
@@ -295,7 +326,7 @@ export default function AddProductForStaff() {
             <Form.Item
               className='pl-10 pt-10'
               label={<span className='font-semibold'>Mô tả sản phẩm</span>}
-              name='description'
+              name='productDescription'
               rules={[{ required: true, message: 'Vui lòng mô tả' }]}
             >
               <TextArea

@@ -1,5 +1,5 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Col, DatePicker, Row } from 'antd';
+import { Button, Card, Col, DatePicker, Row, Skeleton } from 'antd';
 import { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 import { TiDelete } from 'react-icons/ti';
@@ -25,7 +25,30 @@ export default function CheckCart() {
   }, [cartData]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className='p-12'>
+        <Row gutter={16}>
+          <Col span={16}>
+            <Card
+              title={<Skeleton.Input style={{ width: 200 }} active={true} />}
+              extra={
+                <Button type='text' danger disabled>
+                  <Skeleton.Input style={{ width: 100 }} active={true} />
+                </Button>
+              }
+              bordered={false}
+              className='rounded-3xl bg-white p-5'
+              style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)' }}
+            >
+              <Skeleton active />
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Skeleton active />
+          </Col>
+        </Row>
+      </div>
+    );
   }
 
   if (error) {

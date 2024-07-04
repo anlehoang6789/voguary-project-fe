@@ -28,7 +28,7 @@ export default function AddProductForStaff() {
     isSuccess: categoryIsSuccess
   } = useGetAllCategoriesQuery();
 
-  const [addProductMutation, { isLoading: addLoading }] = useAddProductMutation();
+  const [addProductMutation] = useAddProductMutation();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);

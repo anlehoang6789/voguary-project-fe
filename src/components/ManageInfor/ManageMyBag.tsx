@@ -7,7 +7,7 @@ import CustomGradientButton from 'components/CustomGradientButton';
 import dayjs, { Dayjs } from 'dayjs';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
-import { useGetOrdersByUserIdQuery, useGetPagedRentalOrderDetailsByUserIdQuery } from 'services/order.services';
+import { useGetPagedRentalOrderDetailsByUserIdQuery } from 'services/order.services';
 
 const aodai =
   'https://firebasestorage.googleapis.com/v0/b/voguary.appspot.com/o/Products%2F%C3%A1o%20d%C3%A0i.jpg?alt=media&token=4de95e39-5ddf-4b30-982b-cafdbea76e40';

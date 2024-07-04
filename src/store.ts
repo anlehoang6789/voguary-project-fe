@@ -19,6 +19,7 @@ import { cartApi } from 'services/cart.services';
 import { paymentApi } from 'services/payment.services';
 import sizeAllSlice from 'slice/sizeAllSlice';
 import { searchApi } from 'services/search.services';
+import { dashboardApi } from 'services/dashboard.services';
 
 export const persistConfig = {
   key: 'root',
@@ -44,7 +45,8 @@ const rootReducer = combineReducers({
   [colorApi.reducerPath]: colorApi.reducer,
   [sizeApi.reducerPath]: sizeApi.reducer,
   [cartApi.reducerPath]: cartApi.reducer,
-  [searchApi.reducerPath]: searchApi.reducer
+  [searchApi.reducerPath]: searchApi.reducer,
+  [dashboardApi.reducerPath]: dashboardApi.reducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -68,6 +70,7 @@ export const store = configureStore({
       .concat(cartApi.middleware)
       .concat(paymentApi.middleware)
       .concat(searchApi.middleware)
+      .concat(dashboardApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { UserLoginResponse } from 'types/Account.type';
-import { GetInventoryChildrenResponse } from 'types/Inventory.type';
+import { GetInventoryRequest, GetInventoryResponse } from 'types/Inventory.type';
 import baseUrl from 'utils/http';
 
 export const inventoryApi = createApi({
@@ -19,9 +19,9 @@ export const inventoryApi = createApi({
   }),
   refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
-    getInventories: build.query<GetInventoryChildrenResponse[], void>({
-      query: () => ({
-        url: 'Inventory/GetInventories',
+    getInventories: build.query<GetInventoryResponse, GetInventoryRequest>({
+      query: ({ pageNumber, pageSize }) => ({
+        url: `Inventory/GetInventories?pageNumber=${pageNumber}&pageSize=${pageSize}`,
         method: 'GET'
       })
     })

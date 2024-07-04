@@ -4,54 +4,47 @@ import { CiSearch } from 'react-icons/ci';
 import { FaEye } from 'react-icons/fa6';
 import { MdDelete } from 'react-icons/md';
 import { useState } from 'react';
-import { GetInventoryChildrenResponse } from 'types/Inventory.type';
 import CustomGradientButton from 'components/CustomGradientButton';
+import { GetInventorybyStaffItem } from 'types/Inventory.type';
 import { useGetInventoriesQuery } from 'services/inventory.services';
 
-const columns: ColumnsType<GetInventoryChildrenResponse> = [
+const columns: ColumnsType<GetInventorybyStaffItem> = [
   {
     title: 'STT',
-    dataIndex: 'productId',
-    key: 'productId',
-    render: (text, record) => {
-      console.log('Product ID:', text); // Log productId to console
-      return <span>{text}</span>;
-    },
+    dataIndex: 'inventoryId',
+    key: 'inventoryId',
     align: 'center'
   },
   {
     title: 'Tên sản phẩm',
     dataIndex: 'productName',
     key: 'productName',
-    render: (text) => <span>{text}</span>,
     align: 'center'
   },
   {
     title: 'Hình ảnh sản phẩm',
-    dataIndex: 'productImages',
-    key: 'productImages',
-    render: (images) => <img src={images?.[0]?.url || ''} alt={images?.[0]?.alt || ''} className='w-16 h-16 mx-auto' />,
+    dataIndex: 'productImage',
+    key: 'productImage',
+    render: (product) => <img src={product} alt={product.productName} className='w-16 h-16 mx-auto' />,
     align: 'center'
   },
   {
     title: 'Tên loại sản phẩm',
-    dataIndex: 'category',
+    dataIndex: 'categoryName',
     key: 'categoryName',
-    render: (categories) => <span>{categories?.[0]?.categoryName || ''}</span>,
     align: 'center'
   },
   {
     title: 'Số lượng hiện hữu',
-    dataIndex: 'inventories',
+    dataIndex: 'quantityAvailable',
     key: 'quantityAvailable',
-    render: (inventories) => <span>{inventories?.[0]?.quantityAvailable || 0}</span>,
     align: 'center'
   },
   {
     title: 'Trạng thái sản phẩm',
-    dataIndex: 'productStatus',
-    key: 'productStatus',
-    render: (status) => <Tag color={status === 'Còn hàng' ? 'green' : 'red'}>{status}</Tag>,
+    dataIndex: 'status',
+    key: 'status',
+    render: (product) => <Tag color={product === 'In Stock' ? 'green' : 'red'}>{product}</Tag>,
     align: 'center'
   },
   {
@@ -74,9 +67,13 @@ const columns: ColumnsType<GetInventoryChildrenResponse> = [
 ];
 
 export default function ViewAllInventoryForStaff() {
-  const { data: inventories, error, isLoading } = useGetInventoriesQuery();
   const [current, setCurrent] = useState(1);
   const [searchText, setSearchText] = useState('');
+
+  const { data, isFetching } = useGetInventoriesQuery({
+    pageNumber: current,
+    pageSize: 10
+  });
 
   const onChange = (page: number) => {
     setCurrent(page);
@@ -86,17 +83,11 @@ export default function ViewAllInventoryForStaff() {
     setSearchText(value);
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error loading inventories</div>;
-  }
-
   const filteredData =
-    inventories?.filter((inventory) => String(inventory.productId).includes(searchText.toLowerCase())) || [];
-
+    data?.data.filter((order) => {
+      const matchesSearch = order.productName.toLowerCase().includes(searchText.toLowerCase());
+      return matchesSearch;
+    }) || [];
   return (
     <div className='container mx-auto p-4'>
       <h1 className='text-2xl font-bold mb-4'>Tất cả hàng tồn kho</h1>
@@ -119,12 +110,12 @@ export default function ViewAllInventoryForStaff() {
         columns={columns}
         dataSource={filteredData}
         pagination={{
-          current,
           pageSize: 10,
-          total: filteredData.length,
+          total: data?.totalRecord || 0,
           onChange: onChange
         }}
-        rowKey='productId'
+        loading={isFetching}
+        rowKey='inventoryId'
       />
     </div>
   );

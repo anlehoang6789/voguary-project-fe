@@ -6,7 +6,8 @@ import {
   GetTotalReturnedOrdersResponse,
   GetTotalRevenueResponse,
   GetTotalUsersCustomerResponse,
-  GetTotalUsersStaffResponse
+  GetTotalUsersStaffResponse,
+  MonthlyRevenueResponse // Thêm type mới cho API mới
 } from 'types/Dashboard.type';
 import baseUrl from 'utils/http';
 
@@ -61,6 +62,13 @@ export const dashboardApi = createApi({
         url: `Dashboard/MostOrderedProductCategory`,
         method: 'GET'
       })
+    }),
+    getMonthlyRevenue2024: build.query<MonthlyRevenueResponse, void>({
+      // Định nghĩa endpoint mới
+      query: () => ({
+        url: `Dashboard/MonthlyRevenue2024`, // URL mới bạn đã cung cấp
+        method: 'GET'
+      })
     })
   })
 });
@@ -71,5 +79,6 @@ export const {
   useGetTotalUsersStaffQuery,
   useGetTotalItemsInStockQuery,
   useGetTotalReturnedOrdersQuery,
-  useGetMostOrderedProductCategoryQuery
+  useGetMostOrderedProductCategoryQuery,
+  useGetMonthlyRevenue2024Query // Thêm hook mới cho endpoint mới
 } = dashboardApi;

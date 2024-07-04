@@ -24,3 +24,6 @@ export interface Root2 {
   categoryName: string;
   orderCount: number;
 }
+export interface MonthlyRevenueResponse {
+  '6/2024': number;
+}

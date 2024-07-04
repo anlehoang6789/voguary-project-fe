@@ -3,6 +3,7 @@ import { UserLoginResponse } from 'types/Account.type';
 import { AddToCartRequest, AddToCartResponse, GetCartByUserIdResponse } from 'types/Cart.type';
 import baseUrl from 'utils/http';
 
+// Define the API
 export const cartApi = createApi({
   reducerPath: 'cartApi',
   baseQuery: fetchBaseQuery({
@@ -31,8 +32,22 @@ export const cartApi = createApi({
         method: 'POST',
         body
       })
+    }),
+    deleteCart: build.mutation<void, number>({
+      query: (cartId) => ({
+        url: `Cart/DeleteCart?cartId=${cartId}`,
+        method: 'DELETE'
+      })
     })
+    // updateCart: build.mutation<void, UpdateToCartRequest>({
+    //   query: (body) => ({
+    //     url: `Cart/UpdateCart?userId=${body.userId}`,
+    //     method: 'PUT',
+    //     body
+    //   })
+    // })
   })
 });
 
-export const { useGetCartByUserIdQuery, useAddToCartMutation } = cartApi;
+// Export the hooks for the endpoints
+export const { useGetCartByUserIdQuery, useAddToCartMutation, useDeleteCartMutation } = cartApi;

@@ -248,3 +248,37 @@ export interface AddProductResponse {
   message: string;
   dataObject: DataObject;
 }
+
+
+
+export interface AddProductDetailRequest {
+  productId: number;
+  description: string;
+  additionalInformation: string;
+  shippingAndReturns: string;
+  sizeChart: string;
+  reviews: string;
+  questions: string;
+  vendorInfo: string;
+  moreProducts: string;
+  productPolicies: string;
+}
+
+export interface AddProductDetailResponse {
+  productId: number;
+  description: string;
+  additionalInformation: string;
+  shippingAndReturns: string;
+  sizeChart: string;
+  reviews: string;
+  questions: string;
+  vendorInfo: string;
+  moreProducts: string;
+  productPolicies: string;
+}
+
+export interface GetProductRequest {
+  PageNumber: number;
+  PageSize: number;
+}
+

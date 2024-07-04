@@ -7,6 +7,7 @@ import {
   GetProductDetailsByProductIdResponse,
   GetProductDetailsInforResponse,
   GetProductRatingsAndFeedbackResponse,
+  GetProductRequest,
   GetProductResponse,
   ProductRecommendation
 } from 'types/Product.type';
@@ -41,9 +42,9 @@ export const productApi = createApi({
   }),
   refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
-    getAllProducts: build.query<GetProductResponse, void>({
-      query: () => ({
-        url: 'Product/PagingAndFilteredProducts',
+    getAllProducts: build.query<GetProductResponse, GetProductRequest>({
+      query: (body) => ({
+        url: `Product/PagingAndFilteredProducts?PageNumber=${body.PageNumber}&PageSize=${body.PageSize}`,
         method: 'GET'
       })
     }),

@@ -2,14 +2,14 @@ import { ArrowRightOutlined } from '@ant-design/icons';
 import { Button, List, Typography } from 'antd';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useGetOrdersByUserIdQuery } from 'services/order.services';
+import { useGetPagedRentalOrderDetailsByUserIdQuery } from 'services/order.services';
 import { RootState } from 'store';
 
 export default function MyBagPopover() {
   const userIdString = useSelector((state: RootState) => state.authLoginAPI.userId);
   const userId = parseInt(userIdString || '0', 10);
 
-  const { data: orders, isLoading, error } = useGetOrdersByUserIdQuery(userId);
+  const { data: orders, isLoading, error } = useGetPagedRentalOrderDetailsByUserIdQuery(userId);
 
   if (isLoading) {
     console.log('Loading orders...');
@@ -28,18 +28,22 @@ export default function MyBagPopover() {
         <List
           dataSource={orders?.items || []}
           renderItem={(item) => (
-            <List.Item key={item.orderId}>
+            <List.Item key={item.productName}>
+              <div style={{ flex: '1' }}>
+                <img className='w-20 ' src={item.productImage} alt={`${item.productName} ảnh`} />
+              </div>
+
               <div style={{ flex: '5' }}>
                 <p style={{ fontSize: '13px', marginLeft: '12px' }}>
                   <span style={{ fontWeight: 'bold' }}>
-                    <Typography.Text>Order Id: {item.orderId}</Typography.Text>{' '}
+                    <Typography.Text>{item.productName}</Typography.Text>{' '}
                   </span>
                 </p>
                 <div className='ml-3'>
-                  <span>Ngày bắt đầu: {item.datePlaced}</span>
+                  <span>Ngày bắt đầu: {item.rentalStart}</span>
                 </div>
                 <div className='ml-3'>
-                  <span>Ngày kết thúc: {item.dueDate}</span>
+                  <span>Ngày kết thúc: {item.rentalEnd}</span>
                 </div>
                 <div
                   className='mt-1'

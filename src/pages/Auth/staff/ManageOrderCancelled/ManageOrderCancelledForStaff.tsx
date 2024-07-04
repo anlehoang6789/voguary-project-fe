@@ -1,12 +1,12 @@
 // src/components/ManageOrderCancelledForStaff.tsx
-import React, { useState } from 'react';
-import { Table, Button, Input, Tag, Modal } from 'antd';
+import { Button, Input, Modal, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { GetRentalReturnOrderByStaffResponse, Order, ReturnOrderByStaffItem } from 'types/Order.type';
-import { FaEye } from 'react-icons/fa6';
-import { CiSearch } from 'react-icons/ci';
 import CustomGradientButton from 'components/CustomGradientButton';
+import { useState } from 'react';
+import { CiSearch } from 'react-icons/ci';
+import { FaEye } from 'react-icons/fa6';
 import { useGetReturnOrdersQuery } from 'services/order.services';
+import { ReturnOrderByStaffItem } from 'types/Order.type';
 
 export default function ManageOrderCancelledForStaff() {
   const [current, setCurrent] = useState(1);

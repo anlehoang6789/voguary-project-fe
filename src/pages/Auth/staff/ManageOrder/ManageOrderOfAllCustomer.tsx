@@ -3,128 +3,29 @@ import { ColumnsType } from 'antd/es/table';
 import { CiSearch, CiFilter } from 'react-icons/ci';
 import { useState } from 'react';
 import CustomGradientButton from 'components/CustomGradientButton';
-import mockOrderData, { Order } from './mockDataOrderOfAllCustomer';
+import { OrderDetailByStaffItem } from 'types/Order.type';
+import { useGetOrderForStaffQuery } from 'services/order.services';
 
 const { Search } = Input;
 
-const orderStatus = ['Chờ xác nhận', 'Chờ giao hàng', 'Đang vận chuyển', 'Đã hoàn thành', 'Đã hủy'];
-
-const columns: ColumnsType<Order> = [
-  {
-    title: 'STT',
-    dataIndex: 'orderId',
-    key: 'orderId',
-    render: (text) => <span>{text}</span>,
-    align: 'center'
-  },
-  {
-    title: 'Mã đơn hàng',
-    dataIndex: 'orderCode',
-    key: 'orderCode',
-    align: 'center'
-  },
-  {
-    title: 'Tên khách hàng',
-    dataIndex: 'customerName',
-    key: 'customerName',
-    align: 'center'
-  },
-  {
-    title: 'Email',
-    dataIndex: 'email',
-    key: 'email',
-    align: 'center'
-  },
-  {
-    title: 'Số điện thoại',
-    dataIndex: 'phone',
-    key: 'phone',
-    align: 'center'
-  },
-  {
-    title: 'Giá tiền đơn hàng',
-    dataIndex: 'totalPrice',
-    key: 'totalPrice',
-    align: 'center'
-  },
-  {
-    title: 'Ngày giao dịch',
-    dataIndex: 'transactionDate',
-    key: 'transactionDate',
-    align: 'center'
-  },
-  {
-    title: 'Trạng thái',
-    dataIndex: 'status',
-    key: 'status',
-    render: (status) => {
-      let color = '';
-      switch (status) {
-        case 'Chờ xác nhận':
-          color = 'blue';
-          break;
-        case 'Chờ giao hàng':
-          color = 'orange';
-          break;
-        case 'Đang vận chuyển':
-          color = 'purple';
-          break;
-        case 'Đã hoàn thành':
-          color = 'green';
-          break;
-        case 'Đã hủy':
-          color = 'red';
-          break;
-      }
-      return <Tag color={color}>{status}</Tag>;
-    },
-    align: 'center'
-  },
-  {
-    title: 'Hành động',
-    key: 'action',
-    render: (text, record) => (
-      <div className='flex justify-center space-x-2 items-center'>
-        <CustomGradientButton>
-          <Dropdown
-            menu={{
-              items: orderStatus.map((status) => ({
-                key: status,
-                label: (
-                  <Tag
-                    color={
-                      status === 'Chờ xác nhận'
-                        ? 'blue'
-                        : status === 'Chờ giao hàng'
-                          ? 'orange'
-                          : status === 'Đang vận chuyển'
-                            ? 'purple'
-                            : status === 'Đã hoàn thành'
-                              ? 'green'
-                              : 'red'
-                    }
-                  >
-                    {status}
-                  </Tag>
-                )
-              }))
-            }}
-          >
-            <Button type='primary' className='flex items-center'>
-              Cập nhật trạng thái
-            </Button>
-          </Dropdown>
-        </CustomGradientButton>
-      </div>
-    ),
-    align: 'center'
-  }
+const orderStatus = [
+  { id: 1, status: 'Chờ Xác Nhận' },
+  { id: 2, status: 'Chờ Giao Hàng' },
+  { id: 3, status: 'Đang Vận Chuyển' },
+  { id: 4, status: 'Đã Hoàn Thành' },
+  { id: 5, status: 'Đã Hủy' }
 ];
 
 export default function ManageOrderOfAllCustomer() {
   const [current, setCurrent] = useState(1);
   const [searchText, setSearchText] = useState('');
-  const [filteredStatus, setFilteredStatus] = useState<string | null>(null);
+  const [filteredStatus, setFilteredStatus] = useState<number | null>(null);
+
+  const { data, isFetching } = useGetOrderForStaffQuery({
+    pageNumber: current,
+    pageSize: 10,
+    status: filteredStatus !== null ? filteredStatus : undefined
+  });
 
   const onChange = (page: number) => {
     setCurrent(page);
@@ -134,15 +35,137 @@ export default function ManageOrderOfAllCustomer() {
     setSearchText(value);
   };
 
-  const handleStatusFilterChange = (status: string) => {
-    setFilteredStatus(status === 'Tất cả' ? null : status);
+  const handleStatusFilterChange = (statusId: number | string) => {
+    setFilteredStatus(statusId === 'Tất cả' ? null : Number(statusId));
   };
 
-  const filteredData = mockOrderData.filter((order) => {
-    const matchesSearch = order.customerName.toLowerCase().includes(searchText.toLowerCase());
-    const matchesStatus = filteredStatus ? order.status === filteredStatus : true;
-    return matchesSearch && matchesStatus;
-  });
+  const filteredData =
+    data?.data.filter((order) => {
+      const matchesSearch = order.username.toLowerCase().includes(searchText.toLowerCase());
+      const matchesStatus = filteredStatus
+        ? order.status === orderStatus.find((status) => status.id === filteredStatus)?.status
+        : true;
+      return matchesSearch && matchesStatus;
+    }) || [];
+
+  const columns: ColumnsType<OrderDetailByStaffItem> = [
+    {
+      title: 'STT',
+      dataIndex: 'index',
+      key: 'index',
+      render: (_: any, __: any, index: number) => {
+        const calculatedIndex = (current - 1) * 10 + index + 1;
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span>{calculatedIndex}</span>
+          </div>
+        );
+      },
+      width: '5%'
+    },
+    {
+      title: 'Mã đơn hàng',
+      dataIndex: 'orderCode',
+      key: 'orderCode',
+      align: 'center'
+    },
+    {
+      title: 'Tên khách hàng',
+      dataIndex: 'username',
+      key: 'username',
+      align: 'center'
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+      align: 'center'
+    },
+    {
+      title: 'Số điện thoại',
+      dataIndex: 'phone',
+      key: 'phone',
+      align: 'center'
+    },
+    {
+      title: 'Giá tiền đơn hàng',
+      dataIndex: 'orderTotal',
+      key: 'orderTotal',
+      align: 'center'
+    },
+    {
+      title: 'Ngày giao dịch',
+      dataIndex: 'paymentTime',
+      key: 'paymentTime',
+      align: 'center'
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status) => {
+        let color = '';
+        switch (status) {
+          case 'Chờ Xác Nhận':
+            color = 'blue';
+            break;
+          case 'Chờ Giao Hàng':
+            color = 'orange';
+            break;
+          case 'Đang Vận Chuyển':
+            color = 'purple';
+            break;
+          case 'Đã Hoàn Thành':
+            color = 'green';
+            break;
+          case 'Đã Hủy':
+            color = 'red';
+            break;
+        }
+        return <Tag color={color}>{status}</Tag>;
+      },
+      align: 'center'
+    },
+    {
+      title: 'Hành động',
+      key: 'action',
+      render: () => (
+        <div className='flex justify-center space-x-2 items-center'>
+          <CustomGradientButton>
+            <Dropdown
+              menu={{
+                items: orderStatus.map((status) => ({
+                  key: status.id,
+                  label: (
+                    <Tag
+                      color={
+                        status.status === 'Chờ Xác Nhận'
+                          ? 'blue'
+                          : status.status === 'Chờ Giao Hàng'
+                            ? 'orange'
+                            : status.status === 'Đang Vận Chuyển'
+                              ? 'purple'
+                              : status.status === 'Đã Hoàn Thành'
+                                ? 'green'
+                                : 'red'
+                      }
+                    >
+                      {status.status}
+                    </Tag>
+                  )
+                }))
+              }}
+            >
+              <Button type='primary' className='flex items-center'>
+                Cập nhật trạng thái
+              </Button>
+            </Dropdown>
+          </CustomGradientButton>
+        </div>
+      ),
+      align: 'center'
+    }
+  ];
 
   return (
     <div className='container mx-auto p-4'>
@@ -167,7 +190,7 @@ export default function ManageOrderOfAllCustomer() {
           menu={{
             items: [
               { key: 'Tất cả', label: 'Tất cả' },
-              ...orderStatus.map((status) => ({ key: status, label: status }))
+              ...orderStatus.map((status) => ({ key: status.id, label: status.status }))
             ],
             onClick: (e) => handleStatusFilterChange(e.key)
           }}
@@ -183,9 +206,10 @@ export default function ManageOrderOfAllCustomer() {
         pagination={{
           current,
           pageSize: 10,
-          total: filteredData.length,
+          total: data?.totalRecord || 0,
           onChange: onChange
         }}
+        loading={isFetching}
         rowKey='orderId'
       />
     </div>

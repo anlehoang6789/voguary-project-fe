@@ -3,82 +3,9 @@ import { Table, Tooltip, Button, Pagination, Tag, Modal } from 'antd';
 import { FaEye } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
-import { useGetPagedRentalOrderDetailsByUserIdQuery } from 'services/order.services';
+import { useGetOrdersByUserIdQuery } from 'services/order.services';
 import { ColumnsType } from 'antd/es/table';
-import { GetPagedRentalOrderChildrenResponse } from 'types/Order.type';
-
-// const mockData = [
-//   {
-//     key: '1',
-//     orderId: 'ORD001',
-//     price: '100.00',
-//     transactionDate: '2023-05-01',
-//     status: 'Đã hủy'
-//   },
-//   {
-//     key: '2',
-//     orderId: 'ORD002',
-//     price: '200.00',
-//     transactionDate: '2023-05-02',
-//     status: 'Đã hủy'
-//   },
-//   {
-//     key: '3',
-//     orderId: 'ORD003',
-//     price: '150.00',
-//     transactionDate: '2023-05-03',
-//     status: 'Đã hủy'
-//   },
-//   {
-//     key: '4',
-//     orderId: 'ORD004',
-//     price: '150.00',
-//     transactionDate: '2023-05-04',
-//     status: 'Đã hủy'
-//   },
-//   {
-//     key: '5',
-//     orderId: 'ORD005',
-//     price: '300.00',
-//     transactionDate: '2023-05-05',
-//     status: 'Đã hủy'
-//   },
-//   {
-//     key: '6',
-//     orderId: 'ORD006',
-//     price: '250.00',
-//     transactionDate: '2023-05-06',
-//     status: 'Đã hủy'
-//   },
-//   {
-//     key: '7',
-//     orderId: 'ORD007',
-//     price: '400.00',
-//     transactionDate: '2023-05-07',
-//     status: 'Đã hủy'
-//   },
-//   {
-//     key: '8',
-//     orderId: 'ORD008',
-//     price: '350.00',
-//     transactionDate: '2023-05-08',
-//     status: 'Đã hủy'
-//   },
-//   {
-//     key: '9',
-//     orderId: 'ORD009',
-//     price: '450.00',
-//     transactionDate: '2023-05-09',
-//     status: 'Đã hủy'
-//   },
-//   {
-//     key: '10',
-//     orderId: 'ORD010',
-//     price: '450.00',
-//     transactionDate: '2023-05-09',
-//     status: 'Đã hủy'
-//   }
-// ];
+import { OrderByUserIdItem } from 'types/Order.type';
 
 const formatDateTime = (dateTimeString: string) => {
   const date = new Date(dateTimeString);
@@ -98,27 +25,26 @@ interface Order {
 
 export default function ManageOrderCancelled() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  // const [pagination, setPagination] = useState({ current: 1, pageSize: 5, total: mockData.length });
-  // const [currentData, setCurrentData] = useState(mockData.slice(0, pagination.pageSize));
+  const [pageSize] = useState(5);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   //Lấy data từ redux store sau khi đăng nhập từ api thành công
   const userIdString = useSelector((state: RootState) => state.authLoginAPI.userId);
   const userId = parseInt(userIdString || '0');
-  const { data: orderTrackingData, error, isFetching } = useGetPagedRentalOrderDetailsByUserIdQuery(userId);
-  const orderTrackingChildren = orderTrackingData?.items || [];
+  const {
+    data: orderTrackingData,
+    error,
+    isFetching
+  } = useGetOrdersByUserIdQuery({ userId, pageNumber: currentPage, pageSize });
+  const orderTrackingChildren = orderTrackingData?.data || [];
   //Filter status để hiển thị đơn hàng đang vận chuyển
-  const filteredOrdersStatus = orderTrackingChildren.filter((order) => order.status === 'Expired');
+  const filteredOrdersStatus = orderTrackingChildren.filter((order) => order.orderStatus === 'Đã Hủy');
   const totalCount = filteredOrdersStatus.length;
   const currentData = filteredOrdersStatus.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   const handlePageChange = (page: number, pageSize?: number) => {
     setCurrentPage(page);
-    if (pageSize) {
-      setPageSize(pageSize);
-    }
   };
 
   // const handleViewDetails = (order: Order) => {
@@ -131,7 +57,7 @@ export default function ManageOrderCancelled() {
     setSelectedOrder(null);
   };
 
-  const columns: ColumnsType<GetPagedRentalOrderChildrenResponse> = [
+  const columns: ColumnsType<OrderByUserIdItem> = [
     {
       title: 'STT',
       dataIndex: 'index',
@@ -153,9 +79,10 @@ export default function ManageOrderCancelled() {
       width: '10%'
     },
     {
-      title: 'Tên món hàng',
-      dataIndex: 'productName',
-      key: 'productName',
+      title: 'Tổng giá tiền đơn hàng',
+      dataIndex: 'orderTotal',
+      key: 'orderTotal',
+      render: (total: number) => `${total.toLocaleString()} VND`,
       width: '15%'
     },
     {
@@ -167,24 +94,24 @@ export default function ManageOrderCancelled() {
     },
     {
       title: 'Trạng thái',
-      dataIndex: 'status',
-      key: 'status',
+      dataIndex: 'orderStatus',
+      key: 'orderStatus',
       render: (status: string) => {
         let color;
         switch (status) {
-          case 'Chờ xác nhận':
+          case 'Chờ Xác Nhận':
             color = 'yellow';
             break;
-          case 'Đang vận chuyển':
+          case 'Đang Vận Chuyển':
             color = 'blue';
             break;
-          case 'Chờ giao hàng':
+          case 'Chờ Giao Hàng':
             color = 'purple';
             break;
-          case 'Hoàn thành':
+          case 'Đã Hoàn Thành':
             color = 'green';
             break;
-          case 'Expired':
+          case 'Đã Hủy':
             color = 'red';
             break;
           default:
@@ -197,7 +124,7 @@ export default function ManageOrderCancelled() {
     {
       title: 'Action',
       key: 'action',
-      render: (_: any, record: GetPagedRentalOrderChildrenResponse) => (
+      render: (_: any) => (
         <Tooltip title='Xem chi tiết đơn hàng'>
           <Button icon={<FaEye style={{ fontSize: '25px' }} />} />
         </Tooltip>

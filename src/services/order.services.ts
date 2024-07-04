@@ -1,6 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { UserLoginResponse } from 'types/Account.type';
-import { GetOrderByUserIdResponse, GetPagedRentalOrderDetailsByUserIdResponse } from 'types/Order.type';
+import {
+  GetOrderByUserIdRequest,
+  GetOrderByUserIdResponse,
+  GetPagedRentalOrderDetailsByUserIdResponse,
+  GetRentalOrderDetailByStaffRequest,
+  GetRentalOrderDetailByStaffResponse
+} from 'types/Order.type';
 import baseUrl from 'utils/http';
 
 export const orderApi = createApi({
@@ -19,9 +25,9 @@ export const orderApi = createApi({
   }),
   refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
-    getOrdersByUserId: build.query<GetOrderByUserIdResponse, number>({
-      query: (userId) => ({
-        url: `RentalOrder/GetRentalOrdersByUserId?userId=${userId}&pageNumber=1&pageSize=5`,
+    getOrdersByUserId: build.query<GetOrderByUserIdResponse, GetOrderByUserIdRequest>({
+      query: (body) => ({
+        url: `RentalOrder/GetRentalOrdersByUserId?userId=${body.userId}&pageNumber=${body.pageNumber}&pageSize=${body.pageSize}`,
         method: 'GET'
       })
     }),
@@ -30,8 +36,21 @@ export const orderApi = createApi({
         url: `RentalOrder/GetPagedRentalOrderDetailsByUserId?userId=${userId}&pageNumber=1&pageSize=5`,
         method: 'GET'
       })
+    }),
+    getOrderForStaff: build.query<GetRentalOrderDetailByStaffResponse, GetRentalOrderDetailByStaffRequest>({
+      query: ({ pageNumber, pageSize, status }) => {
+        let url = `RentalOrder/GetRentalOrderDetailByStaff?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        if (status !== undefined) {
+          url += `&status=${status}`;
+        }
+        return {
+          url,
+          method: 'GET'
+        };
+      }
     })
   })
 });
 
-export const { useGetOrdersByUserIdQuery, useGetPagedRentalOrderDetailsByUserIdQuery } = orderApi;
+export const { useGetOrdersByUserIdQuery, useGetPagedRentalOrderDetailsByUserIdQuery, useGetOrderForStaffQuery } =
+  orderApi;

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { UserLoginResponse } from 'types/Account.type';
 import {
+  GetMostOrderedProductCategoryResponse,
   GetTotalItemsInStockResponse,
   GetTotalReturnedOrdersResponse,
   GetTotalRevenueResponse,
@@ -54,6 +55,12 @@ export const dashboardApi = createApi({
         url: `Dashboard/TotalReturnedOrders`,
         method: 'GET'
       })
+    }),
+    getMostOrderedProductCategory: build.query<GetMostOrderedProductCategoryResponse, void>({
+      query: () => ({
+        url: `Dashboard/MostOrderedProductCategory`,
+        method: 'GET'
+      })
     })
   })
 });
@@ -63,5 +70,6 @@ export const {
   useGetTotalUsersCustomerQuery,
   useGetTotalUsersStaffQuery,
   useGetTotalItemsInStockQuery,
-  useGetTotalReturnedOrdersQuery
+  useGetTotalReturnedOrdersQuery,
+  useGetMostOrderedProductCategoryQuery
 } = dashboardApi;

@@ -15,18 +15,16 @@ export interface Order {
 export interface GetOrderByUserIdResponse {
   pageNumber: number;
   pageSize: number;
-  totalCount: number;
-  items: Item[];
+  totalPage: number;
+  totalRecord: number;
+  data: OrderByUserIdItem[];
 }
 
-export interface Item {
-  orderId: number;
-  orderStatus: string;
-  datePlaced: string;
-  dueDate: string;
-  returnDate: any;
+export interface OrderByUserIdItem {
+  orderCode: string;
   orderTotal: number;
-  pointsEarned: number;
+  paymentTime: string;
+  orderStatus: string;
 }
 
 export interface GetPagedRentalOrderDetailsByUserIdResponse {
@@ -44,4 +42,41 @@ export interface GetPagedRentalOrderChildrenResponse {
   status: string;
   paymentTime: string;
   orderCode: string;
+}
+
+export interface GetOrderByUserIdRequest {
+  userId: number;
+  pageNumber: number;
+  pageSize: number;
+}
+
+export interface GetRentalOrderDetailByStaffResponse {
+  pageNumber: number;
+  pageSize: number;
+  totalPage: number;
+  totalRecord: number;
+  data: OrderDetailByStaffItem[];
+}
+
+export interface OrderDetailByStaffItem {
+  productName: string;
+  productImage: string;
+  productQuantity: number;
+  rentalStart: string;
+  rentalEnd: string;
+  orderTotal: number;
+  paymentType: string;
+  paymentTime: string;
+  status: string;
+  orderCode: string;
+  username: string;
+  address: string;
+  phone: string;
+  email: string;
+}
+
+export interface GetRentalOrderDetailByStaffRequest {
+  pageNumber: number;
+  pageSize: number;
+  status?: number;
 }

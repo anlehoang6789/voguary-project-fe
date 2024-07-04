@@ -148,7 +148,7 @@ export default function AddProductForStaff() {
                 }
               ]}
             >
-              <Input placeholder='Quần dài đẹp lung linh' className='w-full max-w-[300px]' />
+              <Input placeholder='Quần dài đẹp lung linh' className='w-full max-w-[880px]' />
             </FormItem>
           </Col>
 

@@ -17,3 +17,10 @@ export interface GetTotalItemsInStockResponse {
 export interface GetTotalReturnedOrdersResponse {
   totalReturnedOrders: number;
 }
+
+export type GetMostOrderedProductCategoryResponse = Root2[];
+
+export interface Root2 {
+  categoryName: string;
+  orderCount: number;
+}

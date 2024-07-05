@@ -38,7 +38,7 @@ export default function ManageBeingTransported() {
   } = useGetOrdersByUserIdQuery({ userId, pageNumber: currentPage, pageSize });
   const orderTrackingChildren = orderTrackingData?.data || [];
   //Filter status để hiển thị đơn hàng đang vận chuyển
-  const filteredOrdersStatus = orderTrackingChildren.filter((order) => order.orderStatus === 'Đang Vận Chuyển');
+  const filteredOrdersStatus = orderTrackingChildren.filter((order) => order.orderStatus === 'Đang vận chuyển');
   const totalCount = filteredOrdersStatus.length;
   const currentData = filteredOrdersStatus.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
@@ -98,19 +98,19 @@ export default function ManageBeingTransported() {
       render: (status: string) => {
         let color;
         switch (status) {
-          case 'Chờ Xác Nhận':
+          case 'Chờ xác nhận':
             color = 'yellow';
             break;
-          case 'Đang Vận Chuyển':
+          case 'Đang vận chuyển':
             color = 'blue';
             break;
-          case 'Chờ Giao Hàng':
+          case 'Chờ giao hàng':
             color = 'purple';
             break;
-          case 'Đã Hoàn Thành':
+          case 'Đã hoàn thành':
             color = 'green';
             break;
-          case 'Đã Hủy':
+          case 'Đã hủy':
             color = 'red';
             break;
           default:

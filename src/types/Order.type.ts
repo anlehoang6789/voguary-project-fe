@@ -59,6 +59,7 @@ export interface GetRentalOrderDetailByStaffResponse {
 }
 
 export interface OrderDetailByStaffItem {
+  orderId: number;
   productName: string;
   productImage: string;
   productQuantity: number;
@@ -80,6 +81,27 @@ export interface GetRentalOrderDetailByStaffRequest {
   pageSize: number;
   status?: number;
 }
+
+export interface UpdateOrderStatusResponse {
+  orderId: number;
+  userId: number;
+  orderStatus: string;
+  returnReason: string;
+  orderTotal: number;
+  pointsEarned: number;
+  orderCode: string;
+  paymentId: number;
+  deposits: any[];
+  payments: any[];
+  rentalOrderDetails: any[];
+  user: any;
+}
+
+export interface UpdateOrderStatusRequest {
+  orderId: number;
+  status?: number;
+}
+
 export interface GetRentalReturnOrderByStaffResponse {
   pageNumber: number;
   pageSize: number;

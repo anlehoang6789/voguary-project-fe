@@ -5,7 +5,9 @@ import {
   GetOrderByUserIdResponse,
   GetPagedRentalOrderDetailsByUserIdResponse,
   GetRentalOrderDetailByStaffRequest,
-  GetRentalOrderDetailByStaffResponse
+  GetRentalOrderDetailByStaffResponse,
+  UpdateOrderStatusRequest,
+  UpdateOrderStatusResponse
 } from 'types/Order.type';
 import baseUrl from 'utils/http';
 
@@ -48,9 +50,19 @@ export const orderApi = createApi({
           method: 'GET'
         };
       }
+    }),
+    updateOrderStatus: build.mutation<UpdateOrderStatusResponse, UpdateOrderStatusRequest>({
+      query: ({ orderId, status }) => ({
+        url: `RentalOrder/UpdateOrderStatus?orderId=${orderId}&status=${status}`,
+        method: 'PUT'
+      })
     })
   })
 });
 
-export const { useGetOrdersByUserIdQuery, useGetPagedRentalOrderDetailsByUserIdQuery, useGetOrderForStaffQuery } =
-  orderApi;
+export const {
+  useGetOrdersByUserIdQuery,
+  useGetPagedRentalOrderDetailsByUserIdQuery,
+  useGetOrderForStaffQuery,
+  useUpdateOrderStatusMutation
+} = orderApi;

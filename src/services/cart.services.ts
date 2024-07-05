@@ -1,6 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { UserLoginResponse } from 'types/Account.type';
-import { AddToCartRequest, AddToCartResponse, GetCartByUserIdResponse } from 'types/Cart.type';
+import {
+  AddToCartRequest,
+  AddToCartResponse,
+  GetCartByUserIdResponse,
+  UpdateToCartRequest,
+  UpdateToCartResponse
+} from 'types/Cart.type';
 import baseUrl from 'utils/http';
 
 // Define the API
@@ -38,16 +44,16 @@ export const cartApi = createApi({
         url: `Cart/DeleteCart?cartId=${cartId}`,
         method: 'DELETE'
       })
+    }),
+    updateCart: build.mutation<UpdateToCartResponse, UpdateToCartRequest>({
+      query: (body) => ({
+        url: `Cart/UpdateCart?cartId=${body.cartId}`,
+        method: 'PUT',
+        body
+      })
     })
-    // updateCart: build.mutation<void, UpdateToCartRequest>({
-    //   query: (body) => ({
-    //     url: `Cart/UpdateCart?userId=${body.userId}`,
-    //     method: 'PUT',
-    //     body
-    //   })
-    // })
   })
 });
 
 // Export the hooks for the endpoints
-export const { useGetCartByUserIdQuery, useAddToCartMutation, useDeleteCartMutation } = cartApi;
+export const { useGetCartByUserIdQuery, useAddToCartMutation, useDeleteCartMutation, useUpdateCartMutation } = cartApi;

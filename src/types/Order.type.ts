@@ -101,3 +101,23 @@ export interface UpdateOrderStatusRequest {
   orderId: number;
   status?: number;
 }
+
+export interface GetRentalReturnOrderByStaffResponse {
+  pageNumber: number;
+  pageSize: number;
+  totalPage: number;
+  totalRecord: number;
+  data: ReturnOrderByStaffItem[];
+}
+export interface ReturnOrderByStaffItem {
+  orderId: number;
+  datePlaced: string;
+  dueDate: string;
+  returnDate: string;
+  username: string;
+  returnReason: string;
+}
+export interface GetRentalReturnOrderByStaffRequest {
+  pageNumber: number;
+  pageSize: number;
+}

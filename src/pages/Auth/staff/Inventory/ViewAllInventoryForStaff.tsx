@@ -4,39 +4,34 @@ import { CiSearch } from 'react-icons/ci';
 import { FaEye } from 'react-icons/fa6';
 import { MdDelete } from 'react-icons/md';
 import { useState } from 'react';
-import { Inventory } from 'types/Inventory.type';
-import mockData from './mockDataOfInventoryForStaff';
 import CustomGradientButton from 'components/CustomGradientButton';
+import { GetInventorybyStaffItem } from 'types/Inventory.type';
+import { useGetInventoriesQuery } from 'services/inventory.services';
 
-const columns: ColumnsType<Inventory> = [
+const columns: ColumnsType<GetInventorybyStaffItem> = [
   {
     title: 'STT',
     dataIndex: 'inventoryId',
     key: 'inventoryId',
-    render: (text) => <span>{text}</span>,
     align: 'center'
   },
   {
     title: 'Tên sản phẩm',
-    dataIndex: 'product',
+    dataIndex: 'productName',
     key: 'productName',
-    render: (product) => <span>{product[0].productName}</span>,
     align: 'center'
   },
   {
     title: 'Hình ảnh sản phẩm',
-    dataIndex: 'product',
+    dataIndex: 'productImage',
     key: 'productImage',
-    render: (product) => (
-      <img src={product[0].productImage} alt={product[0].productName} className='w-16 h-16 mx-auto' />
-    ),
+    render: (product) => <img src={product} alt={product.productName} className='w-16 h-16 mx-auto' />,
     align: 'center'
   },
   {
     title: 'Tên loại sản phẩm',
-    dataIndex: 'product',
+    dataIndex: 'categoryName',
     key: 'categoryName',
-    render: (product) => <span>{product[0].category[0].categoryName}</span>,
     align: 'center'
   },
   {
@@ -47,11 +42,9 @@ const columns: ColumnsType<Inventory> = [
   },
   {
     title: 'Trạng thái sản phẩm',
-    dataIndex: 'product',
-    key: 'productStatus',
-    render: (product) => (
-      <Tag color={product[0].productStatus === 'Còn hàng' ? 'green' : 'red'}>{product[0].productStatus}</Tag>
-    ),
+    dataIndex: 'status',
+    key: 'status',
+    render: (product) => <Tag color={product === 'In Stock' ? 'green' : 'red'}>{product}</Tag>,
     align: 'center'
   },
   {
@@ -77,6 +70,11 @@ export default function ViewAllInventoryForStaff() {
   const [current, setCurrent] = useState(1);
   const [searchText, setSearchText] = useState('');
 
+  const { data, isFetching } = useGetInventoriesQuery({
+    pageNumber: current,
+    pageSize: 10
+  });
+
   const onChange = (page: number) => {
     setCurrent(page);
   };
@@ -85,9 +83,11 @@ export default function ViewAllInventoryForStaff() {
     setSearchText(value);
   };
 
-  const filteredData = mockData.filter((inventory) =>
-    inventory.product[0].productName.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const filteredData =
+    data?.data.filter((order) => {
+      const matchesSearch = order.productName.toLowerCase().includes(searchText.toLowerCase());
+      return matchesSearch;
+    }) || [];
 
   return (
     <div className='container mx-auto p-4'>
@@ -111,11 +111,11 @@ export default function ViewAllInventoryForStaff() {
         columns={columns}
         dataSource={filteredData}
         pagination={{
-          current,
           pageSize: 10,
-          total: filteredData.length,
+          total: data?.totalRecord || 0,
           onChange: onChange
         }}
+        loading={isFetching}
         rowKey='inventoryId'
       />
     </div>

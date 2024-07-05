@@ -49,3 +49,14 @@ export interface UpdateToCartRequest {
   rentalStart: string;
   rentalEnd: string;
 }
+export interface UpdateToCartResponse {
+  cartId: number;
+  userId: number;
+  productId: number;
+  productTitle: string;
+  quantity: number;
+  productPrice: number;
+  productImageUrl: string[];
+  rentalStart: string;
+  rentalEnd: string;
+}

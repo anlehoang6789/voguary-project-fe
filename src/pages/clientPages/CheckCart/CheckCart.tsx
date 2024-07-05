@@ -4,7 +4,7 @@ import { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 import { TiDelete } from 'react-icons/ti';
 import { useSelector } from 'react-redux';
-import { useGetCartByUserIdQuery, useDeleteCartMutation } from 'services/cart.services';
+import { useGetCartByUserIdQuery, useDeleteCartMutation, useUpdateCartMutation } from 'services/cart.services';
 import { RootState } from 'store';
 import { stringToDate } from 'utils/convertTypeDayjs';
 import PaymentInfo from './PaymentCart/PaymentInfo';
@@ -12,8 +12,9 @@ import PaymentInfo from './PaymentCart/PaymentInfo';
 export default function CheckCart() {
   const userIdString = useSelector((state: RootState) => state.authLoginAPI.userId);
   const userId = parseInt(userIdString || '0');
-  const { data: cartData, error, isLoading, isSuccess, refetch } = useGetCartByUserIdQuery(userId); // Get refetch
+  const { data: cartData, error, isLoading, isSuccess, refetch } = useGetCartByUserIdQuery(userId);
   const [deleteCart] = useDeleteCartMutation();
+  const [updateCart] = useUpdateCartMutation();
   const [rentalStart, setRentalStart] = useState<Dayjs | null>(null);
   const [rentalEnd, setRentalEnd] = useState<Dayjs | null>(null);
 
@@ -85,6 +86,25 @@ export default function CheckCart() {
     }
   };
 
+  const handleQuantityChange = async (cartId: number, newQuantity: number) => {
+    try {
+      const cartItem = cartData.find((item) => item.cartId === cartId);
+      if (!cartItem) return;
+
+      const updatePayload = {
+        cartId,
+        quantity: newQuantity,
+        rentalStart: cartItem.rentalStart,
+        rentalEnd: cartItem.rentalEnd
+      };
+      console.log('Updating cart with payload:', updatePayload);
+      await updateCart(updatePayload).unwrap();
+      refetch();
+    } catch (error) {
+      console.error('Failed to update cart item:', error);
+    }
+  };
+
   return (
     <div className='p-12'>
       <Row gutter={16}>
@@ -134,9 +154,15 @@ export default function CheckCart() {
                     </div>
                   </div>
                   <div className='flex items-center justify-center'>
-                    <Button icon={<MinusOutlined />} />
+                    <Button
+                      icon={<MinusOutlined />}
+                      onClick={() => handleQuantityChange(item.cartId, item.quantity - 1)}
+                    />
                     <span className='mx-2'>{item.quantity}</span>
-                    <Button icon={<PlusOutlined />} />
+                    <Button
+                      icon={<PlusOutlined />}
+                      onClick={() => handleQuantityChange(item.cartId, item.quantity + 1)}
+                    />
                   </div>
                   <div className='text-center'>
                     <p>{item.productPrice.toLocaleString('vi-VN')} VND</p>

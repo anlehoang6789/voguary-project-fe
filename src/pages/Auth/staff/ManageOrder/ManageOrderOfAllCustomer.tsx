@@ -9,11 +9,11 @@ import { useGetOrderForStaffQuery, useUpdateOrderStatusMutation } from 'services
 const { Search } = Input;
 
 const orderStatus = [
-  { id: 1, status: 'Chờ Xác Nhận' },
-  { id: 2, status: 'Chờ Giao Hàng' },
-  { id: 3, status: 'Đang Vận Chuyển' },
-  { id: 4, status: 'Đã Hoàn Thành' },
-  { id: 5, status: 'Đã Hủy' }
+  { id: 1, status: 'Chờ xác nhận' },
+  { id: 2, status: 'Chờ giao hàng' },
+  { id: 3, status: 'Đang vận chuyển' },
+  { id: 4, status: 'Đã hoàn thành' },
+  { id: 5, status: 'Đã hủy' }
 ];
 
 export default function ManageOrderOfAllCustomer() {

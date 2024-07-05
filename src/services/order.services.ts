@@ -5,7 +5,9 @@ import {
   GetOrderByUserIdResponse,
   GetPagedRentalOrderDetailsByUserIdResponse,
   GetRentalOrderDetailByStaffRequest,
-  GetRentalOrderDetailByStaffResponse
+  GetRentalOrderDetailByStaffResponse,
+  GetRentalReturnOrderByStaffRequest,
+  GetRentalReturnOrderByStaffResponse
 } from 'types/Order.type';
 import baseUrl from 'utils/http';
 
@@ -48,9 +50,20 @@ export const orderApi = createApi({
           method: 'GET'
         };
       }
+    }),
+
+    getReturnOrders: build.query<GetRentalReturnOrderByStaffResponse, GetRentalReturnOrderByStaffRequest>({
+      query: ({ pageNumber, pageSize }) => ({
+        url: `RentalOrder/GetReturnOrders?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+        method: 'GET'
+      })
     })
   })
 });
 
-export const { useGetOrdersByUserIdQuery, useGetPagedRentalOrderDetailsByUserIdQuery, useGetOrderForStaffQuery } =
-  orderApi;
+export const {
+  useGetOrdersByUserIdQuery,
+  useGetPagedRentalOrderDetailsByUserIdQuery,
+  useGetOrderForStaffQuery,
+  useGetReturnOrdersQuery
+} = orderApi;

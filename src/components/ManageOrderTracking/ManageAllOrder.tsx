@@ -97,19 +97,19 @@ const ManageAllOrder = () => {
       render: (status: string) => {
         let color;
         switch (status) {
-          case 'Chờ Xác Nhận':
+          case 'Chờ xác nhận':
             color = 'yellow';
             break;
-          case 'Đang Vận Chuyển':
+          case 'Đang vận chuyển':
             color = 'blue';
             break;
-          case 'Chờ Giao Hàng':
+          case 'Chờ giao hàng':
             color = 'purple';
             break;
-          case 'Đã Hoàn Thành':
+          case 'Đã hoàn thành':
             color = 'green';
             break;
-          case 'Đã Hủy':
+          case 'Đã hủy':
             color = 'red';
             break;
           default:

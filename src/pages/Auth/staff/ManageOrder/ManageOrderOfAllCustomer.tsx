@@ -106,6 +106,7 @@ export default function ManageOrderOfAllCustomer() {
       title: 'Giá tiền đơn hàng',
       dataIndex: 'orderTotal',
       key: 'orderTotal',
+      render: (total: number) => `${total.toLocaleString()} đ`,
       align: 'center'
     },
     {
@@ -154,13 +155,13 @@ export default function ManageOrderOfAllCustomer() {
                     <Menu.Item key={status.id} onClick={() => handleUpdateOrderStatus(record.orderId, status.id)}>
                       <Tag
                         color={
-                          status.status === 'Chờ Xác Nhận'
+                          status.status === 'Chờ xác nhận'
                             ? 'blue'
-                            : status.status === 'Chờ Giao Hàng'
+                            : status.status === 'Chờ giao hàng'
                               ? 'orange'
-                              : status.status === 'Đang Vận Chuyển'
+                              : status.status === 'Đang vận chuyển'
                                 ? 'purple'
-                                : status.status === 'Đã Hoàn Thành'
+                                : status.status === 'Đã hoàn thành'
                                   ? 'green'
                                   : 'red'
                         }

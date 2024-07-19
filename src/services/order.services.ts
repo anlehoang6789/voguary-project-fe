@@ -10,7 +10,6 @@ import {
   UpdateOrderStatusResponse,
   GetRentalReturnOrderByStaffRequest,
   GetRentalReturnOrderByStaffResponse
-
 } from 'types/Order.type';
 import baseUrl from 'utils/http';
 
@@ -66,7 +65,6 @@ export const orderApi = createApi({
       query: ({ pageNumber, pageSize }) => ({
         url: `RentalOrder/GetReturnOrders?pageNumber=${pageNumber}&pageSize=${pageSize}`,
         method: 'GET'
-
       })
     })
   })
@@ -80,5 +78,4 @@ export const {
   useUpdateOrderStatusMutation,
 
   useGetReturnOrdersQuery
-
 } = orderApi;

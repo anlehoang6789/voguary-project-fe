@@ -64,9 +64,8 @@ export const dashboardApi = createApi({
       })
     }),
     getMonthlyRevenue2024: build.query<MonthlyRevenueResponse, void>({
-      // Định nghĩa endpoint mới
       query: () => ({
-        url: `Dashboard/MonthlyRevenue2024`, // URL mới bạn đã cung cấp
+        url: `Dashboard/MonthlyRevenue2024`,
         method: 'GET'
       })
     })

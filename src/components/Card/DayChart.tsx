@@ -2,11 +2,11 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 const data = {
-  labels: ['Ngày 1', 'Ngày 2', 'Ngày 3', 'Ngày 4', 'Ngày 5', 'Ngày 6', 'Ngày 7'],
+  labels: ['Ngày 17', 'Ngày 18', 'Ngày 19', 'Ngày 20', 'Ngày 21', 'Ngày 22', 'Ngày 23'],
   datasets: [
     {
       label: 'Doanh thu',
-      data: [5000, 6000, 5500, 7000, 6500, 7200, 6800],
+      data: [50000, 612305, 133455, 756332, 0, 0, 0],
       backgroundColor: [
         'rgba(75, 192, 192, 0.6)',
         'rgba(54, 162, 235, 0.6)',

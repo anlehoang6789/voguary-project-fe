@@ -6,6 +6,8 @@ import {
   GetPagedRentalOrderDetailsByUserIdResponse,
   GetRentalOrderDetailByStaffRequest,
   GetRentalOrderDetailByStaffResponse,
+  UpdateOrderStatusRequest,
+  UpdateOrderStatusResponse,
   GetRentalReturnOrderByStaffRequest,
   GetRentalReturnOrderByStaffResponse
 } from 'types/Order.type';
@@ -52,6 +54,13 @@ export const orderApi = createApi({
       }
     }),
 
+    updateOrderStatus: build.mutation<UpdateOrderStatusResponse, UpdateOrderStatusRequest>({
+      query: ({ orderId, status }) => ({
+        url: `RentalOrder/UpdateOrderStatus?orderId=${orderId}&status=${status}`,
+        method: 'PUT'
+      })
+    }),
+
     getReturnOrders: build.query<GetRentalReturnOrderByStaffResponse, GetRentalReturnOrderByStaffRequest>({
       query: ({ pageNumber, pageSize }) => ({
         url: `RentalOrder/GetReturnOrders?pageNumber=${pageNumber}&pageSize=${pageSize}`,
@@ -65,5 +74,8 @@ export const {
   useGetOrdersByUserIdQuery,
   useGetPagedRentalOrderDetailsByUserIdQuery,
   useGetOrderForStaffQuery,
+
+  useUpdateOrderStatusMutation,
+
   useGetReturnOrdersQuery
 } = orderApi;

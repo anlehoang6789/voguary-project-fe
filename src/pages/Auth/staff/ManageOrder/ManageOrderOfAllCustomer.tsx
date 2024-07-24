@@ -1,10 +1,10 @@
-import { Table, Tag, Button, Dropdown, Input } from 'antd';
+import { Table, Tag, Button, Dropdown, Input, Menu, notification } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { CiSearch, CiFilter } from 'react-icons/ci';
 import { useState } from 'react';
 import CustomGradientButton from 'components/CustomGradientButton';
 import { OrderDetailByStaffItem } from 'types/Order.type';
-import { useGetOrderForStaffQuery } from 'services/order.services';
+import { useGetOrderForStaffQuery, useUpdateOrderStatusMutation } from 'services/order.services';
 
 const { Search } = Input;
 
@@ -21,11 +21,13 @@ export default function ManageOrderOfAllCustomer() {
   const [searchText, setSearchText] = useState('');
   const [filteredStatus, setFilteredStatus] = useState<number | null>(null);
 
-  const { data, isFetching } = useGetOrderForStaffQuery({
+  const { data, isFetching, refetch } = useGetOrderForStaffQuery({
     pageNumber: current,
     pageSize: 10,
     status: filteredStatus !== null ? filteredStatus : undefined
   });
+
+  const [updateOrderStatus] = useUpdateOrderStatusMutation();
 
   const onChange = (page: number) => {
     setCurrent(page);
@@ -37,6 +39,18 @@ export default function ManageOrderOfAllCustomer() {
 
   const handleStatusFilterChange = (statusId: number | string) => {
     setFilteredStatus(statusId === 'Tất cả' ? null : Number(statusId));
+  };
+
+  const handleUpdateOrderStatus = async (orderId: number, statusId: number) => {
+    try {
+      await updateOrderStatus({ orderId, status: statusId }).unwrap();
+
+      notification.success({ message: 'Cập nhật trạng thái thành công' });
+      refetch();
+    } catch (error) {
+      console.error('Failed to update order status:', error);
+      notification.error({ message: 'Cập nhật trạng thái thất bại' });
+    }
   };
 
   const filteredData =
@@ -75,6 +89,7 @@ export default function ManageOrderOfAllCustomer() {
       key: 'username',
       align: 'center'
     },
+
     {
       title: 'Email',
       dataIndex: 'email',
@@ -91,6 +106,7 @@ export default function ManageOrderOfAllCustomer() {
       title: 'Giá tiền đơn hàng',
       dataIndex: 'orderTotal',
       key: 'orderTotal',
+      render: (total: number) => `${total.toLocaleString()} đ`,
       align: 'center'
     },
     {
@@ -129,32 +145,33 @@ export default function ManageOrderOfAllCustomer() {
     {
       title: 'Hành động',
       key: 'action',
-      render: () => (
+      render: (_, record) => (
         <div className='flex justify-center space-x-2 items-center'>
           <CustomGradientButton>
             <Dropdown
-              menu={{
-                items: orderStatus.map((status) => ({
-                  key: status.id,
-                  label: (
-                    <Tag
-                      color={
-                        status.status === 'Chờ xác xhận'
-                          ? 'blue'
-                          : status.status === 'Chờ giao hàng'
-                            ? 'orange'
-                            : status.status === 'Đang vận chuyển'
-                              ? 'purple'
-                              : status.status === 'Đã hoàn thành'
-                                ? 'green'
-                                : 'red'
-                      }
-                    >
-                      {status.status}
-                    </Tag>
-                  )
-                }))
-              }}
+              overlay={
+                <Menu>
+                  {orderStatus.map((status) => (
+                    <Menu.Item key={status.id} onClick={() => handleUpdateOrderStatus(record.orderId, status.id)}>
+                      <Tag
+                        color={
+                          status.status === 'Chờ xác nhận'
+                            ? 'blue'
+                            : status.status === 'Chờ giao hàng'
+                              ? 'orange'
+                              : status.status === 'Đang vận chuyển'
+                                ? 'purple'
+                                : status.status === 'Đã hoàn thành'
+                                  ? 'green'
+                                  : 'red'
+                        }
+                      >
+                        {status.status}
+                      </Tag>
+                    </Menu.Item>
+                  ))}
+                </Menu>
+              }
             >
               <Button type='primary' className='flex items-center'>
                 Cập nhật trạng thái

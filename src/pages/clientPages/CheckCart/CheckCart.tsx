@@ -1,5 +1,5 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Col, DatePicker, Row, Skeleton } from 'antd';
+import { Button, Card, Col, DatePicker, notification, Row, Skeleton } from 'antd';
 import { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 import { TiDelete } from 'react-icons/ti';
@@ -80,8 +80,16 @@ export default function CheckCart() {
     try {
       await deleteCart(cartId).unwrap();
       console.log('Cart item deleted successfully');
+      notification.success({
+        message: 'Xóa thành công',
+        description: 'Sản phẩm của bạn đã xóa!!'
+      });
       refetch();
     } catch (error) {
+      notification.error({
+        message: 'Xóa thất bại',
+        description: 'Sản phẩm của bạn chưa được xóa!!'
+      });
       console.error('Failed to delete cart item:', error);
     }
   };
@@ -95,13 +103,22 @@ export default function CheckCart() {
         cartId,
         quantity: newQuantity,
         rentalStart: cartItem.rentalStart,
-        rentalEnd: cartItem.rentalEnd
+        rentalEnd: cartItem.rentalEnd,
+        userId: userId
       };
       console.log('Updating cart with payload:', updatePayload);
       await updateCart(updatePayload).unwrap();
+      notification.success({
+        message: 'Cập nhật thành công',
+        description: 'Giỏ hàng của bạn đã được cập nhật!'
+      });
       refetch();
     } catch (error) {
       console.error('Failed to update cart item:', error);
+      notification.error({
+        message: 'Cập nhật thất bại',
+        description: 'Giỏ hàng của bạn chưa được cập nhật!!'
+      });
     }
   };
 

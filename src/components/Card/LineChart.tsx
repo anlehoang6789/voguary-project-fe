@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { useGetMonthlyRevenue2024Query } from 'services/dashboard.services'; // Thay đổi đường dẫn tới dashboardApi
+import { useGetMonthlyRevenue2024Query } from 'services/dashboard.services'; // Adjust the import path
 
 const options = {
   scales: {
@@ -31,7 +31,7 @@ export default function LineChart() {
     datasets: [
       {
         label: 'Doanh thu',
-        data: [], // Dữ liệu sẽ được cập nhật sau khi nhận được từ API
+        data: Array(12).fill(0), // Initialize with an array of zeros for 12 months
         fill: false,
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 2,
@@ -43,16 +43,24 @@ export default function LineChart() {
 
   useEffect(() => {
     if (monthlyRevenueData) {
-      const revenueValues = Object.values(monthlyRevenueData)[0]; // Lấy giá trị từ key '6/2024'
-      setData({
-        ...data,
+      // Convert the monthlyRevenueData object to an array with 12 elements
+      const revenueValues = new Array(12).fill(0);
+      Object.entries(monthlyRevenueData).forEach(([key, value]) => {
+        const monthIndex = parseInt(key.split('/')[0], 10) - 1; // Extract month index from key
+        if (monthIndex >= 0 && monthIndex < 12) {
+          revenueValues[monthIndex] = value;
+        }
+      });
+
+      setData((prevData) => ({
+        ...prevData,
         datasets: [
           {
-            ...data.datasets[0],
+            ...prevData.datasets[0],
             data: revenueValues
           }
         ]
-      });
+      }));
     }
   }, [monthlyRevenueData]);
 

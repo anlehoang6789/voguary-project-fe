@@ -80,7 +80,7 @@ const ManageAllOrder = () => {
       title: 'Tổng giá tiền đơn hàng',
       dataIndex: 'orderTotal',
       key: 'orderTotal',
-      render: (total: number) => `${total.toLocaleString()} VND`,
+      render: (total: number) => `${total.toLocaleString()} đ`,
       width: '15%'
     },
     {

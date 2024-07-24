@@ -46,10 +46,10 @@ export const cartApi = createApi({
       })
     }),
     updateCart: build.mutation<UpdateToCartResponse, UpdateToCartRequest>({
-      query: (body) => ({
-        url: `Cart/UpdateCart?cartId=${body.cartId}`,
+      query: (updatePayload) => ({
+        url: `Cart/UpdateCart?userId=${updatePayload.userId}`,
         method: 'PUT',
-        body
+        body: updatePayload
       })
     })
   })

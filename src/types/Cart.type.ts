@@ -44,6 +44,7 @@ export interface AddToCartResponse {
   user: any;
 }
 export interface UpdateToCartRequest {
+  userId: number;
   cartId: number;
   quantity: number;
   rentalStart: string;

@@ -1,10 +1,11 @@
-import { Table, Tag, Button, Dropdown, Input, Menu, notification } from 'antd';
+import { Table, Tag, Button, Dropdown, Input, Menu, notification, Tooltip, Modal } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { CiSearch, CiFilter } from 'react-icons/ci';
 import { useState } from 'react';
 import CustomGradientButton from 'components/CustomGradientButton';
 import { OrderDetailByStaffItem } from 'types/Order.type';
 import { useGetOrderForStaffQuery, useUpdateOrderStatusMutation } from 'services/order.services';
+import { FaEye } from 'react-icons/fa6';
 
 const { Search } = Input;
 
@@ -51,6 +52,27 @@ export default function ManageOrderOfAllCustomer() {
       console.error('Failed to update order status:', error);
       notification.error({ message: 'Cập nhật trạng thái thất bại' });
     }
+  };
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<OrderDetailByStaffItem | null>(null);
+
+  const handleViewDetails = (order: OrderDetailByStaffItem) => {
+    setSelectedOrder(order);
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+    setSelectedOrder(null);
+  };
+
+  const formatDateTime = (dateTimeString: string) => {
+    const date = new Date(dateTimeString);
+    const formattedDate = date.toLocaleDateString('vi-VN');
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${formattedDate} lúc ${hours}h${minutes}phút`;
   };
 
   const filteredData =
@@ -113,6 +135,7 @@ export default function ManageOrderOfAllCustomer() {
       title: 'Ngày giao dịch',
       dataIndex: 'paymentTime',
       key: 'paymentTime',
+      render: (text: string) => formatDateTime(text),
       align: 'center'
     },
     {
@@ -178,6 +201,9 @@ export default function ManageOrderOfAllCustomer() {
               </Button>
             </Dropdown>
           </CustomGradientButton>
+          <Tooltip title='Xem chi tiết đơn hàng'>
+            <Button icon={<FaEye style={{ fontSize: '15px' }} />} onClick={() => handleViewDetails(record)} />
+          </Tooltip>
         </div>
       ),
       align: 'center'
@@ -229,6 +255,115 @@ export default function ManageOrderOfAllCustomer() {
         loading={isFetching}
         rowKey='orderId'
       />
+
+      <Modal
+        title={<span className='flex justify-center text-xl pb-3'>Chi tiết đơn hàng</span>}
+        open={isModalVisible}
+        onCancel={handleCloseModal}
+        footer={[
+          <CustomGradientButton>
+            <Button key='close' onClick={handleCloseModal} type='primary'>
+              Đóng
+            </Button>
+          </CustomGradientButton>
+        ]}
+      >
+        {selectedOrder && (
+          <div className='bg-[#ffffff] pl-8 pr-8 pt-2 pb-8 '>
+            <div className=''>
+              <div className='flex flex-col items-center flex-shrink-0'>
+                {' '}
+                <p className='font-semibold text-sm text-dimGray pb-2'>{selectedOrder.productName}</p>
+                <img
+                  src={selectedOrder.productImage}
+                  alt={selectedOrder.productName}
+                  className='product-img block rounded-md'
+                  width='160px'
+                />
+                <p className='font-thin text-sm text-dimGray pt-2'>Số lượng: {selectedOrder.productQuantity}</p>
+                <p className='font-thin text-sm text-dimGray pt-2 pb-2'>
+                  {formatDateTime(selectedOrder.rentalStart)} - {formatDateTime(selectedOrder.rentalEnd)}
+                </p>
+              </div>
+            </div>
+
+            <div className='border-t-2 border-t-gainsboro pt-4 pl-8 pr-8 mt-7'>
+              <div className='orderid flex justify-between mb-3'>
+                <span className='inline-block'>Mã đơn hàng</span>
+                <span className='inline-block'>
+                  <span className='inline-block' id='orderid'>
+                    {selectedOrder.orderCode}
+                  </span>
+                </span>
+              </div>
+
+              <div className='name flex justify-between mb-3'>
+                <span className='inline-block'>Tên</span>
+                <span className='inline-block'>
+                  <span className='inline-block' id='name'>
+                    {selectedOrder.username}
+                  </span>
+                </span>
+              </div>
+
+              <div className='address flex justify-between mb-3'>
+                <span className='inline-block'>Địa chỉ</span>
+                <span className='inline-block text-right' style={{ maxWidth: '200px', wordWrap: 'break-word' }}>
+                  <span className='inline-block' id='address'>
+                    {selectedOrder.address}
+                  </span>
+                </span>
+              </div>
+
+              <div className='phone flex justify-between mb-3'>
+                <span className='inline-block'>Số điện thoại</span>
+                <span className='inline-block'>
+                  <span className='inline-block' id='phone'>
+                    {selectedOrder.phone}
+                  </span>
+                </span>
+              </div>
+
+              <div className='payment flex justify-between mb-3'>
+                <span className='inline-block'>Hình thức thanh toán</span>
+                <span className='inline-block'>
+                  <span className='inline-block' id='payment'>
+                    {selectedOrder.paymentType}
+                  </span>
+                </span>
+              </div>
+
+              <div className='flex justify-between mb-3'>
+                <span className='inline-block'>Ngày giao dịch</span>
+                <span className='inline-block'>
+                  <span className='inline-block' id='status'>
+                    {formatDateTime(selectedOrder.paymentTime)}
+                  </span>
+                </span>
+              </div>
+
+              <div className='flex justify-between mb-3'>
+                <span className='inline-block'>Trạng thái đơn hàng</span>
+                <span className='inline-block'>
+                  <span className='inline-block' id='status'>
+                    {selectedOrder.status}
+                  </span>
+                </span>
+              </div>
+
+              <div className='total flex justify-between border-t-2 pt-3 text-lg font-bold text-оnух'>
+                <span className='inline-block'>Tổng cộng</span>{' '}
+                <span className='inline-block'>
+                  <span className='inline-block' id='total'>
+                    {selectedOrder.orderTotal.toLocaleString()}
+                  </span>{' '}
+                  VND
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

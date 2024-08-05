@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Table, Tooltip, Button, Pagination, Tag, Modal } from 'antd';
 import { FaEye } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
@@ -27,13 +27,19 @@ export default function ManageBeingTransported() {
   const {
     data: orderTrackingData,
     error,
-    isFetching
+    isFetching,
+    refetch
   } = useGetOrdersByUserIdQuery({ userId, pageNumber: currentPage, pageSize });
   const orderTrackingChildren = orderTrackingData?.data || [];
   //Filter status để hiển thị đơn hàng đang vận chuyển
   const filteredOrdersStatus = orderTrackingChildren.filter((order) => order.orderStatus === 'Đang vận chuyển');
   const totalCount = filteredOrdersStatus.length;
-  const currentData = filteredOrdersStatus.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  // const currentData = filteredOrdersStatus.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  // Kiểm tra dữ liệu của trang hiện tại
+  useEffect(() => {
+    refetch();
+  }, [currentPage, pageSize, refetch]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -133,7 +139,7 @@ export default function ManageBeingTransported() {
     <div className='mx-auto w-full min-h-screen space-y-4'>
       <Table
         columns={columns}
-        dataSource={currentData}
+        dataSource={filteredOrdersStatus}
         pagination={false}
         loading={isFetching}
         rowKey='key'

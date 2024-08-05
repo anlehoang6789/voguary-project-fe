@@ -25,6 +25,16 @@ export interface OrderByUserIdItem {
   orderTotal: number;
   paymentTime: string;
   orderStatus: string;
+  fullName: string;
+  phone: string;
+  address: string;
+  paymentMethod: string;
+  email: string;
+  productName: string;
+  productImage: string;
+  productQuantity: number;
+  rentalStart: string;
+  rentalEnd: string;
 }
 
 export interface GetPagedRentalOrderDetailsByUserIdResponse {

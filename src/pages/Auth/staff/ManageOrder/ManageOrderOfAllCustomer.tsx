@@ -6,6 +6,7 @@ import CustomGradientButton from 'components/CustomGradientButton';
 import { OrderDetailByStaffItem } from 'types/Order.type';
 import { useGetOrderForStaffQuery, useUpdateOrderStatusMutation } from 'services/order.services';
 import { FaEye } from 'react-icons/fa6';
+import { CiEdit } from 'react-icons/ci';
 
 const { Search } = Input;
 
@@ -197,7 +198,7 @@ export default function ManageOrderOfAllCustomer() {
               }
             >
               <Button type='primary' className='flex items-center'>
-                Cập nhật trạng thái
+                <CiEdit style={{ fontSize: '15px' }} />
               </Button>
             </Dropdown>
           </CustomGradientButton>

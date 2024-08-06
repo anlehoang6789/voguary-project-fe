@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { UserLoginResponse } from 'types/Account.type';
-import { AddPaymentMethodResponse, GetPaymentByUserIdResponse } from 'types/Payment.type';
+import { GetPaymentByUserIdResponse, AddPaymentMethodResponse } from 'types/Payment.type';
 import baseUrl from 'utils/http';
 
 export const paymentApi = createApi({
@@ -25,11 +25,25 @@ export const paymentApi = createApi({
         method: 'GET'
       })
     }),
-    addPaymentMethod: build.mutation<AddPaymentMethodResponse, Partial<AddPaymentMethodResponse>>({
-      query: ({ userId, PaymentMethodId }) => ({
-        url: `Payment/AddPaymentForUser?userId=${userId}&PaymentMethodId=1`,
+    addPaymentMethod: build.mutation<AddPaymentMethodResponse, {
+      userId: number;
+      fullName: string;
+      phone: string;
+      address: string;
+      paymentMethodId: number;
+      returnUrl: string;
+    }>({
+      query: ({ userId, fullName, phone, address, paymentMethodId, returnUrl }) => ({
+        url: `Payment/AddPaymentForUser`,
         method: 'POST',
-        body: { userId, PaymentMethodId }
+        params: {
+          userId,
+          FullName: fullName,
+          Phone: phone,
+          Address: address,
+          PaymentMethodId: paymentMethodId,
+          ReturnUrl: returnUrl
+        }
       })
     })
   })

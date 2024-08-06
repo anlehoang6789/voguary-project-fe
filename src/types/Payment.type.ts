@@ -13,29 +13,15 @@ export interface GetPaymentByUserIdChildrenResponse {
   paymentMethodName: string;
 }
 
-export interface Product {
-  productId: number;
-  productName: string;
-  productPrice: number;
-  categoryId: number;
-}
-
-export interface Cart {
-  cartId: number;
-  userId: number;
-  productId: number;
-  colorName: any;
-  sizeName: any;
-  rentalStart: any;
-  rentalEnd: any;
-  quantity: number;
-  product: Product;
-}
-
 export interface AddPaymentMethodResponse {
-  PaymentMethodId: number;
+  status: string;
+  message: string;
+  dataObject: DataObject;
+  additionalData: any;
+}
+
+export interface DataObject {
   paymentId: number;
-  orderId: any;
   userId: number;
   paymentAmount: number;
   paymentMethodName: string;
@@ -45,5 +31,22 @@ export interface AddPaymentMethodResponse {
   address: string;
   paymentTime: string;
   paymentLink: string;
+  returnUrl: any;
+  cancelUrl: any;
   carts: Cart[];
+}
+
+export interface Cart {
+  cartId: number;
+  userId: number;
+  productId: number;
+  quantity: number;
+  product: Product;
+}
+
+export interface Product {
+  productId: number;
+  productName: string;
+  productPrice: number;
+  categoryId: number;
 }

@@ -17,6 +17,9 @@ export default function ManagePaymentMethod({
   const userId = parseInt(userIdString || '0');
   const [selectedMethod, setSelectedMethod] = useState('');
   const [formDisabled, setFormDisabled] = useState(true);
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
   const navigate = useNavigate();
   const [addPaymentMethod, { data, error, isLoading }] = useAddPaymentMethodMutation();
   const { data: cartData, isSuccess } = useGetCartByUserIdQuery(userId);
@@ -46,11 +49,15 @@ export default function ManagePaymentMethod({
       try {
         const response = await addPaymentMethod({
           userId,
-          PaymentMethodId: 1 // Thanh toán qua thẻ
+          fullName,
+          phone,
+          address,
+          paymentMethodId: 1, // Bank card
+          returnUrl: 'http://localhost:3000' // Replace with your actual return URL
         }).unwrap();
 
-        if (response.paymentLink) {
-          window.location.href = response.paymentLink;
+        if (response.dataObject.paymentLink) {
+          window.location.href = response.dataObject.paymentLink;
         }
       } catch (err) {
         console.error('Failed to add payment method:', err);
@@ -59,7 +66,11 @@ export default function ManagePaymentMethod({
       try {
         await addPaymentMethod({
           userId,
-          PaymentMethodId: 2
+          fullName,
+          phone,
+          address,
+          paymentMethodId: 2, // COD
+          returnUrl: 'http://localhost:3000' // COD might not need a return URL
         }).unwrap();
 
         navigate('/orderTracking');

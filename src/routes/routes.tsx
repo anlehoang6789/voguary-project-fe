@@ -1,3 +1,5 @@
+import PaymentCanceled from 'components/MangeCheckout/PaymentCanceled';
+import PaymentSuccess from 'components/MangeCheckout/PaymentSuccess';
 import AdminLayout from 'layouts/admin_layout/AdminLayout';
 import ClientLayout from 'layouts/client_layout/ClientLayout';
 import LoginLayout from 'layouts/login_layout/LoginLayout';
@@ -42,6 +44,8 @@ const publicRoutes: RouteProps[] = [
   { path: '/login', component: LoginPage, layout: LoginLayout },
   { path: '/register', component: RegisterPage, layout: LoginLayout },
   { path: '/*', component: NotFoundPage, layout: ClientLayout },
+  { path: '/status=success', component: PaymentSuccess, layout: ClientLayout },
+  { path: '/status=canceled', component: PaymentCanceled, layout: ClientLayout },
   { path: '/product', component: ManageProduct, layout: ClientLayout },
   { path: '/product/:id', component: ManageProductDetailsPage, layout: ClientLayout }
 ];

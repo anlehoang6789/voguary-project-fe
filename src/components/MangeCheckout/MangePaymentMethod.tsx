@@ -52,8 +52,8 @@ export default function ManagePaymentMethod({
           fullName,
           phone,
           address,
-          paymentMethodId: 1, // Bank card
-          returnUrl: 'http://localhost:3000' // Replace with your actual return URL
+          paymentMethodId: 1,
+          returnUrl: 'https://voguary.id.vn'
         }).unwrap();
 
         if (response.dataObject.paymentLink) {
@@ -69,8 +69,8 @@ export default function ManagePaymentMethod({
           fullName,
           phone,
           address,
-          paymentMethodId: 2, // COD
-          returnUrl: 'http://localhost:3000' // COD might not need a return URL
+          paymentMethodId: 2,
+          returnUrl: 'https://voguary.id.vn'
         }).unwrap();
 
         navigate('/orderTracking');
